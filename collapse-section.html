@@ -1,0 +1,7 @@
+﻿<div horizontal layout center justified>
+	<span data-bind="text: title, click: click, title: buttonTitle" class="subhead"></span>
+	<paper-icon-button data-bind="click: click, icon: buttonIcon, title: buttonTitle"></paper-icon-button>
+</div>
+<core-collapse data-bind="attr: { opened: opened }">
+	<!-- ko template: { nodes: $componentTemplateNodes, data: data } --><!-- /ko -->
+</core-collapse>
