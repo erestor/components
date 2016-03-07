@@ -2,8 +2,9 @@
 	function(htmlString) {
 
 	var ViewModel = function(params) {
-		this.label = params.label;
 		this.value = params.value;
+		this.label = params.label;
+		this.title = params.title;
 		this.hasFocus = params.hasFocus;
 		this.enter = params.enter;
 		this.placeholder = params.placeholder;
