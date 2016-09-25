@@ -2,6 +2,8 @@
 	<span data-bind="text: title, click: click" class="subhead"></span>
 	<paper-icon-button data-bind="click: click, icon: buttonIcon, title: buttonTitle"></paper-icon-button>
 </div>
-<core-collapse data-bind="attr: { opened: opened }">
-	<!-- ko template: { nodes: $componentTemplateNodes, data: data } --><!-- /ko -->
-</core-collapse>
+<iron-collapse data-bind="attr: { 'opened': opened }">
+	<div class="collapse-content">
+		<!-- ko template: { nodes: $componentTemplateNodes, data: data } --><!-- /ko -->
+	</div>
+</iron-collapse>
