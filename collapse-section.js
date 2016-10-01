@@ -22,9 +22,11 @@
 			return locale().toggle;
 			//return self.opened() ? locale().shrink : locale().expand;
 		});
+		this.heightTweak = ko.observable(self.opened());
 	};
 	ViewModel.prototype = {
 		'click': function() {
+			this.heightTweak(false);
 			this.opened(!this.opened());
 		}
 	};
