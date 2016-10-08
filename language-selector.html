@@ -1,7 +1,7 @@
 ﻿<paper-menu-button horizontal layout>
 	<paper-icon-button icon="icons:language" class="dropdown-trigger" data-bind="title: locale().language" noink></paper-icon-button>
 	<paper-menu class="dropdown-content">
-		<paper-item data-bind="click: setCzech, css: { 'core-selected': localeId() == 'cz' }">Česky</paper-item>
-		<paper-item data-bind="click: setEnglish, css: { 'core-selected': localeId() == 'en' }">English</paper-item>
+		<paper-item data-bind="click: setCzech, css: { 'iron-selected': localeId() == 'cz' }">Česky</paper-item>
+		<paper-item data-bind="click: setEnglish, css: { 'iron-selected': localeId() == 'en' }">English</paper-item>
 	</paper-menu>
 </paper-menu-button>

@@ -1,4 +1,9 @@
-﻿<div horizontal layout center data-bind="attr: { 'justified': justified }">
+﻿<style>
+	iron-collapse.height-tweak {
+		height: auto !important;
+	}
+</style>
+<div horizontal layout center data-bind="attr: { 'justified': justified }">
 	<span data-bind="text: title, click: click" class="subhead"></span>
 	<paper-icon-button data-bind="click: click, icon: buttonIcon, title: buttonTitle"></paper-icon-button>
 </div>
