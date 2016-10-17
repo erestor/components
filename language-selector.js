@@ -3,7 +3,8 @@
 	'lang'],
 	function(htmlString, lang) {
 
-	var ViewModel = function() {
+	var ViewModel = function(params) {
+		this.halign = params.halign || "left";
 		this.setCzech = lang.setCzech;
 		this.setEnglish = lang.setEnglish;
 		this.localeId = lang.localeId;

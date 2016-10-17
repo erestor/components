@@ -1,4 +1,4 @@
-﻿<paper-menu-button horizontal layout>
+﻿<paper-menu-button horizontal layout data-bind="attr: { 'horizontal-align': halign }">
 	<paper-icon-button icon="icons:language" class="dropdown-trigger" data-bind="title: locale().language" noink></paper-icon-button>
 	<paper-menu class="dropdown-content">
 		<paper-item data-bind="click: setCzech, css: { 'iron-selected': localeId() == 'cz' }">Česky</paper-item>
