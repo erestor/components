@@ -4,7 +4,10 @@
 	}
 </style>
 <div horizontal layout center data-bind="attr: { 'justified': justified }">
-	<span data-bind="text: title, click: click" class="subhead"></span>
+	<div horizontal layout center data-bind="css: { 'iconified': titleIcon }">
+		<iron-icon data-bind="icon: titleIcon, visible: titleIcon"></iron-icon>
+		<span data-bind="text: title, click: click" class="subhead"></span>
+	</div>
 	<paper-icon-button data-bind="click: click, icon: buttonIcon, title: buttonTitle"></paper-icon-button>
 </div>
 <iron-collapse data-bind="attr: { 'opened': opened }, css: { 'height-tweak': heightTweak }">

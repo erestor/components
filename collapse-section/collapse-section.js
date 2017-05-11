@@ -6,6 +6,7 @@
 
 	ViewModel = function(params) {
 		this.title = params.title;
+		this.titleIcon = params.titleIcon;
 		this.opened = params.opened || ko.observable();
 		this.icon = params.icon;
 		this.data = params.data;
