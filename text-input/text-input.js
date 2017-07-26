@@ -7,6 +7,8 @@ function(htmlString) {
 		this.value = params.value;
 		this.label = params.label;
 		this.title = params.title;
+		this.help = params.help;
+		this.helpTitle = params.helpTitle || params.label;
 		this.hasFocus = params.hasFocus;
 		this.enter = params.enter;
 		this.placeholder = params.placeholder;

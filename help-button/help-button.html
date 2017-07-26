@@ -1,0 +1,12 @@
+﻿<paper-icon-button icon="icons:help" data-bind="click: open, css: dialogId"></paper-icon-button>
+<paper-dialog data-bind="attr: { id: dialogId, 'vertical-align': noPosition ? '' : 'auto' }" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
+	<h2 data-bind="html: title, visible: !!title"></h2>
+	<paper-dialog-scrollable>
+		<!-- ko if: content -->
+		<p data-bind="html: content"></p>
+		<!-- /ko -->
+		<!-- ko ifnot: content -->
+		<!-- ko template: { nodes: $componentTemplateNodes, data: data } --><!-- /ko -->
+		<!-- /ko -->
+	</paper-dialog-scrollable>
+</paper-dialog>

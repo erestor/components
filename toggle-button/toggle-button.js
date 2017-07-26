@@ -6,7 +6,7 @@ function(htmlString, tools) {
 		this.value = params.value;
 		this.title = params.title;
 		this.enable = params.enable !== undefined ? params.enable : true;
-		this.dialogId = tools.getUuid();
+		this.dialogId = tools.getGuid();
 	};
 	ViewModel.prototype = {
 		'onChanged': function() {
