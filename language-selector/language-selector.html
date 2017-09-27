@@ -1,7 +1,7 @@
-﻿<paper-menu-button horizontal layout data-bind="attr: { 'horizontal-align': halign }">
-	<paper-icon-button icon="icons:language" class="dropdown-trigger" data-bind="title: locale().language" noink></paper-icon-button>
-	<paper-menu class="dropdown-content">
+﻿<paper-menu-button data-bind="attr: { 'horizontal-align': halign }">
+	<paper-icon-button icon="icons:language" slot="dropdown-trigger" data-bind="title: locale().language" noink></paper-icon-button>
+	<paper-listbox slot="dropdown-content">
 		<paper-item data-bind="click: setCzech, css: { 'iron-selected': localeId() == 'cz' }">Česky</paper-item>
 		<paper-item data-bind="click: setEnglish, css: { 'iron-selected': localeId() == 'en' }">English</paper-item>
-	</paper-menu>
+	</paper-listbox>
 </paper-menu-button>
