@@ -7,6 +7,7 @@
 		this.data = params.data; //for templated version
 		this.noPosition = params.noPosition;
 		this.dialogId = tools.getGuid();
+		this.icon = params.outline ? 'icons:help-outline' : 'icons:help';
 	};
 	ViewModel.prototype = {
 		'open': function() {
