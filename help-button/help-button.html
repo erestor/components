@@ -1,5 +1,7 @@
 ﻿<paper-icon-button data-bind="click: open, css: dialogId, attr: {'icon': icon}"></paper-icon-button>
-<paper-dialog data-bind="attr: { id: dialogId, 'vertical-align': noPosition ? '' : 'auto' }" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
+<paper-dialog data-bind="attr: { id: dialogId, 'vertical-align': noPosition ? '' : 'auto' }"
+	entry-animation="fade-in-animation"
+	exit-animation="fade-out-animation">
 	<h2 data-bind="html: title, visible: !!title"></h2>
 	<paper-dialog-scrollable>
 		<!-- ko if: content -->
