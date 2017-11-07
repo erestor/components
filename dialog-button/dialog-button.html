@@ -15,5 +15,10 @@
 				<!-- ko template: { nodes: $componentTemplateNodes, data: data } --><!-- /ko -->
 			<!-- /ko -->
 		</paper-dialog-scrollable>
+		<!-- ko if: closeBtnLabel -->
+		<div class="buttons">
+			<paper-button dialog-dismiss data-bind="text: closeBtnLabel"></paper-button>
+		</div>
+		<!-- /ko -->
 	<!-- /ko -->
 </paper-dialog>

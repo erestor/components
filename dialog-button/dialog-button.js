@@ -6,6 +6,7 @@
 		this.icon = params.icon;
 		this.tooltip = params.tooltip;
 		this.raw = params.raw;
+		this.closeBtnLabel = params.closeBtnLabel;
 	};
 	ViewModel.prototype = Object.create(DialogButtonBase.prototype);
 	ViewModel.prototype.constructor = ViewModel;
