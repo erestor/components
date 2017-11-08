@@ -19,10 +19,10 @@
 
 			return self.icon;
 		});
-		this.buttonTitle = ko.pureComputed(function() {
-			return locale().toggle;
-			//return self.opened() ? locale().shrink : locale().expand;
-		});
+
+		this.titleClass = {};
+		this.titleClass[params.titleClass || 'subhead'] = true;
+
 		this.heightTweak = ko.observable(self.opened());
 	};
 	ViewModel.prototype = {
