@@ -1,10 +1,8 @@
 ﻿define([
-	'text!./collapse-section.html', 'lang'],
-	function(htmlString, lang) {
+	'text!./collapse-section.html'],
+	function(htmlString) {
 
-	var locale = lang.locale,
-
-	ViewModel = function(params) {
+	var ViewModel = function(params) {
 		this.title = params.title;
 		this.titleIcon = params.titleIcon;
 		this.opened = params.opened || ko.observable();
