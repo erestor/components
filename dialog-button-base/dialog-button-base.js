@@ -12,7 +12,7 @@
 	DialogButtonBase.prototype = {
 		'open': function() {
 			if (!this.dialogEl)
-				this.dialogEl = $('#' + this.dialogId).appendTo($('body')); //must put the dialog in the body to ensure proper stacking
+				this.dialogEl = $('#' + this.dialogId);
 
 			var d = this.dialogEl[0];
 			if (d.__isAnimating) {
@@ -23,10 +23,6 @@
 				d.positionTarget = $('.' + this.dialogId)[0]; //looking for a class(!)
 
 			d.open();
-		},
-		'dispose': function() {
-			if (this.dialogEl)
-				this.dialogEl.remove();
 		}
 	};
 	return DialogButtonBase;
