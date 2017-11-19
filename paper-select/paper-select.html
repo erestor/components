@@ -1,0 +1,14 @@
+﻿<paper-dropdown-menu data-bind="label: label, enable: enable, event: { 'iron-select': onSelected }, attr: { 'no-label-float': noLabelFloat }">
+	<paper-listbox slot="dropdown-content" data-bind="attr: { 'selected': selectedItemMenuIndex }">
+		<!-- ko if: optionsCaption -->
+		<paper-item>
+			<span data-bind="text: optionsCaption"></span>
+		</paper-item>
+		<!-- /ko -->
+		<!-- ko foreach: options -->
+		<paper-item data-bind="attr: { 'data-value': $parent.getOptionValue($data) }">
+			<span data-bind="text: $parent.getOptionText($data)"></span>
+		</paper-item>
+		<!-- /ko -->
+	</paper-listbox>
+</paper-dropdown-menu>
