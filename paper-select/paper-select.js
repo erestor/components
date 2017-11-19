@@ -15,7 +15,7 @@
 		var self = this;
 		this.selectedItemIndex = ko.pureComputed(function() {
 			var val = self.value(),
-				opts = self.options() || [];
+				opts = self.options ? ko.unwrap(self.options) : [];
 
 			for (var i = 0; i < opts.length; ++i) {
 				if (self.getOptionValue(opts[i]) == val)
