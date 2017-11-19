@@ -10,7 +10,7 @@
 		this.optionsValue = params.optionsValue;
 		this.optionsText = params.optionsText;
 		this.optionsCaption = params.optionsCaption;
-		this.enable = params.enable !== undefined ? params.enable : true;
+		this.disable = params.disable !== undefined ? params.disable : false;
 
 		var self = this;
 		this.selectedItemIndex = ko.pureComputed(function() {
