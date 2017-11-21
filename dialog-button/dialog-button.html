@@ -1,4 +1,5 @@
-﻿<paper-icon-button data-bind="icon: icon, click: open, css: dialogId, title: tooltip"></paper-icon-button>
+﻿<paper-icon-button data-bind="icon: icon, click: open, css: dialogId"></paper-icon-button>
+<paper-tooltip data-bind="text: tooltip"></paper-tooltip>
 <paper-dialog data-bind="attr: { id: dialogId, 'vertical-align': noPosition ? '' : 'auto' }"
 	entry-animation="fade-in-animation"
 	exit-animation="fade-out-animation">
