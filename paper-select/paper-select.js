@@ -13,25 +13,25 @@
 		this.disable = params.disable !== undefined ? params.disable : false;
 
 		var self = this;
-		this.selectedItemIndex = ko.pureComputed(function() {
-			var val = self.value(),
-				opts = self.options ? ko.unwrap(self.options) : [];
-
-			for (var i = 0; i < opts.length; ++i) {
-				if (self.getOptionValue(opts[i]) == val)
-					return i;
-			}
-			return -1;
-		});
 		this.selectedItemMenuIndex = ko.pureComputed(function() {
-			var index = self.selectedItemIndex();
+			var index = self.getItemIndex(self.value());
 			return self.optionsCaption ? index + 1 : index;
 		});
 	}
 	ViewModel.prototype = {
-		'onSelected': function(vm, ev) {
-			var val = $(ev.target.selectedItem).attr('data-value');
-			this.value(val);
+		'onCaptionSelected': function() {
+			this.value(undefined);
+		},
+		'onSelected': function(option) {
+			this.value(this.getOptionValue(option));
+		},
+		'getItemIndex': function(value) {
+			var opts = ko.unwrap(this.options) || [];
+			for (var i = 0; i < opts.length; ++i) {
+				if (this.getOptionValue(opts[i]) == value)
+					return i;
+			}
+			return -1;
 		},
 		'getOptionText': function(item) {
 			switch (typeof this.optionsText) {
