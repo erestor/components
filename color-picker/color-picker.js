@@ -3,6 +3,7 @@ function(htmlString, tools) {
 
 	var ViewModel = function(params) {
 		this.color = params.color;
+		this.halign = params.halign;
 		this.dialogId = tools.getGuid();
 	};
 	ViewModel.prototype = {
