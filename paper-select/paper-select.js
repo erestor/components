@@ -3,14 +3,15 @@
 	function(htmlString) {
 
 	function ViewModel(params) {
-		this.value = params.value;
-		this.options = params.options;
+		this.disable = params.disable !== undefined ? params.disable : false;
 		this.label = params.label;
 		this.noLabelFloat = params.noLabelFloat;
-		this.optionsValue = params.optionsValue;
-		this.optionsText = params.optionsText;
+		this.options = params.options;
 		this.optionsCaption = params.optionsCaption;
-		this.disable = params.disable !== undefined ? params.disable : false;
+		this.optionsText = params.optionsText;
+		this.optionsValue = params.optionsValue;
+		this.valign = params.valign;
+		this.value = params.value;
 
 		var self = this;
 		this.selectedItemMenuIndex = ko.pureComputed(function() {
