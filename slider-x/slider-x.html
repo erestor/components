@@ -1,11 +1,1 @@
-﻿<!-- the order of the attributes matter - especially the value must be after min and max -->
-<paper-slider data-bind="attr: {
-		'id': dialogId,
-		'min': min,
-		'max': max,
-		'secondary-progress': secondaryProgress,
-		'value': value,
-		'pin': pin
-	},
-	enable: enable,
-	event: { 'change': onChanged, 'immediate-value-change': onImmediateChange }"></paper-slider>
+﻿<paper-slider data-bind="attr: sliderAttrs, enable: enable, event: { 'change': onChanged, 'immediate-value-change': onImmediateChange }"></paper-slider>
