@@ -5,7 +5,7 @@ function(htmlString, tools) {
 		this.checked = params.checked;
 		this.label = params.label;
 		this.noLabel = params.label === undefined;
-		this.disable = params.disable !== undefined ? params.disable : false;
+		this.enable = tools.readEnableStatus(params);
 		this.id = tools.getGuid();
 	};
 	ViewModel.prototype = {

@@ -5,7 +5,7 @@ function(htmlString, tools) {
 		this.label = params.label;
 		this.value = params.value;
 		this.title = params.title;
-		this.enable = params.enable !== undefined ? params.enable : true;
+		this.enable = tools.readEnableStatus(params);
 		this.dialogId = tools.getGuid();
 	};
 	ViewModel.prototype = {

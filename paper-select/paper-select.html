@@ -1,4 +1,4 @@
-﻿<paper-dropdown-menu data-bind="label: label, disable: disable, attr: { 'no-label-float': noLabelFloat, 'vertical-align': valign }">
+﻿<paper-dropdown-menu data-bind="label: label, enable: enable, attr: { 'no-label-float': noLabelFloat, 'vertical-align': valign }">
 	<paper-listbox slot="dropdown-content" data-bind="attr: { 'selected': selectedItemMenuIndex }, delegatedHandler: 'click'">
 		<!-- ko if: optionsCaption -->
 		<paper-item data-bind="text: optionsCaption" data-click="onCaptionSelected"></paper-item>

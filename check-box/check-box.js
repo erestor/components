@@ -1,11 +1,11 @@
-﻿define(['text!./check-box.html'],
-	function(htmlString) {
+﻿define(['text!./check-box.html', '../tools/tools'],
+	function(htmlString, tools) {
 
 	var ViewModel = function(params) {
 		this.label = params.label;
 		this.value = params.value;
 		this.title = params.title;
-		this.enable = params.enable !== undefined ? params.enable : true;
+		this.enable = tools.readEnableStatus(params);
 	};
 
     return {

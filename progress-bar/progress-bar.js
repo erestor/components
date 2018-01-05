@@ -1,5 +1,5 @@
-﻿define(['text!./progress-bar.html'],
-function(htmlString) {
+﻿define(['text!./progress-bar.html', '../tools/tools'],
+function(htmlString, tools) {
 
 	var ViewModel = function(params) {
 		this.indeterminate = params.indeterminate;
@@ -7,7 +7,7 @@ function(htmlString) {
 		this.max = params.max || 100;
 		this.secondaryProgress = params.secondaryProgress || 0;
 		this.value = params.value;
-		this.enable = params.enable !== undefined ? params.enable : true;
+		this.enable = tools.readEnableStatus(params);
 	};
 
     return {

@@ -5,6 +5,7 @@ function(htmlString, tools) {
 		//the order of the attributes matter - especially the value must be after min and max
 		this.dialogId = tools.getGuid();
 		this.value = params.value;
+		this.enable = tools.readEnableStatus(params);
 		this.sliderAttrs = {
 			'id': this.dialogId,
 			'min': params.min || 0,
@@ -20,8 +21,6 @@ function(htmlString, tools) {
 			this.sliderAttrs.step = 1;
 			this.sliderAttrs['max-markers'] = this.sliderAttrs.max;
 		}
-
-		this.enable = params.enable !== undefined ? params.enable : true;
 	};
 	ViewModel.prototype = {
 		'onChanged': function() {

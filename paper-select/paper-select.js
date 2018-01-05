@@ -1,9 +1,9 @@
 ﻿define(
-	['text!./paper-select.html'],
-	function(htmlString) {
+	['text!./paper-select.html', '../tools/tools'],
+	function(htmlString, tools) {
 
 	function ViewModel(params) {
-		this.disable = params.disable !== undefined ? params.disable : false;
+		this.enable = tools.readEnableStatus(params);
 		this.label = params.label;
 		this.noLabelFloat = params.noLabelFloat;
 		this.options = params.options;
