@@ -4,8 +4,10 @@
 
 	function ViewModel(params) {
 		this.enable = tools.readEnableStatus(params);
+		this.halign = params.halign;
 		this.label = params.label;
 		this.noLabelFloat = params.noLabelFloat;
+		this.noselect = params.noselect;
 		this.options = params.options;
 		this.optionsCaption = params.optionsCaption;
 		this.optionsText = params.optionsText;
@@ -13,10 +15,18 @@
 		this.valign = params.valign;
 		this.value = params.value;
 
+		this.listboxId = tools.getGuid();
+
 		var self = this;
 		this.selectedItemMenuIndex = ko.pureComputed(function() {
-			var index = self.getItemIndex(self.value());
-			return self.optionsCaption ? index + 1 : index;
+			var index = self.getItemIndex(self.value()),
+				paperIndex = self.optionsCaption ? index + 1 : index;
+
+			var listbox = $('#' + self.listboxId);
+			if (listbox.length === 1)
+				listbox[0].selected = paperIndex;
+
+			return paperIndex;
 		});
 	}
 	ViewModel.prototype = {
