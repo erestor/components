@@ -3,6 +3,8 @@
 	function(htmlString, tools) {
 
 	function ViewModel(params) {
+		this.afterChange = params.afterChange;
+		this.beforeChange = params.beforeChange;
 		this.enable = tools.readEnableStatus(params);
 		this.halign = params.halign;
 		this.label = params.label;
@@ -31,10 +33,30 @@
 	}
 	ViewModel.prototype = {
 		'onCaptionSelected': function() {
+			var oldVal = this.value();
+			if (oldVal === undefined || oldVal === null)
+				return;
+
+			if (this.beforeChange)
+				this.beforeChange(oldVal);
+
 			this.value(undefined);
+			if (this.afterChange)
+				this.afterChange(oldVal);
 		},
-		'onSelected': function(option) {
-			this.value(this.getOptionValue(option));
+		'onSelected': function(item) {
+			var oldVal = this.value(),
+				newVal = this.getOptionValue(item);
+
+			if (oldVal === newVal)
+				return;
+
+			if (this.beforeChange)
+				this.beforeChange(oldVal, newVal);
+
+			this.value(newVal);
+			if (this.afterChange)
+				this.afterChange(oldVal, newVal);
 		},
 		'getItemIndex': function(value) {
 			var opts = ko.unwrap(this.options) || [];
