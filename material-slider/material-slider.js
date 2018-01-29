@@ -1,4 +1,4 @@
-﻿define(['text!./slider-x.html', '../tools/tools'],
+﻿define(['text!./material-slider.html', '../tools/tools'],
 function(htmlString, tools) {
 
 	var ViewModel = function (params) {

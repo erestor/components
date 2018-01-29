@@ -1,4 +1,4 @@
-﻿define(['text!./progress-bar.html', '../tools/tools'],
+﻿define(['text!./material-progress.html', '../tools/tools'],
 function(htmlString, tools) {
 
 	var ViewModel = function(params) {

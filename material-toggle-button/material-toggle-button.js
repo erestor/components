@@ -1,4 +1,4 @@
-﻿define(['text!./toggle-button.html', '../tools/tools'],
+﻿define(['text!./material-toggle-button.html', '../tools/tools'],
 function(htmlString, tools) {
 
 	var ViewModel = function(params) {

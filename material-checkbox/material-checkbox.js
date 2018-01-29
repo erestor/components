@@ -1,4 +1,4 @@
-﻿define(['text!./checkbox-x.html', '../tools/tools'],
+﻿define(['text!./material-checkbox.html', '../tools/tools'],
 function(htmlString, tools) {
 
 	var ViewModel = function(params) {

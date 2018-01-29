@@ -1,5 +1,5 @@
 ﻿define(
-	['text!./paper-select.html', '../tools/tools'],
+	['text!./material-select.html', '../tools/tools'],
 	function(htmlString, tools) {
 
 	function ViewModel(params) {

@@ -1,4 +1,4 @@
-﻿define(['text!./color-picker.html', '../tools/tools'],
+﻿define(['text!./material-color-picker.html', '../tools/tools'],
 function(htmlString, tools) {
 
 	var ViewModel = function(params) {
