@@ -20,12 +20,9 @@
 
 		this.titleClass = {};
 		this.titleClass[params.titleClass || 'subhead'] = true;
-
-		this.heightTweak = ko.observable(self.opened());
 	};
 	ViewModel.prototype = {
 		'click': function() {
-			this.heightTweak(false);
 			this.opened(!this.opened());
 		}
 	};
