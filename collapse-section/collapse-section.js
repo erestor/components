@@ -13,7 +13,7 @@
 		var self = this;
 		this.buttonIcon = ko.pureComputed(function() {
 			if (!self.icon)
-				return self.opened() ? 'expand-less' : 'expand-more';
+				return 'icons:expand-more';
 
 			return self.icon;
 		});
