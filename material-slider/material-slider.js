@@ -11,7 +11,8 @@ function(htmlString, tools) {
 			'min': params.min || 0,
 			'max': params.max || 100,
 			'value': this.value,
-			'pin': params.pin
+			'pin': params.pin,
+			'expand': params.expand
 		};
 		if (params.secondaryProgress)
 			this.sliderAttrs['secondary-progress'] = params.secondaryProgress;
