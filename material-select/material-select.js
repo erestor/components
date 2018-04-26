@@ -6,18 +6,20 @@
 		this.afterChange = params.afterChange;
 		this.beforeChange = params.beforeChange;
 		this.enable = tools.readEnableStatus(params);
-		this.halign = params.halign;
 		this.label = params.label;
-		this.noLabelFloat = params.noLabelFloat;
 		this.noselect = params.noselect;
 		this.options = params.options;
 		this.optionsCaption = params.optionsCaption;
 		this.optionsText = params.optionsText;
 		this.optionsValue = params.optionsValue;
-		this.valign = params.valign;
 		this.value = params.value;
 
 		this.listboxId = tools.getGuid();
+		this.dropdownAttrs = {
+			'horizontal-align': params.halign,
+			'no-label-float': params.noLabelFloat,
+			'vertical-align': params.valign
+		};
 
 		var self = this;
 		this.selectedItemMenuIndex = ko.pureComputed(function() {
