@@ -8,7 +8,8 @@
 		this.opened = params.opened || ko.observable();
 		this.icon = params.icon;
 		this.data = params.data;
-		this.justified = !params.tight;
+		this.centerTitle = params.centerTitle;
+		this.justified = !params.tight && !params.centerTitle;
 
 		var self = this;
 		this.buttonIcon = ko.pureComputed(function() {
