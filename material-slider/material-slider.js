@@ -17,6 +17,10 @@ function(htmlString, tools) {
 		if (params.secondaryProgress)
 			this.sliderAttrs['secondary-progress'] = params.secondaryProgress;
 
+		if (params.step) {
+			this.sliderAttrs.snaps = true;
+			this.sliderAttrs.step = params.step;
+		}
 		if (params.marked) {
 			this.sliderAttrs.snaps = true;
 			this.sliderAttrs.step = 1;
