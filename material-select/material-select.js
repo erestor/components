@@ -14,8 +14,10 @@
 		this.optionsValue = params.optionsValue;
 		this.value = params.value;
 
+		this.rootId = tools.getGuid();
 		this.listboxId = tools.getGuid();
 		this.dropdownAttrs = {
+			'id': this.rootId,
 			'horizontal-align': params.halign,
 			'no-label-float': params.noLabelFloat,
 			'vertical-align': params.valign
