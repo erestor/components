@@ -3,6 +3,7 @@
 	function(htmlString, tools) {
 
 	function ViewModel(params) {
+		this.alwaysNotify = params.alwaysNotify; //onSelected will trigger events and write value even if selection does not change
 		this.afterChange = params.afterChange;
 		this.beforeChange = params.beforeChange;
 		this.enable = tools.readEnableStatus(params);
@@ -52,7 +53,7 @@
 			var oldVal = this.value(),
 				newVal = this.getOptionValue(item);
 
-			if (oldVal === newVal)
+			if (!this.alwaysNotify && oldVal === newVal)
 				return;
 
 			if (this.beforeChange)
