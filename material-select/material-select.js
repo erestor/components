@@ -43,11 +43,11 @@
 				return;
 
 			if (this.beforeChange)
-				this.beforeChange(oldVal);
+				this.beforeChange(undefined, oldVal);
 
 			this.value(undefined);
 			if (this.afterChange)
-				this.afterChange(oldVal);
+				this.afterChange(undefined, oldVal);
 		},
 		'onSelected': function(item) {
 			var oldVal = this.value(),
@@ -57,11 +57,11 @@
 				return;
 
 			if (this.beforeChange)
-				this.beforeChange(oldVal, newVal);
+				this.beforeChange(newVal, oldVal);
 
 			this.value(newVal);
 			if (this.afterChange)
-				this.afterChange(oldVal, newVal);
+				this.afterChange(newVal, oldVal);
 		},
 		'getItemIndex': function(value) {
 			var opts = ko.unwrap(this.options) || [];
