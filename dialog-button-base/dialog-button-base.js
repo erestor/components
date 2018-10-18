@@ -3,6 +3,7 @@
 
 	var DialogButtonBase = function(params) {
 		this.content = params.content;
+		this.enable = tools.readEnableStatus(params);
 		this.title = params.title;
 		this.data = params.data; //for templated version
 		this.noPosition = params.noPosition;
