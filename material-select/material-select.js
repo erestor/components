@@ -25,6 +25,14 @@
 		};
 
 		var self = this;
+		this.selectedItem = ko.pureComputed(function() {
+			var index = self.getItemIndex(self.value());
+			return index >= 0 ? ko.unwrap(self.options)[index] : null;
+		});
+		this.selectedItemText = ko.pureComputed(function() {
+			var item = self.selectedItem();
+			return item ? self.getOptionText(item) : self.optionsCaption;
+		});
 		this.selectedItemMenuIndex = ko.pureComputed(function() {
 			var index = self.getItemIndex(self.value()),
 				paperIndex = self.optionsCaption ? index + 1 : index;
