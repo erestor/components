@@ -13,6 +13,7 @@
 		this.optionsCaption = params.optionsCaption;
 		this.optionsText = params.optionsText;
 		this.optionsValue = params.optionsValue;
+		this.title = params.title;
 		this.value = params.value;
 
 		this.rootId = tools.getGuid();
@@ -35,7 +36,13 @@
 		});
 		this.selectedItemMenuIndex = ko.pureComputed(function() {
 			var index = self.getItemIndex(self.value()),
-				paperIndex = self.optionsCaption ? index + 1 : index;
+				paperIndex = index;
+
+			if (self.optionsCaption)
+				paperIndex++;
+
+			if (self.title)
+				paperIndex++;
 
 			var listbox = $('#' + self.listboxId);
 			if (listbox.length === 1)
