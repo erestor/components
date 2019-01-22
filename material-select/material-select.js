@@ -8,7 +8,6 @@
 		this.beforeChange = params.beforeChange;
 		this.enable = tools.readEnableStatus(params);
 		this.label = params.label;
-		this.noselect = params.noselect;
 		this.options = params.options;
 		this.optionsCaption = params.optionsCaption;
 		this.optionsText = params.optionsText;
