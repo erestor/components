@@ -1,0 +1,28 @@
+﻿<div data-bind="attr: { id: id }" class="material-banner-wrapper">
+	<div class="material-banner-text">
+		<span class="body2" data-bind="html: text"></span>
+	</div>
+	<div class="material-banner-buttons">
+		<!-- ko using: buttons[0] -->
+			<!-- ko if: $data.href -->
+			<a data-bind="href: href" target="_blank" rel="noopener">
+				<paper-button class="body2" data-bind="text: text"></paper-button>
+			</a>
+			<!-- /ko -->
+			<!-- ko ifnot: $data.href -->
+			<paper-button class="body2" data-bind="text: text, click: $component.onButton0"></paper-button>
+			<!-- /ko -->
+		<!-- /ko -->
+
+		<!-- ko with: buttons[1] -->
+			<!-- ko if: $data.href -->
+			<a data-bind="href: href" target="_blank" rel="noopener">
+				<paper-button class="body2" data-bind="text: text"></paper-button>
+			</a>
+			<!-- /ko -->
+			<!-- ko ifnot: $data.href -->
+			<paper-button class="body2" data-bind="text: text, click: $component.onButton1"></paper-button>
+			<!-- /ko -->
+		<!-- /ko -->
+	</div>
+</div>

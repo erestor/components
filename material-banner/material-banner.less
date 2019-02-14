@@ -1,0 +1,55 @@
+﻿material-banner {
+	display: block;
+	box-sizing: border-box;
+    border-color: rgba(0, 0, 0, 0.12);
+    border-style: solid;
+	border-width: 0;
+	border-bottom-width: 1px;
+
+	.material-banner-wrapper {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.material-banner-text {
+		padding: 16px;
+	}
+
+	.material-banner-buttons {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		align-self: flex-end;
+		padding: 8px 8px 8px 24px;
+	}
+}
+
+@media only screen and (min-width: 641px) {
+	material-banner {
+		.material-banner-wrapper {
+			max-width: 720px;
+			margin: 0 auto;
+		}
+
+		.material-banner-text {
+			padding-right: 64px;
+			padding-left: 24px;
+		}
+	}
+}
+
+@media only screen and (max-width: 640px) {
+	material-banner {
+		.material-banner-wrapper {
+			flex-wrap: wrap;
+		}
+
+		.material-banner-text {
+			padding-bottom: 0;
+		}
+
+		.material-banner-buttons {
+			flex: 1;
+		}
+	}
+}
