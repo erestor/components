@@ -23,7 +23,7 @@ function(htmlString, tools) {
 	};
 	ViewModel.prototype = {
 		'_hide': function() {
-			$('#' + this.id).slideUp({
+			$('#' + this.id).parent().slideUp({
 				duration: 375,
 				easing: 'easeOutCubic'
 			});
