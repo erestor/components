@@ -1,6 +1,13 @@
 ﻿<div data-bind="attr: { id: id }" class="material-banner-wrapper">
-	<div class="material-banner-text">
-		<span class="body2" data-bind="html: text"></span>
+	<div class="material-banner-message">
+		<!-- ko if: icon -->
+		<div class="material-banner-illustration">
+			<iron-icon data-bind="attr: { 'icon': icon }"></iron-icon>
+		</div>
+		<!-- /ko -->
+		<div class="material-banner-text">
+			<span class="body2" data-bind="html: text"></span>
+		</div>
 	</div>
 	<div class="material-banner-buttons">
 		<!-- ko using: buttons[0] -->

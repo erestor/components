@@ -2,6 +2,7 @@
 function(htmlString, tools) {
 
 	var ViewModel = function(params) {
+		this.icon = params.icon;
 		this.text = params.text;
 		this.buttons = ko.unwrap(params.buttons);
 		this.id = tools.getGuid();
