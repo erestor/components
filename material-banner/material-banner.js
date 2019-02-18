@@ -5,6 +5,7 @@ function(htmlString, tools) {
 		this.icon = params.icon;
 		this.text = params.text;
 		this.buttons = ko.unwrap(params.buttons);
+		this.closed = params.closed;
 		this.id = tools.getGuid();
 
 		var self = this;
@@ -23,9 +24,14 @@ function(htmlString, tools) {
 	};
 	ViewModel.prototype = {
 		'_hide': function() {
+			var self = this;
 			$('#' + this.id).parent().slideUp({
 				duration: 375,
-				easing: 'easeOutCubic'
+				easing: 'easeOutCubic',
+				complete: function() {
+					if (ko.isWritableObservable(self.closed))
+						self.closed(true);
+				}
 			});
 		}
 	};
