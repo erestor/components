@@ -4,15 +4,16 @@ function(htmlString, tools) {
 	var ViewModel = function(params) {
 		this.icon = params.icon;
 		this.text = params.text;
-		this.buttons = ko.unwrap(params.buttons);
+		this.buttons = params.buttons;
 		this.closed = params.closed;
 		this.id = tools.getGuid();
 
 		var self = this;
 		var onButtonClick = function(index) {
 			self._hide();
-			if (self.buttons[index].click)
-				self.buttons[index].click();
+			var buttons = ko.unwrap(self.buttons);
+			if (buttons[index].click)
+				buttons[index].click();
 		};
 
 		this.onButton0 = function() {

@@ -10,7 +10,7 @@
 		</div>
 	</div>
 	<div class="material-banner-buttons">
-		<!-- ko using: buttons[0] -->
+		<!-- ko using: ko.unwrap(buttons)[0] -->
 			<!-- ko if: $data.href -->
 			<a data-bind="href: href" target="_blank" rel="noopener" tabindex="-1">
 				<paper-button class="body2" data-bind="text: text"></paper-button>
@@ -20,7 +20,7 @@
 			<paper-button class="body2" data-bind="text: text, click: $component.onButton0"></paper-button>
 			<!-- /ko -->
 		<!-- /ko -->
-		<!-- ko with: buttons[1] -->
+		<!-- ko with: ko.unwrap(buttons)[1] -->
 			<!-- ko if: $data.href -->
 			<a data-bind="href: href" target="_blank" rel="noopener" tabindex="-1">
 				<paper-button class="body2" data-bind="text: text"></paper-button>
