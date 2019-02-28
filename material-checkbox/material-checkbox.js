@@ -5,6 +5,7 @@ function(htmlString, tools) {
 		this.checked = params.checked;
 		this.label = params.label;
 		this.noLabel = params.label === undefined;
+		this.noink = params.noink;
 		this.enable = tools.readEnableStatus(params);
 		this.id = tools.getGuid();
 	};
