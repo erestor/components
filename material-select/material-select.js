@@ -86,11 +86,26 @@
 			return -1;
 		},
 		'getOptionText': function(item) {
+			var text = item;
 			switch (typeof this.optionsText) {
-				case 'function': return this.optionsText(item);
-				case 'string': return ko.unwrap(item[this.optionsText]);
-				default: return item;
+				case 'function':
+					text = this.optionsText(item);
+					break;
+
+				case 'string':
+					text = ko.unwrap(item[this.optionsText]);
+					break;
 			}
+			if (item === this.selectedItem.peek()) {
+				//if selected item's had been updated dynamically, the internal input of paper-menu-button doesn't update automatically,
+				//so we must do it here
+				var menu = $('#' + this.rootId);
+				if (menu.length === 1) {
+					var input = $(menu[0].$.menuButton).find('paper-input');
+					input.val(text);
+				}
+			}
+			return text;
 		},
 		'getOptionValue': function(item) {
 			switch (typeof this.optionsValue) {
