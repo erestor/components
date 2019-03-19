@@ -10,8 +10,10 @@ function(htmlString, tools) {
 
 		var self = this;
 		var onButtonClick = function(index) {
-			self._hide();
-			var buttons = ko.unwrap(self.buttons);
+			var buttons = self.buttons;
+			if (buttons[index].dismiss)
+				self._hide();
+
 			if (buttons[index].click)
 				buttons[index].click();
 		};
