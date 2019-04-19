@@ -1,0 +1,100 @@
+﻿material-carousel {
+	display: block;
+	position: relative;
+
+	.carousel-wrapper {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		display: -ms-flexbox;
+		display: flex;
+		flex-direction: column;
+		-ms-flex-align: center;
+		align-items: center;
+
+		.frames {
+			flex: 1;
+			position: relative;
+			width: 100%;
+			overflow: hidden;
+
+			.frame {
+				.fit();
+
+				&:not(.selected):not(.animating) {
+					display: none !important;
+				}
+
+				&.selected {
+					z-index: 2;
+				}
+
+				&.animating {
+					pointer-events: none;
+				}
+			}
+		}
+
+		.controls {
+			display: -ms-flexbox;
+			display: flex;
+			flex-direction: row;
+			-ms-flex-pack: center;
+			justify-content: center;
+			margin-top: 16px;
+			margin-bottom: 16px;
+
+			.control {
+				transition: opacity .25s ease-in-out;
+				transition-duration: 0.75s;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background-color: black;
+				opacity: 0.15;
+				margin-left: 4px;
+				margin-right: 4px;
+
+				&:hover {
+					cursor: pointer;
+				}
+
+				&.selected {
+					opacity: 0.5;
+
+					&:hover {
+						cursor: default;
+					}
+				}
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	material-carousel {
+		.carousel-wrapper {
+			.controls {
+				.control {
+					width: 16px;
+					height: 16px;
+				}
+			}
+		}
+	}
+}
+
+@media only screen and (max-height: 768px) {
+	material-carousel {
+		.carousel-wrapper {
+			.controls {
+				.control {
+					width: 16px;
+					height: 16px;
+				}
+			}
+		}
+	}
+}
