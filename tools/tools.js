@@ -12,9 +12,9 @@ function() {
 				throw 'Cannot specify both \'enable\' and \'disable\' parameters';
 
 			if (params.disable !== undefined)
-				return ko.computed(function() { return !ko.unwrap(params.disable); });
+				return ko.pureComputed(function() { return !ko.unwrap(params.disable); });
 			else
-				return params.enable !== undefined ? ko.computed(function() { return ko.unwrap(params.enable); }) : function() { return true; };
+				return params.enable !== undefined ? ko.pureComputed(function() { return ko.unwrap(params.enable); }) : function() { return true; };
 		}
 	};
 });
