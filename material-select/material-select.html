@@ -1,5 +1,10 @@
 ﻿<paper-dropdown-menu data-bind="label: label, enable: enable, attr: dropdownAttrs">
 	<paper-listbox slot="dropdown-content" data-bind="attr: { 'id': listboxId, 'selected': selectedItemMenuIndex }, delegatedHandler: 'click'">
+		<!-- ko if: title -->
+		<paper-item disabled>
+			<span class="subhead opaque" data-bind="html: title"></span>
+		</paper-item>
+		<!-- /ko -->
 		<!-- ko if: optionsCaption -->
 		<paper-item data-bind="text: optionsCaption" data-click="onCaptionSelected"></paper-item>
 		<!-- /ko -->
