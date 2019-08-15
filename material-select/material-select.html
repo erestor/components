@@ -9,7 +9,7 @@
 		<paper-item data-bind="text: optionsCaption" data-click="onCaptionSelected"></paper-item>
 		<!-- /ko -->
 		<!-- ko foreach: options -->
-		<paper-item data-click="onSelected" data-bind="text: $parent.getOptionText($data)"></paper-item>
+		<paper-item data-click="onSelected" data-bind="text: $parent.getOptionText($data, $index())"></paper-item>
 		<!-- /ko -->
 	</paper-listbox>
 </paper-dropdown-menu>

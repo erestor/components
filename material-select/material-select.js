@@ -30,8 +30,10 @@
 			return index >= 0 ? ko.unwrap(self.options)[index] : null;
 		});
 		this.selectedItemText = ko.pureComputed(function() {
-			var item = self.selectedItem();
-			return item ? self.getOptionText(item) : self.optionsCaption;
+			var index = self.getItemIndex(self.value()),
+				item = index >= 0 ? ko.unwrap(self.options)[index] : null;
+
+			return item ? self.getOptionText(item, index) : self.optionsCaption;
 		});
 		this.selectedItemMenuIndex = ko.pureComputed(function() {
 			var index = self.getItemIndex(self.value()),
@@ -85,11 +87,11 @@
 			}
 			return -1;
 		},
-		'getOptionText': function(item) {
+		'getOptionText': function(item, index) {
 			var text = item;
 			switch (typeof this.optionsText) {
 				case 'function':
-					text = this.optionsText(item);
+					text = this.optionsText(item, index);
 					break;
 
 				case 'string':
