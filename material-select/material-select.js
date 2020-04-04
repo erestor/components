@@ -99,7 +99,7 @@
 					break;
 			}
 			if (item === this.selectedItem.peek()) {
-				//if selected item's had been updated dynamically, the internal input of paper-menu-button doesn't update automatically,
+				//if selected item's value had been updated dynamically, the internal input of paper-menu-button doesn't update automatically,
 				//so we must do it here
 				var menu = $('#' + this.rootId);
 				if (menu.length === 1) {
