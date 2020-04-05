@@ -1,4 +1,4 @@
-﻿<paper-dropdown-menu data-bind="label: label, enable: enable, attr: dropdownAttrs">
+﻿<paper-dropdown-menu-light data-bind="label: label, enable: enable, attr: dropdownAttrs">
 	<paper-listbox slot="dropdown-content" data-bind="attr: { 'id': listboxId, 'selected': selectedItemMenuIndex }, delegatedHandler: 'click'">
 		<!-- ko if: title -->
 		<paper-item disabled>
@@ -12,4 +12,4 @@
 		<paper-item data-click="onSelected" data-bind="text: $parent.getOptionText($data, $index())"></paper-item>
 		<!-- /ko -->
 	</paper-listbox>
-</paper-dropdown-menu>
+</paper-dropdown-menu-light>

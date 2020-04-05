@@ -103,8 +103,8 @@
 				//so we must do it here
 				var menu = $('#' + this.rootId);
 				if (menu.length === 1) {
-					var input = $(menu[0].$.menuButton).find('paper-input');
-					input.val(text);
+					var input = $(menu[0].$.input);
+					input.text(text);
 				}
 			}
 			return text;
