@@ -1,7 +1,7 @@
 ﻿define(['text!./material-slider.html', '../tools/tools'],
 function(htmlString, tools) {
 
-	var ViewModel = function (params) {
+	var ViewModel = function(params) {
 		//the order of the attributes matter - especially the value must be after min and max
 		this.dialogId = tools.getGuid();
 		this.value = params.value;
@@ -14,6 +14,8 @@ function(htmlString, tools) {
 			'pin': params.pin,
 			'expand': params.expand
 		};
+
+		var self = this;
 		if (params.secondaryProgress)
 			this.sliderAttrs['secondary-progress'] = params.secondaryProgress;
 
@@ -26,6 +28,11 @@ function(htmlString, tools) {
 			this.sliderAttrs.step = 1;
 			this.sliderAttrs['max-markers'] = this.sliderAttrs.max;
 		}
+		this.label = !params.label ? null : ko.pureComputed(function() {
+			var txt = ko.unwrap(params.label);
+			txt += ' (' + ko.unwrap(self.value) + ')';
+			return txt;
+		});
 	};
 	ViewModel.prototype = {
 		'onChanged': function() {

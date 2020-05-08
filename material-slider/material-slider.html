@@ -1,1 +1,4 @@
-﻿<paper-slider data-bind="attr: sliderAttrs, enable: enable, event: { 'change': onChanged, 'immediate-value-change': onImmediateChange }"></paper-slider>
+﻿<!-- ko if: label -->
+<span class="caption" data-bind="html: label"></span>
+<!-- /ko -->
+<paper-slider data-bind="attr: sliderAttrs, enable: enable, event: { 'change': onChanged, 'immediate-value-change': onImmediateChange }"></paper-slider>
