@@ -30,7 +30,9 @@ function(htmlString, tools) {
 		}
 		this.label = !params.label ? null : ko.pureComputed(function() {
 			var txt = ko.unwrap(params.label);
-			txt += ' (' + ko.unwrap(self.value) + ')';
+			var value = ko.unwrap(self.value);
+			var valueDesc = typeof params.valueDesc == 'function' ? params.valueDesc(value) : value;
+			txt += ' (' + valueDesc + ')';
 			return txt;
 		});
 	};
