@@ -32,22 +32,32 @@ function(htmlString, animations) {
 
 			setTimeout(function() { //wait for DOM update
 				var controls = el.find('.control'),
-					selection = 0;
+					stopOnClickFrames = el.find('.stop-on-click'),
+					selection = 0,
+					animating = false,
+					interval = setInterval(tick, options.interval);
 
 				selectFrame(0);
 
 				controls.each(function(index, el) {
 					$(el).click(function() {
-						if (interval) {
-							clearInterval(interval);
-							interval = null;
-						}
+						stop();
 						animateToFrame(index, animations.timing, true);
 					});
 				});
 
-				var animating = false,
-					interval = setInterval(tick, options.interval);
+				stopOnClickFrames.each(function(index, el) {
+					if (!$(el).is('iframe'))
+						$(el).click(stop);
+					else {
+						var listener = window.addEventListener('blur', function() {
+							if (document.activeElement === el) {
+								stop();
+								window.removeEventListener('blur', listener);
+							}
+						});
+					}
+				});
 
 				ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
 					clearInterval(interval);
@@ -106,6 +116,13 @@ function(htmlString, animations) {
 						selection = newSelection;
 						animating = false;
 					};
+				}
+
+				function stop() {
+					if (interval) {
+						clearInterval(interval);
+						interval = null;
+					}
 				}
 
 				//#endregion
