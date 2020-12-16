@@ -1,8 +1,0 @@
-﻿<paper-menu-button close-on-activate="true" data-bind="attr: { 'horizontal-align': halign }">
-	<paper-icon-button icon="icons:language" slot="dropdown-trigger" alt="language"></paper-icon-button>
-	<paper-listbox slot="dropdown-content" data-bind="attr: { 'selected': selectedLangIndex }">
-		<paper-item data-bind="click: setCzech, css: { 'iron-selected': localeId() == 'cz' }">Česky</paper-item>
-		<paper-item data-bind="click: setEnglish, css: { 'iron-selected': localeId() == 'en' }">English</paper-item>
-	</paper-listbox>
-</paper-menu-button>
-<paper-tooltip data-bind="text: locale().language"></paper-tooltip>
