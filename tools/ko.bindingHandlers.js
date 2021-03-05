@@ -1,4 +1,4 @@
-﻿define([], function() {
+﻿define(['./animations'], function(animations) {
 
     ko.bindingHandlers.disable = {
         update: function (element, valueAccessor) {
@@ -156,6 +156,24 @@
 		update: function(element, valueAccessor) {
 			var value = valueAccessor();
 			$(element).css('visibility', !ko.unwrap(value) ? 'visible' : 'hidden');
+		}
+	};
+
+	//#endregion
+
+	//#region Animation
+
+	ko.bindingHandlers.slideDown = {
+		init: function(element, valueAccessor) {
+			var value = valueAccessor();
+			$(element).toggle(ko.unwrap(value));
+		},
+		update: function(element, valueAccessor) {
+			var value = valueAccessor();
+			if (ko.unwrap(value))
+				$(element).slideDown(animations.$timing);
+			else
+				$(element).slideUp(animations.$timing);
 		}
 	};
 

@@ -8,6 +8,10 @@
 			duration: 375,
 			easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)' //ease-out-cubic
 		},
+		$timing: {
+			duration: 375,
+			easing: 'easeOutCubic'
+		},
 		slideLeft: [
 			{ transform: 'none' },
 			{ transform: 'translateX(-100%)' }
