@@ -99,12 +99,21 @@
 					break;
 			}
 			if (item === this.selectedItem.peek()) {
-				//if selected item's value had been updated dynamically, the internal input of paper-menu-button doesn't update automatically,
+				//if selected item's value had been updated dynamically, the internal input of paper-dropdown-menu(-light) doesn't update automatically,
 				//so we must do it here
 				var menu = $('#' + this.rootId);
 				if (menu.length === 1) {
-					var input = $(menu[0].$.input);
-					input.text(text);
+					if (menu.is('paper-dropdown-menu')) {
+						var input = $(menu[0].$.menuButton).find('paper-input');
+						input.val(text);
+					}
+					else if (menu.is('paper-dropdown-menu-light')) {
+						var textfield = $(menu[0].$.input);
+						textfield.text(text);
+					}
+					else {
+						//different element (e.g. paper-menu-button) used in the template, do nothing
+					}
 				}
 			}
 			return text;
