@@ -10,34 +10,30 @@ function(htmlString, animations) {
 			return new Array(self.frameCount());
 		});
 	}
-	ViewModel.prototype = {
-	};
 
-	ko.bindingHandlers._material_carousel = {
-		'init': function(element, valueAccessor) {
+	ko.bindingHandlers._material_carousel = (function() {
+		var init = function(element, valueAccessor) {
 			var el = $(element),
+				options = ko.unwrap(valueAccessor()),
 				frames = el.find('.frame');
 
 			if (!frames.length) {
 				//the component template hasn't been injected yet, must wait
-				var initFn = arguments.callee;
 				setTimeout(function() {
-					initFn(element, valueAccessor);
+					init(element, valueAccessor);
 				}, 50);
 				return;
 			}
-
-			var options = ko.unwrap(valueAccessor());
 			options.frameCount(frames.length);
+			setTimeout(boot); //wait for DOM update before boot
+			return;
 
-			setTimeout(function() { //wait for DOM update
+			function boot() {
 				var controls = el.find('.control'),
 					stopOnClickFrames = el.find('.stop-on-click'),
 					selection = 0,
 					animating = false,
-					interval = setInterval(tick, options.interval);
-
-				selectFrame(0);
+					interval;
 
 				controls.each(function(index, el) {
 					$(el).click(function() {
@@ -59,23 +55,50 @@ function(htmlString, animations) {
 					}
 				});
 
+				//set up observer to start the carousel spin when it becomes visible
+				var observer = new IntersectionObserver(function(entries) {
+					entries.forEach(function(entry) {
+						if (entry.isIntersecting)
+							start();
+						else
+							stop();
+					});
+				});
+				observer.observe(element);
+
 				ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
-					clearInterval(interval);
+					observer.unobserve(element);
+					stop();
 					controls.each(function(el) {
 						$(el).off('click');
 					});
 				});
 
-				//#region Internal functions
+				selectFrame(0);
+				return;
 
-				function tick() {
-					animateToFrame((selection + 1) % frames.length, animations.carouselTiming);
-				}
+				//#region Internal functions
 
 				function selectFrame(newSelection) {
 					$(frames[newSelection]).addClass('selected');
 					$(controls[newSelection]).addClass('selected');
 					selection = newSelection;
+				}
+
+				function start() {
+					if (!interval)
+						interval = setInterval(tick, options.interval);
+
+					function tick() {
+						animateToFrame((selection + 1) % frames.length, animations.carouselTiming);
+					}
+				}
+
+				function stop() {
+					if (interval) {
+						clearInterval(interval);
+						interval = null;
+					}
 				}
 
 				function animateToFrame(newSelection, timing, correctDirection) {
@@ -118,17 +141,13 @@ function(htmlString, animations) {
 					};
 				}
 
-				function stop() {
-					if (interval) {
-						clearInterval(interval);
-						interval = null;
-					}
-				}
-
 				//#endregion
-			});
-		}
-	};
+			}
+		};
+		return {
+			'init': init
+		};
+	})();
 
     return {
 		'viewModel': ViewModel,
