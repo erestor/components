@@ -1,15 +1,15 @@
-﻿<paper-dropdown-menu-light data-bind="label: label, enable: enable, attr: dropdownAttrs">
-	<paper-listbox slot="dropdown-content" data-bind="attr: { 'id': listboxId, 'selected': selectedItemMenuIndex }, delegatedHandler: 'click'">
+﻿<paper-dropdown-menu-light data-bind="label: label, enable: enable, attr: dropdownAttrs, event: { 'opened-changed': openedChanged }">
+	<paper-listbox slot="dropdown-content" data-bind="attr: { 'id': listboxId, 'selected': selectedIndex }, event: { 'selected-changed': selectedChanged }">
 		<!-- ko if: title -->
 		<paper-item disabled>
-			<span class="subhead opaque" data-bind="html: title"></span>
+			<span class="paper-listbox-title" data-bind="html: title"></span>
 		</paper-item>
 		<!-- /ko -->
 		<!-- ko if: optionsCaption -->
-		<paper-item data-bind="text: optionsCaption" data-click="onCaptionSelected"></paper-item>
+		<paper-item data-bind="text: optionsCaption"></paper-item>
 		<!-- /ko -->
 		<!-- ko foreach: options -->
-		<paper-item data-click="onSelected" data-bind="text: $parent.getOptionText($data, $index())"></paper-item>
+		<paper-item data-bind="text: $parent.getOptionText($data, $index())"></paper-item>
 		<!-- /ko -->
 	</paper-listbox>
 </paper-dropdown-menu-light>

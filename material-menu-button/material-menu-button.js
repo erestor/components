@@ -8,23 +8,15 @@ function(htmlString, materialSelectComponent) {
 		this.buttonCaption = params.buttonCaption;
 		this.noselect = params.noselect;
 		this.icon = params.icon || 'icons:arrow-drop-down';
-		this.fitInto = params.fitInto;
 	}
 	ViewModel.prototype = Object.create(MaterialSelectVM.prototype);
 	ViewModel.prototype.constructor = ViewModel;
 
-	ViewModel.prototype.openedChanged = function() {
-		if (!this.rootEl) {
-			this.rootEl = $('#' + this.rootId);
-			var m = this.rootEl[0],
-				d = m.$.dropdown,
-				containerEl = $(this.fitInto);
+	ViewModel.prototype.getDropdown = function() {
+		if (!this.dropdownEl)
+			this.dropdownEl = $('#' + this.rootId)[0].$.dropdown;
 
-			if (containerEl.length == 1)
-				d.fitInto = containerEl[0];
-
-			d.style.margin = "4px";
-		}
+		return this.dropdownEl;
 	};
 
     return {

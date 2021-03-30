@@ -1,24 +1,25 @@
-﻿<paper-menu-button data-bind="attr: dropdownAttrs, enable: enable, event: { 'opened-changed': openedChanged }" close-on-activate="true" dynamic-align>
+﻿<paper-menu-button close-on-activate="true" dynamic-align
+	data-bind="attr: dropdownAttrs, enable: enable, event: { 'opened-changed': openedChanged }">
 	<!-- ko if: buttonCaption -->
 	<paper-button slot="dropdown-trigger" data-bind="enable: enable">
-		<span class="caption" data-bind="html: buttonCaption == 'selection' ? selectedItemText() : buttonCaption"></span>
-		<iron-icon data-bind="icon: icon" class="left-margin"></iron-icon>
+		<span class="paper-menu-button-caption" data-bind="html: buttonCaption == 'selection' ? selectedItemText() : buttonCaption"></span>
+		<iron-icon data-bind="icon: icon"></iron-icon>
 	</paper-button>
 	<!-- /ko -->
 	<!-- ko ifnot: buttonCaption -->
 	<paper-icon-button slot="dropdown-trigger" data-bind="icon: icon, enable: enable"></paper-icon-button>
 	<!-- /ko -->
-	<paper-listbox slot="dropdown-content" data-bind="attr: { 'id': listboxId, 'selected': selectedItemMenuIndex }, delegatedHandler: 'click'" class="noselect">
+	<paper-listbox slot="dropdown-content" data-bind="attr: { 'id': listboxId, 'selected': selectedIndex }, event: { 'selected-changed': selectedChanged }" class="noselect">
 		<!-- ko if: title -->
 		<paper-item disabled>
-			<span class="subhead opaque" data-bind="html: title"></span>
+			<span class="paper-listbox-title" data-bind="html: title"></span>
 		</paper-item>
 		<!-- /ko -->
 		<!-- ko if: optionsCaption -->
-		<paper-item data-click="onCaptionSelected" data-bind="text: optionsCaption"></paper-item>
+		<paper-item data-bind="text: optionsCaption"></paper-item>
 		<!-- /ko -->
 		<!-- ko foreach: options -->
-		<paper-item data-click="onSelected" data-bind="text: $parent.getOptionText($data, $index()), css: { 'disabled': $data.isDisabled }"></paper-item>
+		<paper-item data-bind="text: $parent.getOptionText($data, $index()), css: { 'disabled': $data.isDisabled }"></paper-item>
 		<!-- /ko -->
 	</paper-listbox>
 </paper-menu-button>

@@ -8,15 +8,15 @@
 		align-items: center;
 	}
 
-	paper-item {
-		&.disabled {
-			opacity: .25;
+	paper-button {
+		iron-icon {
+			margin-left: 16px;
 		}
 	}
 
 	@media only screen and (max-width: 1023px) {
 		paper-button {
-			.caption {
+			.paper-menu-button-caption {
 				max-width: 128px;
 			}
 		}
@@ -24,7 +24,7 @@
 
 	@media only screen and (max-width: 799px) {
 		paper-button {
-			.caption {
+			.paper-menu-button-caption {
 				max-width: 96px;
 			}
 		}
@@ -32,7 +32,7 @@
 
 	@media only screen and (max-width: 639px) {
 		paper-button {
-			.caption {
+			.paper-menu-button-caption {
 				max-width: 64px;
 			}
 		}
