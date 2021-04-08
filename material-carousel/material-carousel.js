@@ -4,6 +4,7 @@ function(htmlString, animations) {
 	function ViewModel(params) {
 		this.frameCount = ko.observable();
 		this.interval = params.interval || 10000; //10 seconds by default
+		this.loop = params.loop === undefined ? true : params.loop;
 
 		var self = this;
 		this.frames = ko.pureComputed(function() {
@@ -90,7 +91,10 @@ function(htmlString, animations) {
 						interval = setInterval(tick, options.interval);
 
 					function tick() {
-						animateToFrame((selection + 1) % frames.length, animations.carouselTiming);
+						if (!options.loop && selection == frames.length - 1)
+							stop();
+						else
+							animateToFrame((selection + 1) % frames.length, animations.carouselTiming);
 					}
 				}
 
