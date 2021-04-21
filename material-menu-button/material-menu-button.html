@@ -1,15 +1,16 @@
-﻿<paper-menu-button close-on-activate="true" dynamic-align
+﻿<paper-menu-button class="material-menu-button-impl" close-on-activate="true" dynamic-align
 	data-bind="attr: dropdownAttrs, enable: enable, event: { 'opened-changed': openedChanged }">
 	<!-- ko if: buttonCaption -->
 	<paper-button slot="dropdown-trigger" data-bind="enable: enable">
-		<span class="paper-menu-button-caption" data-bind="html: buttonCaption == 'selection' ? selectedItemText() : buttonCaption"></span>
+		<span class="caption" data-bind="html: dropdownTriggerCaption"></span>
 		<iron-icon data-bind="icon: icon"></iron-icon>
 	</paper-button>
 	<!-- /ko -->
 	<!-- ko ifnot: buttonCaption -->
 	<paper-icon-button slot="dropdown-trigger" data-bind="icon: icon, enable: enable"></paper-icon-button>
 	<!-- /ko -->
-	<paper-listbox slot="dropdown-content" data-bind="attr: { 'id': listboxId, 'selected': selectedIndex }, event: { 'selected-changed': selectedChanged }" class="noselect">
+	<paper-listbox slot="dropdown-content"
+		data-bind="attr: { 'selected': selectedIndex }, event: { 'selected-changed': selectedChanged }, css: { 'noselect': noselect }">
 		<!-- ko if: title -->
 		<paper-item disabled>
 			<span class="paper-listbox-title" data-bind="html: title"></span>
