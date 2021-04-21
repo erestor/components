@@ -4,8 +4,8 @@
 ],
 function(htmlString, tools) {
 
-	function ViewModel(params) {
-		this.alwaysNotify = params.alwaysNotify; //onSelected will trigger events and write value even if selection does not change
+	function MaterialSelect(params) {
+		this.alwaysNotify = params.alwaysNotify; //trigger events and write value even if selection does not change
 		this.afterChange = params.afterChange;
 		this.beforeChange = params.beforeChange;
 		this.enable = tools.readEnableStatus(params);
@@ -27,26 +27,25 @@ function(htmlString, tools) {
 			'vertical-align': params.valign
 		};
 
-		this.selectedIndex = ko.observable(this._getSelectedValueMenuIndex());
+		this._internallyChangingValue = false;
+		var self = this;
+		this.selectedIndex = ko.pureComputed(function() {
+			var index = self._getSelectedValueMenuIndex();
+			if (!self._internallyChangingValue) {
+				var listbox = $('#' + self.listboxId);
+				if (listbox.length === 1)
+					listbox[0].selected = index;
+			}
+			return index;
+		});
 		this.selectedItemText = ko.pureComputed(function() {
 			var index = self._getSelectedItemIndex(),
 				item = index >= 0 ? ko.unwrap(self.options)[index] : null;
 
-			return item ? self.getOptionText(item, index) : self.optionsCaption;
-		});
-
-		var self = this;
-		this._internallyChangingValue = false;
-		this.selectionSub = this.value.subscribe(function() {
-			if (!self._internallyChangingValue)
-				self.selectedIndex(self._getSelectedValueMenuIndex());
+			return item ? self.getOptionText(item, index) : ko.unwrap(self.optionsCaption);
 		});
 	}
-	ViewModel.prototype = {
-		'dispose': function() {
-			this.selectionSub.dispose();
-		},
-
+	MaterialSelect.prototype = {
 		//this function is meant as virtual when material-select is used as base for other selection elements, such as paper-menu-button
 		'getDropdown': function() {
 			if (!this.dropdownEl)
@@ -197,7 +196,7 @@ function(htmlString, tools) {
 	};
 
     return {
-		'viewModel': ViewModel,
+		'viewModel': MaterialSelect,
 		'template': htmlString
 	};
 });
