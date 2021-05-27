@@ -132,13 +132,20 @@ function(htmlString, tools) {
 			if (this.beforeChange)
 				this.beforeChange(newVal, oldVal);
 
-			this._internallyChangingValue = true;
-			var self = this;
-			var sub = this.value.subscribe(function() {
-				self._internallyChangingValue = false;
-				sub.dispose();
-			});
-			this.value(newVal);
+			var skipUpdate = this.alwaysNotify && this.value.equalityComparer && this.value.equalityComparer(newVal, oldVal);
+				//This select is configured to always notify, but the observable is not (has an equality comparer) and the values are equal,
+				//so if we 'update' the observable nothing will happen.
+				//Therefore we can skip it
+
+			if (!skipUpdate) {
+				this._internallyChangingValue = true;
+				var self = this;
+				var sub = this.value.subscribe(function() {
+					self._internallyChangingValue = false;
+					sub.dispose();
+				});
+				this.value(newVal);
+			}
 			if (this.afterChange)
 				this.afterChange(newVal, oldVal);
 		},
