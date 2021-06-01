@@ -10,7 +10,7 @@
 	<paper-icon-button slot="dropdown-trigger" data-bind="icon: icon, enable: enable"></paper-icon-button>
 	<!-- /ko -->
 	<paper-listbox slot="dropdown-content"
-		data-bind="attr: { 'selected': selectedIndex }, event: { 'selected-changed': selectedChanged }, css: { 'noselect': noselect }">
+		data-bind="attr: { 'selected': selectedIndex }, event: { 'selected-changed': selectedChanged }, css: { 'noselect': noselect || alwaysNotify }">
 		<!-- ko if: title -->
 		<paper-item disabled>
 			<span class="paper-listbox-title" data-bind="html: title"></span>

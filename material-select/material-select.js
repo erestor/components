@@ -141,8 +141,11 @@ function(htmlString, tools) {
 				this._internallyChangingValue = true;
 				var self = this;
 				var sub = this.value.subscribe(function() {
-					self._internallyChangingValue = false;
 					sub.dispose();
+					if (self.alwaysNotify)
+						self.value(null); //so that the select-changed event fires next time
+
+					self._internallyChangingValue = false;
 				});
 				this.value(newVal);
 			}
