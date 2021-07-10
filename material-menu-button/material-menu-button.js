@@ -7,6 +7,12 @@ function(htmlString, materialSelectComponent) {
 	var MaterialSelectVM = materialSelectComponent.viewModel;
 
 	function MaterialMenuButton(params) {
+
+		//fix polymer bug where dropdown appears as much below the button as the page is scrolled, making it possibly appear below viewscreen
+		//(even though paper-menu-button vertical-align should be 'top' by default!)
+		if (params.valign === undefined)
+			params.valign = 'top';
+
 		MaterialSelectVM.call(this, params);
 		this.buttonCaption = params.buttonCaption;
 		this.noselect = params.noselect;
