@@ -4,12 +4,6 @@
 }
 
 .material-menu-button-impl {
-	paper-button {
-		iron-icon {
-			margin-left: 16px;
-		}
-	}
-
 	@media only screen and (max-width: 1023px) {
 		paper-button {
 			.caption {
@@ -30,6 +24,26 @@
 		paper-button {
 			.caption {
 				max-width: 64px;
+			}
+		}
+	}
+}
+
+html[dir="ltr"] {
+	.material-menu-button-impl {
+		paper-button {
+			iron-icon {
+				margin-left: 16px;
+			}
+		}
+	}
+}
+
+html[dir="rtl"] {
+	.material-menu-button-impl {
+		paper-button {
+			iron-icon {
+				margin-right: 16px;
 			}
 		}
 	}
