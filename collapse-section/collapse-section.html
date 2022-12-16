@@ -3,7 +3,7 @@
 		<iron-icon data-bind="icon: titleIcon, visible: titleIcon"></iron-icon>
 		<span data-bind="text: title, click: click, css: titleClass"></span>
 	</div>
-	<paper-icon-button data-bind="click: click, icon: buttonIcon, css: {'flip': opened}"></paper-icon-button>
+	<paper-icon-button data-bind="click: click, icon: buttonIcon, css: {'flip': opened}" alt="toggle"></paper-icon-button>
 </div>
 <iron-collapse data-bind="attr: { 'opened': opened }">
 	<div class="collapse-content">
