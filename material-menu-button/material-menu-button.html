@@ -2,8 +2,8 @@
 	data-bind="attr: dropdownAttrs, enable: enable, event: { 'opened-changed': openedChanged }">
 	<!-- ko if: buttonCaption -->
 	<material-button slot="dropdown-trigger" params="enable: enable">
-		<span class="caption" data-bind="html: $parent.dropdownTriggerCaption"></span>
-		<iron-icon data-bind="icon: $parent.icon"></iron-icon>
+		<span class="caption" data-bind="html: dropdownTriggerCaption"></span>
+		<iron-icon data-bind="icon: icon"></iron-icon>
 	</material-button>
 	<!-- /ko -->
 	<!-- ko ifnot: buttonCaption -->
