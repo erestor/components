@@ -18,7 +18,9 @@
 		</paper-dialog-scrollable>
 		<!-- ko if: closeBtnLabel -->
 		<div class="buttons">
-			<paper-button dialog-dismiss data-bind="text: closeBtnLabel"></paper-button>
+			<material-button dialog-dismiss>
+				<span data-bind="text: closeBtnLabel"></span>
+			</material-button>
 		</div>
 		<!-- /ko -->
 	<!-- /ko -->

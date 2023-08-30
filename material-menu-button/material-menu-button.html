@@ -1,10 +1,10 @@
 ﻿<paper-menu-button class="material-menu-button-impl" close-on-activate="true" dynamic-align
 	data-bind="attr: dropdownAttrs, enable: enable, event: { 'opened-changed': openedChanged }">
 	<!-- ko if: buttonCaption -->
-	<paper-button slot="dropdown-trigger" data-bind="enable: enable">
+	<material-button slot="dropdown-trigger" params="enable: enable">
 		<span class="caption" data-bind="html: dropdownTriggerCaption"></span>
 		<iron-icon data-bind="icon: icon"></iron-icon>
-	</paper-button>
+	</material-button>
 	<!-- /ko -->
 	<!-- ko ifnot: buttonCaption -->
 	<paper-icon-button slot="dropdown-trigger" data-bind="icon: icon, enable: enable"></paper-icon-button>

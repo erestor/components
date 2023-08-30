@@ -33,7 +33,7 @@ function(htmlString, materialSelectComponent) {
 		return this.dropdownEl;
 	};
 
-    return {
+	return {
 		'viewModel': MaterialMenuButton,
 		'template': htmlString
 	};

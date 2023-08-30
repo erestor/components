@@ -1,7 +1,7 @@
 ﻿define(['text!./material-checkbox.html', '../tools/tools'],
 function(htmlString, tools) {
 
-	var ViewModel = function(params) {
+	var MaterialCheckbox = function(params) {
 		this.checked = params.checked;
 		this.clicked = params.clicked;
 		this.label = params.label;
@@ -10,7 +10,7 @@ function(htmlString, tools) {
 		this.enable = tools.readEnableStatus(params);
 		this.id = tools.getGuid();
 	};
-	ViewModel.prototype = {
+	MaterialCheckbox.prototype = {
 		'onChanged': function() {
 			var d = $('#' + this.id)[0];
 			this.checked(d.checked);
@@ -21,8 +21,8 @@ function(htmlString, tools) {
 		}
 	};
 
-    return {
-		'viewModel': ViewModel,
+	return {
+		'viewModel': MaterialCheckbox,
 		'template': htmlString
 	};
 });

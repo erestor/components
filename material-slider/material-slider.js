@@ -1,7 +1,7 @@
 ﻿define(['text!./material-slider.html', '../tools/tools'],
 function(htmlString, tools) {
 
-	var ViewModel = function(params) {
+	var MaterialSlider = function(params) {
 		//the order of the attributes matter - especially the value must be after min and max
 		this.dialogId = tools.getGuid();
 		this.value = params.value;
@@ -36,7 +36,7 @@ function(htmlString, tools) {
 			return txt;
 		});
 	};
-	ViewModel.prototype = {
+	MaterialSlider.prototype = {
 		'onChanged': function() {
 			var d = $('#' + this.dialogId)[0];
 			this.value(d.value);
@@ -47,8 +47,8 @@ function(htmlString, tools) {
 		}
 	};
 
-    return {
-		'viewModel': ViewModel,
+	return {
+		'viewModel': MaterialSlider,
 		'template': htmlString
 	};
 });

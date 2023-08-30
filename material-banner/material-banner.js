@@ -1,7 +1,7 @@
 ﻿define(['text!./material-banner.html', '../tools/tools'],
 function(htmlString, tools) {
 
-	var ViewModel = function(params) {
+	var MaterialBanner = function(params) {
 		this.icon = params.icon;
 		this.text = params.text;
 		this.buttons = params.buttons;
@@ -25,7 +25,7 @@ function(htmlString, tools) {
 			onButtonClick(1);
 		};
 	};
-	ViewModel.prototype = {
+	MaterialBanner.prototype = {
 		'_hide': function() {
 			var self = this;
 			$('#' + this.id).parent().slideUp({
@@ -39,8 +39,8 @@ function(htmlString, tools) {
 		}
 	};
 
-    return {
-		'viewModel': ViewModel,
+	return {
+		'viewModel': MaterialBanner,
 		'template': htmlString
 	};
 });
