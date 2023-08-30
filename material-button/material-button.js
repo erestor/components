@@ -4,9 +4,6 @@ function(htmlString, tools) {
 	var MaterialButton = function(params) {
 		//attributes
 		this.autofocus = params.autofocus;
-		this.dialogConfirm = params.dialogConfirm;
-		this.dialogDismiss = params.dialogDismiss;
-		this.slot = params.slot;
 		//this.id = tools.getGuid();
 
 		//data binding
