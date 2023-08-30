@@ -1,7 +1,7 @@
 ﻿define(['text!./material-toggle-button.html', '../tools/tools'],
 function(htmlString, tools) {
 
-	var ViewModel = function(params) {
+	var MaterialToggleButton = function(params) {
 		this.label = params.label;
 		this.value = params.value;
 		this.title = params.title;
@@ -20,7 +20,7 @@ function(htmlString, tools) {
 			this.inverted = true;
 		}
 	};
-	ViewModel.prototype = {
+	MaterialToggleButton.prototype = {
 		'dispose': function() {
 			if (this.inverted)
 				this.value.dispose();
@@ -31,8 +31,8 @@ function(htmlString, tools) {
 		}
 	};
 
-    return {
-		'viewModel': ViewModel,
+	return {
+		'viewModel': MaterialToggleButton,
 		'template': htmlString
 	};
 });

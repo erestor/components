@@ -7,7 +7,6 @@ function(htmlString, tools) {
 		this.elevation = params.elevation;
 		this.noink = params.noink;
 		this.raised = params.raised;
-		//this.id = tools.getGuid();
 
 		//data binding
 		this.click = params.click;
@@ -16,7 +15,7 @@ function(htmlString, tools) {
 	MaterialButton.prototype = {
 	};
 
-    return {
+	return {
 		'viewModel': MaterialButton,
 		'template': htmlString
 	};

@@ -2,7 +2,7 @@
 	'text!./collapse-section.html'],
 	function(htmlString) {
 
-	var ViewModel = function(params) {
+	var CollapseSection = function(params) {
 		this.title = params.title;
 		this.titleIcon = params.titleIcon;
 		this.opened = params.opened || ko.observable();
@@ -22,14 +22,14 @@
 		this.titleClass = {};
 		this.titleClass[params.titleClass || 'subhead'] = true;
 	};
-	ViewModel.prototype = {
+	CollapseSection.prototype = {
 		'click': function() {
 			this.opened(!this.opened());
 		}
 	};
 
-    return {
-		'viewModel': ViewModel,
+	return {
+		'viewModel': CollapseSection,
 		'template': htmlString
 	};
 });

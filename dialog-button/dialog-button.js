@@ -11,7 +11,7 @@
 	DialogButton.prototype = Object.create(DialogButtonBase.prototype);
 	DialogButton.prototype.constructor = DialogButton;
 
-    return {
+	return {
 		'viewModel': DialogButton,
 		'template': htmlString
 	};

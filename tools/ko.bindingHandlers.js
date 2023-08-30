@@ -1,48 +1,48 @@
 ﻿define(['./animations'], function(animations) {
 
-    ko.bindingHandlers.disable = {
-        update: function (element, valueAccessor) {
-            var value = ko.unwrap(valueAccessor());
-            ko.bindingHandlers.enable.update(element, function () {
+	ko.bindingHandlers.disable = {
+		update: function (element, valueAccessor) {
+			var value = ko.unwrap(valueAccessor());
+			ko.bindingHandlers.enable.update(element, function () {
 				return !value;
 			});
-        }
-    };
+		}
+	};
 
 	//#region Keyboard
 
-    ko.bindingHandlers.escape = {
-        'update': function (element, valueAccessor, allBindingsAccessor, viewModel) {
-            var command = valueAccessor();
+	ko.bindingHandlers.escape = {
+		'update': function (element, valueAccessor, allBindingsAccessor, viewModel) {
+			var command = valueAccessor();
 			if (!command)
 				return;
 
-            $(element).off('keyup.escapeBindingHandler').on('keyup.escapeBindingHandler', function (event) {
-                if (event.keyCode === 27) { // <ESC>
-                    command.call(viewModel, viewModel, event);
-                }
-            });
-        }
-    };
+			$(element).off('keyup.escapeBindingHandler').on('keyup.escapeBindingHandler', function (event) {
+				if (event.keyCode === 27) { // <ESC>
+					command.call(viewModel, viewModel, event);
+				}
+			});
+		}
+	};
 
 	ko.bindingHandlers.enter = {
-        'update': function (element, valueAccessor, allBindingsAccessor, viewModel) {
-            var command = valueAccessor();
+		'update': function (element, valueAccessor, allBindingsAccessor, viewModel) {
+			var command = valueAccessor();
 			if (!command)
 				return;
 
-            $(element).off('keyup.enterBindingHandler').on('keyup.enterBindingHandler', function (event) {
-                if (event.keyCode === 13) { // <Enter>
-                    command.call(viewModel, viewModel, event);
-                }
-            });
-        }
+			$(element).off('keyup.enterBindingHandler').on('keyup.enterBindingHandler', function (event) {
+				if (event.keyCode === 13) { // <Enter>
+					command.call(viewModel, viewModel, event);
+				}
+			});
+		}
 	};
 
 	//global keydown, not usable for single elements
 	ko.bindingHandlers.keydown = {
 		'init': function(element, valueAccessor) {
-            var handler = valueAccessor();
+			var handler = valueAccessor();
 			$(document).on('keydown', handler);
 
 			//handle disposal (if KO removes by the template binding)
@@ -182,8 +182,8 @@
 	//#region Deferred composition
 
 	ko.bindingHandlers.when = {
-        'init': function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-            var needAsyncContext = allBindings.has(ko.bindingEvent.descendantsComplete),
+		'init': function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+			var needAsyncContext = allBindings.has(ko.bindingEvent.descendantsComplete),
 				savedNodes,
 				isRendered,
 				resetSubscription;
@@ -208,12 +208,12 @@
 			}
 
 			ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
-		        subscription.dispose();
+				subscription.dispose();
 				if (resetSubscription)
 					resetSubscription.dispose();
-	        });
+			});
 
-            return {
+			return {
 				'controlsDescendantBindings': true
 			};
 
@@ -233,13 +233,13 @@
 				ko.applyBindingsToDescendants(bindingContext, element);
 				isRendered = true;
 			}
-        }
+		}
 	};
 	ko.virtualElements.allowedBindings.when = true;
 
 	ko.bindingHandlers.visibleDeferred = {
 		'init': ko.bindingHandlers.when.init,
-        'update': ko.bindingHandlers.visible.update
+		'update': ko.bindingHandlers.visible.update
 	};
 
 	//#endregion

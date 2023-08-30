@@ -1,7 +1,7 @@
 ﻿define(['text!./material-progress.html', '../tools/tools'],
 function(htmlString, tools) {
 
-	var ViewModel = function(params) {
+	var MaterialProgress = function(params) {
 		this.indeterminate = params.indeterminate;
 		this.min = params.min || 0;
 		this.max = params.max || 100;
@@ -10,8 +10,8 @@ function(htmlString, tools) {
 		this.enable = tools.readEnableStatus(params);
 	};
 
-    return {
-		'viewModel': ViewModel,
+	return {
+		'viewModel': MaterialProgress,
 		'template': htmlString
 	};
 });
