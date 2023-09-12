@@ -4,12 +4,24 @@ function(htmlString, tools, materialRipple) {
 	var MaterialButton = function(params) {
 		//attributes
 		this.autofocus = params.autofocus;
+
+		//css
+		this.cardaction = params.cardaction;
 		this.outlined = params.outlined;
 		this.raised = params.raised;
 
 		//data binding
 		this.click = params.click;
 		this.enable = tools.readEnableStatus(params);
+	};
+	MaterialButton.prototype = {
+		'getCss': function() {
+			return {
+				'mdc-card__action--button': ko.unwrap(this.cardaction),
+				'mdc-button--outlined': ko.unwrap(this.outlined),
+				'mdc-button--raised': ko.unwrap(this.raised)
+			};
+		}
 	};
 
 	return {
