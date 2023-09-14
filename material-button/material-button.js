@@ -6,7 +6,6 @@ function(htmlString, tools, materialRipple) {
 		this.autofocus = params.autofocus;
 
 		//css
-		this.cardaction = params.cardaction;
 		this.outlined = params.outlined;
 		this.raised = params.raised;
 
@@ -17,7 +16,6 @@ function(htmlString, tools, materialRipple) {
 	MaterialButton.prototype = {
 		'getCss': function() {
 			return {
-				'mdc-card__action--button': ko.unwrap(this.cardaction),
 				'mdc-button--outlined': ko.unwrap(this.outlined),
 				'mdc-button--raised': ko.unwrap(this.raised)
 			};
