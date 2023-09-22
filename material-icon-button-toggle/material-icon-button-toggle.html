@@ -1,0 +1,11 @@
+﻿<button class="mdc-icon-button" data-bind="click: toggle, delayedCss: getCss(), enable: enable">
+<div class="mdc-icon-button__ripple"></div>
+<span class="mdc-icon-button__focus-ring"></span>
+<!-- ko if: icons -->
+<i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on" data-bind="title: titles[0]">{{icons[0]}}</i>
+<i class="material-icons mdc-icon-button__icon" data-bind="title: titles[1]">{{icons[1]}}</i>
+<!-- /ko -->
+<!-- ko ifnot: icons -->
+<!-- ko template: {'nodes': $componentTemplateNodes} --><!-- /ko -->
+<!-- /ko -->
+</button>
