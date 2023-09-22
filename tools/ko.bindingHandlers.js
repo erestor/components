@@ -1,7 +1,7 @@
 ﻿define(['./animations'], function(animations) {
 
 	ko.bindingHandlers.disable = {
-		update: function (element, valueAccessor) {
+		'update': function (element, valueAccessor) {
 			var value = ko.unwrap(valueAccessor());
 			ko.bindingHandlers.enable.update(element, function () {
 				return !value;
@@ -57,7 +57,7 @@
 	//#region Attributes
 
 	ko.bindingHandlers.flex = {
-		update: function (element, valueAccessor) {
+		'update': function (element, valueAccessor) {
 			ko.bindingHandlers.attr.update(element, function () {
 				return { flex: valueAccessor() };
 			});
@@ -65,7 +65,7 @@
 	};
 
 	ko.bindingHandlers.href = {
-		update: function (element, valueAccessor) {
+		'update': function (element, valueAccessor) {
 			ko.bindingHandlers.attr.update(element, function () {
 				return { href: valueAccessor() };
 			});
@@ -73,7 +73,7 @@
 	};
 
 	ko.bindingHandlers.icon = {
-		update: function (element, valueAccessor) {
+		'update': function (element, valueAccessor) {
 			var val = valueAccessor();
 			ko.bindingHandlers.attr.update(element, function () {
 				return { icon: val, alt: val };
@@ -82,7 +82,7 @@
 	};
 
 	ko.bindingHandlers.id = {
-		update: function (element, valueAccessor) {
+		'update': function (element, valueAccessor) {
 			ko.bindingHandlers.attr.update(element, function () {
 				return { id: valueAccessor() };
 			});
@@ -90,7 +90,7 @@
 	};
 
 	ko.bindingHandlers.label = {
-		update: function (element, valueAccessor, allBindingsAccessor) {
+		'update': function (element, valueAccessor, allBindingsAccessor) {
 			var val = valueAccessor();
 			if (ko.unwrap(allBindingsAccessor().required))
 				val += ' *';
@@ -102,7 +102,7 @@
 	};
 
 	ko.bindingHandlers.placeholder = {
-		update: function (element, valueAccessor) {
+		'update': function (element, valueAccessor) {
 			ko.bindingHandlers.attr.update(element, function () {
 				return { placeholder: valueAccessor() };
 			});
@@ -110,7 +110,7 @@
 	};
 
 	ko.bindingHandlers.src = {
-		update: function (element, valueAccessor) {
+		'update': function (element, valueAccessor) {
 			ko.bindingHandlers.attr.update(element, function () {
 				return { src: valueAccessor() };
 			});
@@ -118,7 +118,7 @@
 	};
 
 	ko.bindingHandlers.title = {
-		update: function (element, valueAccessor) {
+		'update': function (element, valueAccessor) {
 			ko.bindingHandlers.attr.update(element, function () {
 				return { title: valueAccessor() };
 			});
@@ -126,7 +126,7 @@
 	};
 
 	ko.bindingHandlers.raised = {
-		update: function (element, valueAccessor) {
+		'update': function (element, valueAccessor) {
 			ko.bindingHandlers.attr.update(element, function () {
 				return { raised: valueAccessor() };
 			});
@@ -134,7 +134,7 @@
 	};
 
 	ko.bindingHandlers.active = {
-		update: function (element, valueAccessor) {
+		'update': function (element, valueAccessor) {
 			ko.bindingHandlers.attr.update(element, function () {
 				return { active: valueAccessor() };
 			});
@@ -146,20 +146,57 @@
 	//#region Visibility
 
 	ko.bindingHandlers.opaque = {
-		update: function(element, valueAccessor) {
+		'update': function(element, valueAccessor) {
 			var value = valueAccessor();
 			$(element).css('visibility', ko.unwrap(value) ? 'visible' : 'hidden');
 		}
 	};
 
 	ko.bindingHandlers.transparent = {
-		update: function(element, valueAccessor) {
+		'update': function(element, valueAccessor) {
 			var value = valueAccessor();
-			$(element).css('visibility', !ko.unwrap(value) ? 'visible' : 'hidden');
+			$(element).css('visibility', ko.unwrap(value) ? 'hidden' : 'visible');
 		}
 	};
 
 	//#endregion
+
+	//#region Knockout overrides
+
+	ko.bindingHandlers.css = {
+		'update': function(element, valueAccessor) {
+			var value = ko.utils.unwrapObservable(valueAccessor());
+			if (value !== null && typeof value == "object") {
+				ko.utils.objectForEach(value, (className, shouldHaveClass) => {
+					element.classList.toggle(className, !!ko.utils.unwrapObservable(shouldHaveClass));
+				});
+			}
+			else
+				ko.bindingHandlers['class'].update(element, valueAccessor);
+		}
+	};
+
+	ko.bindingHandlers['class'] = function() {
+		var classesWrittenByBindingKey = '__ko__cssValue';
+		return {
+			'update': function(element, valueAccessor) {
+				var value = ko.utils.stringTrim(ko.utils.unwrapObservable(valueAccessor()));
+				element.classList.remove(element[classesWrittenByBindingKey]);
+				element[classesWrittenByBindingKey] = value;
+				element.classList.add(value);
+			}
+		};
+	}();
+
+	//#endregion
+
+	//special binding for mdc elements - mdc ripple effects change classes in unpredictable manner, so it's necessary to wait with the update
+	ko.bindingHandlers.delayedCss = {
+		'update': function(element, valueAccessor) {
+			ko.utils.unwrapObservable(valueAccessor()); //this is necessary to initialise the dependency
+			setTimeout(() => ko.bindingHandlers.css.update(element, valueAccessor));
+		}
+	};
 
 	//#region Animation
 
@@ -168,7 +205,7 @@
 			var value = valueAccessor();
 			$(element).toggle(ko.unwrap(value));
 		},
-		update: function(element, valueAccessor) {
+		'update': function(element, valueAccessor) {
 			var value = valueAccessor();
 			if (ko.unwrap(value))
 				$(element).slideDown(animations.$timing);
