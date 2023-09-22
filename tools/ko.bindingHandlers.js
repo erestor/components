@@ -166,13 +166,13 @@
 	ko.bindingHandlers.css = {
 		'update': function(element, valueAccessor) {
 			var value = ko.utils.unwrapObservable(valueAccessor());
-			if (value !== null && typeof value == "object") {
+			if (value === null || typeof value != "object")
+				ko.bindingHandlers['class'].update(element, valueAccessor);
+			else {
 				ko.utils.objectForEach(value, (className, shouldHaveClass) => {
 					element.classList.toggle(className, !!ko.utils.unwrapObservable(shouldHaveClass));
 				});
 			}
-			else
-				ko.bindingHandlers['class'].update(element, valueAccessor);
 		}
 	};
 
@@ -181,9 +181,13 @@
 		return {
 			'update': function(element, valueAccessor) {
 				var value = ko.utils.stringTrim(ko.utils.unwrapObservable(valueAccessor()));
-				element.classList.remove(element[classesWrittenByBindingKey]);
-				element[classesWrittenByBindingKey] = value;
-				element.classList.add(value);
+				if (element[classesWrittenByBindingKey] !== undefined)
+					element.classList.remove(element[classesWrittenByBindingKey]);
+
+				if (value.length > 0) {
+					element.classList.add(value);
+					element[classesWrittenByBindingKey] = value;
+				}
 			}
 		};
 	}();
