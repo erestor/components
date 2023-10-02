@@ -1,5 +1,5 @@
-﻿define(['text!./material-checkbox.html', '../tools/tools'],
-function(htmlString, tools) {
+﻿define(['text!./material-checkbox.html', '../tools/tools', '@material/checkbox', '@material/form-field'],
+function(htmlString, tools, materialCheckbox, materialFormField) {
 
 	var MaterialCheckbox = function(params) {
 		this.checked = params.checked;
@@ -11,18 +11,27 @@ function(htmlString, tools) {
 		this.id = tools.getGuid();
 	};
 	MaterialCheckbox.prototype = {
-		'onChanged': function() {
-			var d = $('#' + this.id)[0];
-			this.checked(d.checked);
-		},
 		'onTapped': function(vm, ev) {
 			if (this.clicked)
 				this.clicked(this.checked, ev);
+
+			return true;
 		}
 	};
 
 	return {
-		'viewModel': MaterialCheckbox,
+		'viewModel': {
+			'createViewModel': function(params, componentInfo) {
+				var vm = new MaterialCheckbox(params);
+				var sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', function(node) {
+					const checkbox = new materialCheckbox.MDCCheckbox($(node).find('.mdc-checkbox')[0]);
+					const formField = new materialFormField.MDCFormField($(node).find('.mdc-form-field')[0]);
+					formField.input = checkbox;
+				});
+				vm.dispose = () => sub.dispose();
+				return vm;
+			}
+		},
 		'template': htmlString
 	};
 });

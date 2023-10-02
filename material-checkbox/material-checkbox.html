@@ -1,3 +1,16 @@
-﻿<paper-checkbox data-bind="attr: { 'id': id, 'checked': checked, 'no-label': noLabel, 'noink': noink }, enable: enable, event: { 'change': onChanged, 'tap': onTapped }">
-	<span data-bind="html: label"></span>
-</paper-checkbox>
+﻿<div class="mdc-form-field" data-bind="css: {'noink': noink}">
+	<div class="mdc-checkbox">
+		<input type="checkbox" class="mdc-checkbox__native-control" data-bind="attr: {'id': id}, checked: checked, enable: enable, event: {'tap': onTapped}" />
+		<div class="mdc-checkbox__background">
+			<svg class="mdc-checkbox__checkmark" viewbox="0 0 24 24">
+				<path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+			</svg>
+			<div class="mdc-checkbox__mixedmark"></div>
+		</div>
+		<div class="mdc-checkbox__ripple"></div>
+		<div class="mdc-checkbox__focus-ring"></div>
+	</div>
+	<!-- ko ifnot: noLabel -->
+	<label data-bind="attr: {'for': id}, html: label"></label>
+	<!-- /ko -->
+</div>

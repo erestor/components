@@ -12,7 +12,7 @@ function(htmlString, tools, materialRipple) {
 			createViewModel: function(params, componentInfo) {
 				var vm = new MaterialIconButton(params);
 				var sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', function(node) {
-					var ripple = new materialRipple.MDCRipple($(node).find('.mdc-icon-button')[0]);
+					const ripple = new materialRipple.MDCRipple($(node).find('.mdc-icon-button')[0]);
 					ripple.unbounded = true;
 				});
 				vm.dispose = () => sub.dispose();
