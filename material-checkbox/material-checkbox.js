@@ -23,7 +23,7 @@ function(htmlString, tools, materialCheckbox, materialFormField) {
 		'viewModel': {
 			'createViewModel': function(params, componentInfo) {
 				var vm = new MaterialCheckbox(params);
-				var sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', function(node) {
+				const sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
 					const checkbox = new materialCheckbox.MDCCheckbox($(node).find('.mdc-checkbox')[0]);
 					const formField = new materialFormField.MDCFormField($(node).find('.mdc-form-field')[0]);
 					formField.input = checkbox;

@@ -26,7 +26,7 @@ function(htmlString, tools, materialRipple) {
 		'viewModel': {
 			createViewModel: function(params, componentInfo) {
 				var vm = new MaterialButton(params);
-				var sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', function(node) {
+				const sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
 					new materialRipple.MDCRipple($(node).find('.mdc-button')[0]);
 				});
 				vm.dispose = () => sub.dispose();
