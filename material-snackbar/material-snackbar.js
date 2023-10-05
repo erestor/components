@@ -13,8 +13,12 @@ function(htmlString, materialSnackbar) {
 				var sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
 					const $node = $(node);
 					const snackbar = new materialSnackbar.MDCSnackbar($node.find('.mdc-snackbar')[0]);
-					if (params.button)
+					if (params.timeoutMs)
+						snackbar.timeoutMs = params.timeoutMs;
+					else if (params.button)
 						snackbar.timeoutMs = -1;
+					else
+						snackbar.timeoutMs = 4000; //default paper-toast timeout was 3000, but that's below the range
 
 					$node.data('mdc-snackbar', snackbar); //this is necessary to allow opening the snackbar from outside the component
 				});

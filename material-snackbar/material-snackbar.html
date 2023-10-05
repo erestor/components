@@ -5,9 +5,9 @@
 		</div>
 		<!-- ko if: button -->
 		<div class="mdc-snackbar__actions" aria-atomic="true">
-			<button type="button" class="mdc-button mdc-snackbar__action" data-bind="click: button.action">
+			<button type="button" class="mdc-button mdc-snackbar__action" data-bind="click: button().click">
 				<div class="mdc-button__ripple"></div>
-				<span class="mdc-button__label">{{button.text}}</span>
+				<span class="mdc-button__label">{{button().text}}</span>
 			</button>
 		</div>
 		<!-- /ko -->
