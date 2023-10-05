@@ -1,23 +1,21 @@
 ﻿define(['./animations'], function(animations) {
 
 	ko.bindingHandlers.disable = {
-		'update': function (element, valueAccessor) {
-			var value = ko.unwrap(valueAccessor());
-			ko.bindingHandlers.enable.update(element, function () {
-				return !value;
-			});
+		'update': function(element, valueAccessor) {
+			const value = ko.unwrap(valueAccessor());
+			ko.bindingHandlers.enable.update(element, () => !value);
 		}
 	};
 
 	//#region Keyboard
 
 	ko.bindingHandlers.escape = {
-		'update': function (element, valueAccessor, allBindingsAccessor, viewModel) {
+		'update': function(element, valueAccessor, allBindingsAccessor, viewModel) {
 			var command = valueAccessor();
 			if (!command)
 				return;
 
-			$(element).off('keyup.escapeBindingHandler').on('keyup.escapeBindingHandler', function (event) {
+			$(element).off('keyup.escapeBindingHandler').on('keyup.escapeBindingHandler', function(event) {
 				if (event.keyCode === 27) { // <ESC>
 					command.call(viewModel, viewModel, event);
 				}
@@ -26,12 +24,12 @@
 	};
 
 	ko.bindingHandlers.enter = {
-		'update': function (element, valueAccessor, allBindingsAccessor, viewModel) {
+		'update': function(element, valueAccessor, allBindingsAccessor, viewModel) {
 			var command = valueAccessor();
 			if (!command)
 				return;
 
-			$(element).off('keyup.enterBindingHandler').on('keyup.enterBindingHandler', function (event) {
+			$(element).off('keyup.enterBindingHandler').on('keyup.enterBindingHandler', function(event) {
 				if (event.keyCode === 13) { // <Enter>
 					command.call(viewModel, viewModel, event);
 				}
@@ -57,87 +55,67 @@
 	//#region Attributes
 
 	ko.bindingHandlers.flex = {
-		'update': function (element, valueAccessor) {
-			ko.bindingHandlers.attr.update(element, function () {
-				return { flex: valueAccessor() };
-			});
+		'update': function(element, valueAccessor) {
+			ko.bindingHandlers.attr.update(element, () => ({ flex: valueAccessor() }));
 		}
 	};
 
 	ko.bindingHandlers.href = {
-		'update': function (element, valueAccessor) {
-			ko.bindingHandlers.attr.update(element, function () {
-				return { href: valueAccessor() };
-			});
+		'update': function(element, valueAccessor) {
+			ko.bindingHandlers.attr.update(element, () => ({ href: valueAccessor() }));
 		}
 	};
 
 	ko.bindingHandlers.icon = {
-		'update': function (element, valueAccessor) {
+		'update': function(element, valueAccessor) {
 			var val = valueAccessor();
-			ko.bindingHandlers.attr.update(element, function () {
-				return { icon: val, alt: val };
-			});
+			ko.bindingHandlers.attr.update(element, () => ({ icon: val, alt: val }));
 		}
 	};
 
 	ko.bindingHandlers.id = {
-		'update': function (element, valueAccessor) {
-			ko.bindingHandlers.attr.update(element, function () {
-				return { id: valueAccessor() };
-			});
+		'update': function(element, valueAccessor) {
+			ko.bindingHandlers.attr.update(element, () => ({ id: valueAccessor() }));
 		}
 	};
 
 	ko.bindingHandlers.label = {
-		'update': function (element, valueAccessor, allBindingsAccessor) {
+		'update': function(element, valueAccessor, allBindingsAccessor) {
 			var val = valueAccessor();
 			if (ko.unwrap(allBindingsAccessor().required))
 				val += ' *';
 
-			ko.bindingHandlers.attr.update(element, function() {
-				return { label: val };
-			});
+			ko.bindingHandlers.attr.update(element, () => ({ label: val }));
 		}
 	};
 
 	ko.bindingHandlers.placeholder = {
-		'update': function (element, valueAccessor) {
-			ko.bindingHandlers.attr.update(element, function () {
-				return { placeholder: valueAccessor() };
-			});
+		'update': function(element, valueAccessor) {
+			ko.bindingHandlers.attr.update(element, () => ({ placeholder: valueAccessor() }));
 		}
 	};
 
 	ko.bindingHandlers.src = {
-		'update': function (element, valueAccessor) {
-			ko.bindingHandlers.attr.update(element, function () {
-				return { src: valueAccessor() };
-			});
+		'update': function(element, valueAccessor) {
+			ko.bindingHandlers.attr.update(element, () => ({ src: valueAccessor() }));
 		}
 	};
 
 	ko.bindingHandlers.title = {
-		'update': function (element, valueAccessor) {
-			ko.bindingHandlers.attr.update(element, function () {
-				return { title: valueAccessor() };
-			});
+		'update': function(element, valueAccessor) {
+			ko.bindingHandlers.attr.update(element, () => ({ title: valueAccessor() }));
 		}
 	};
 
 	ko.bindingHandlers.raised = {
-		'update': function (element, valueAccessor) {
-			ko.bindingHandlers.attr.update(element, function () {
-				return { raised: valueAccessor() };
-			});
+		'update': function(element, valueAccessor) {
+			ko.bindingHandlers.attr.update(element, () => ({ raised: valueAccessor() }));
 		}
 	};
 
 	ko.bindingHandlers.active = {
-		'update': function (element, valueAccessor) {
-			ko.bindingHandlers.attr.update(element, function () {
-				return { active: valueAccessor() };
-			});
+		'update': function(element, valueAccessor) {
+			ko.bindingHandlers.attr.update(element, () => ({ active: valueAccessor() }));
 		}
 	};
 
@@ -147,15 +125,15 @@
 
 	ko.bindingHandlers.opaque = {
 		'update': function(element, valueAccessor) {
-			var value = valueAccessor();
-			$(element).css('visibility', ko.unwrap(value) ? 'visible' : 'hidden');
+			const value = ko.unwrap(valueAccessor());
+			$(element).css('visibility', value ? 'visible' : 'hidden');
 		}
 	};
 
 	ko.bindingHandlers.transparent = {
 		'update': function(element, valueAccessor) {
-			var value = valueAccessor();
-			$(element).css('visibility', ko.unwrap(value) ? 'hidden' : 'visible');
+			const value = ko.unwrap(valueAccessor());
+			$(element).css('visibility', value ? 'hidden' : 'visible');
 		}
 	};
 
@@ -165,12 +143,12 @@
 
 	ko.bindingHandlers.css = {
 		'update': function(element, valueAccessor) {
-			var value = ko.utils.unwrapObservable(valueAccessor());
+			var value = ko.unwrap(valueAccessor());
 			if (value === null || typeof value != "object")
 				ko.bindingHandlers['class'].update(element, valueAccessor);
 			else {
 				ko.utils.objectForEach(value, (className, shouldHaveClass) => {
-					element.classList.toggle(className, !!ko.utils.unwrapObservable(shouldHaveClass));
+					element.classList.toggle(className, !!ko.unwrap(shouldHaveClass));
 				});
 			}
 		}
@@ -180,7 +158,7 @@
 		var classesWrittenByBindingKey = '__ko__cssValue';
 		return {
 			'update': function(element, valueAccessor) {
-				var value = ko.utils.stringTrim(ko.utils.unwrapObservable(valueAccessor()));
+				const value = ko.unwrap(valueAccessor());
 				if (element[classesWrittenByBindingKey] !== undefined)
 					element.classList.remove(element[classesWrittenByBindingKey]);
 
@@ -197,7 +175,7 @@
 	//special binding for mdc elements - mdc ripple effects change classes in unpredictable manner, so it's necessary to wait with the update
 	ko.bindingHandlers.delayedCss = {
 		'update': function(element, valueAccessor) {
-			ko.utils.unwrapObservable(valueAccessor()); //this is necessary to initialise the dependency
+			ko.unwrap(valueAccessor()); //this is necessary to initialise the dependency
 			setTimeout(() => ko.bindingHandlers.css.update(element, valueAccessor));
 		}
 	};
