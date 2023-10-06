@@ -1,4 +1,4 @@
-﻿define(['./animations'], function(animations) {
+﻿define(['./animations', './tools'], function(animations, tools) {
 
 	ko.bindingHandlers.disable = {
 		'update': function(element, valueAccessor) {
@@ -158,16 +158,17 @@
 		var classesWrittenByBindingKey = '__ko__cssValue';
 		return {
 			'update': function(element, valueAccessor) {
-				const value = ko.unwrap(valueAccessor());
 				if (element[classesWrittenByBindingKey] !== undefined)
 					element.classList.remove(element[classesWrittenByBindingKey]);
 
+				const value = tools.trimString(ko.unwrap(valueAccessor()));
 				if (value.length > 0) {
 					element.classList.add(value);
 					element[classesWrittenByBindingKey] = value;
 				}
 			}
 		};
+
 	}();
 
 	//#endregion

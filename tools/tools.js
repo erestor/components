@@ -1,5 +1,4 @@
-﻿define([],
-function() {
+﻿define([], function() {
 	return {
 		'getGuid': function() {
 			return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -15,6 +14,9 @@ function() {
 				return ko.pureComputed(function() { return !ko.unwrap(params.disable); });
 			else
 				return params.enable !== undefined ? ko.pureComputed(function() { return ko.unwrap(params.enable); }) : function() { return true; };
-		}
+		},
+		'trimString': function(value) {
+            return value === null || value === undefined ? '' : value.trim();
+        }
 	};
 });
