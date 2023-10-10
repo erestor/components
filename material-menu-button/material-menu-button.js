@@ -16,7 +16,7 @@ function(htmlString, materialSelectComponent) {
 		MaterialSelectVM.call(this, params);
 		this.buttonCaption = params.buttonCaption;
 		this.noselect = params.noselect;
-		this.icon = params.icon || 'icons:arrow-drop-down'; //depends on polymer iron-icons
+		this.icon = params.icon || 'arrow_drop_down';
 
 		var self = this;
 		this.dropdownTriggerCaption = ko.computed(function() {

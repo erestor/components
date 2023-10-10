@@ -14,7 +14,7 @@
 		var self = this;
 		this.buttonIcon = ko.pureComputed(function() {
 			if (!self.icon)
-				return 'icons:expand-more';
+				return 'expand_more';
 
 			return self.icon;
 		});
