@@ -1,9 +1,9 @@
 ﻿<div class="collapse-section-header" data-bind="css: { 'justified': justified, 'center': centerTitle }">
 	<div class="collapse-section-title" data-bind="css: { 'iconified': titleIcon }">
-		<iron-icon data-bind="icon: titleIcon, visible: titleIcon"></iron-icon>
+		<i class="material-icons" data-bind="visible: titleIcon">{{titleIcon}}</i>
 		<span data-bind="text: title, click: click, css: titleClass"></span>
 	</div>
-	<paper-icon-button data-bind="click: click, icon: buttonIcon, css: {'flip': opened}" alt="toggle"></paper-icon-button>
+	<material-icon-button data-bind="click: click, css: {'flip': opened}" alt="toggle">{{buttonIcon}}</material-icon-button>
 </div>
 <iron-collapse data-bind="attr: { 'opened': opened }">
 	<div class="collapse-content">

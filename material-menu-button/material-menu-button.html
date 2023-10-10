@@ -3,11 +3,11 @@
 	<!-- ko if: buttonCaption -->
 	<material-button slot="dropdown-trigger" params="enable: enable">
 		<span class="caption" data-bind="html: dropdownTriggerCaption"></span>
-		<iron-icon data-bind="icon: icon"></iron-icon>
+		<i class="material-icons">{{icon}}</i>
 	</material-button>
 	<!-- /ko -->
 	<!-- ko ifnot: buttonCaption -->
-	<paper-icon-button slot="dropdown-trigger" data-bind="icon: icon, enable: enable"></paper-icon-button>
+	<material-icon-button slot="dropdown-trigger" data-bind="enable: enable">{{icon}}</material-icon-button>
 	<!-- /ko -->
 	<paper-listbox slot="dropdown-content"
 		data-bind="attr: { 'selected': selectedIndex }, event: { 'selected-changed': selectedChanged }, css: { 'noselect': noselect || alwaysNotify }">
