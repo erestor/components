@@ -7,7 +7,7 @@
 	</material-button>
 	<!-- /ko -->
 	<!-- ko ifnot: buttonCaption -->
-	<material-icon-button slot="dropdown-trigger" data-bind="enable: enable">{{icon}}</material-icon-button>
+	<material-icon-button slot="dropdown-trigger" data-bind="enable: enable">{{$parent.icon}}</material-icon-button>
 	<!-- /ko -->
 	<paper-listbox slot="dropdown-content"
 		data-bind="attr: { 'selected': selectedIndex }, event: { 'selected-changed': selectedChanged }, css: { 'noselect': noselect || alwaysNotify }">

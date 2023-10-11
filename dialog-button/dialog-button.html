@@ -1,4 +1,4 @@
-﻿<material-icon-button data-bind="click: open, css: dialogId" alt="open">{{icon}}</material-icon-button>
+﻿<material-icon-button data-bind="click: open, css: dialogId" alt="open">{{$parent.icon}}</material-icon-button>
 <paper-tooltip data-bind="text: tooltip"></paper-tooltip>
 <paper-dialog data-bind="attr: { id: dialogId, 'vertical-align': noPosition ? '' : 'auto' }"
 	entry-animation="fade-in-animation"
