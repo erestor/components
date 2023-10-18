@@ -1,0 +1,20 @@
+<label class="mdc-text-field" data-bind="css: getCss()">
+	<!-- ko if: filled-->
+	<span class="mdc-text-field__ripple"></span>
+	<span class="mdc-floating-label" data-bind="id: labelId">{{label}}</span>
+	<!-- /ko -->
+	<!-- ko ifnot: filled -->
+	<span class="mdc-notched-outline">
+		<span class="mdc-notched-outline__leading"></span>
+		<span class="mdc-notched-outline__notch">
+			<span class="mdc-floating-label" data-bind="id: labelId">{{label}}</span>
+		</span>
+		<span class="mdc-notched-outline__trailing"></span>
+	</span>
+	<!-- /ko -->
+	<input class="mdc-text-field__input"
+		data-bind="textInput: value, enable: enable, attr: {'type': type, 'step': step, 'aria-labelledby': labelId, 'autofocus': autofocus}">
+	<!-- ko if: filled -->
+	<span class="mdc-line-ripple"></span>
+	<!-- /ko -->
+</label>

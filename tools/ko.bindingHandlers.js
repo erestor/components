@@ -141,6 +141,7 @@
 
 	//#region Knockout overrides
 
+	//takes advantage of native element.classList property
 	ko.bindingHandlers.css = {
 		'update': function(element, valueAccessor) {
 			var value = ko.unwrap(valueAccessor());
@@ -154,6 +155,7 @@
 		}
 	};
 
+	//takes advantage of native element.classList property
 	ko.bindingHandlers['class'] = function() {
 		var classesWrittenByBindingKey = '__ko__cssValue';
 		return {
