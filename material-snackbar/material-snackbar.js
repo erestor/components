@@ -4,25 +4,33 @@ function(htmlString, materialSnackbar) {
 	var MaterialSnackbar = function(params) {
 		this.label = params.label;
 		this.button = params.button;
+
+		//component lifetime
+		this.bindingSubscription = null;
+		this.mdcSnackbar = null;
+	};
+	MaterialSnackbar.prototype = {
+		'dispose': function() {
+			this.mdcSnackbar.destroy();
+			this.bindingSubscription.dispose();
+		}
 	};
 
 	return {
 		'viewModel': {
 			'createViewModel': function(params, componentInfo) {
 				var vm = new MaterialSnackbar(params);
-				var sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					const $node = $(node);
-					const snackbar = new materialSnackbar.MDCSnackbar($node.find('.mdc-snackbar')[0]);
+				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
+					vm.mdcSnackbar = new materialSnackbar.MDCSnackbar($(node).find('.mdc-snackbar')[0]);
 					if (params.timeoutMs)
-						snackbar.timeoutMs = params.timeoutMs;
+						vm.mdcSnackbar.timeoutMs = params.timeoutMs;
 					else if (params.button)
-						snackbar.timeoutMs = -1;
+						vm.mdcSnackbar.timeoutMs = -1;
 					else
-						snackbar.timeoutMs = 4000; //default paper-toast timeout was 3000, but that's below the range
+						vm.mdcSnackbar.timeoutMs = 4000; //default paper-toast timeout was 3000, but that's below the range
 
-					$node.data('mdc-snackbar', snackbar); //this is necessary to allow opening the snackbar from outside the component
+					$(node).data('mdc-snackbar', vm.mdcSnackbar); //this is necessary to allow opening the snackbar from outside the component
 				});
-				vm.dispose = () => sub.dispose();
 				return vm;
 			}
 		},

@@ -5,17 +5,26 @@ function(htmlString, tools, materialRipple) {
 		this.click = params.click;
 		this.enable = tools.readEnableStatus(params);
 		this.icon = params.icon;
+
+		//component lifetime
+		this.bindingSubscription = null;
+		this.mdcRipple = null;
+	};
+	MaterialIconButton.prototype = {
+		'dispose': function() {
+			this.mdcRipple.destroy();
+			this.bindingSubscription.dispose();
+		}
 	};
 
 	return {
 		'viewModel': {
 			createViewModel: function(params, componentInfo) {
 				var vm = new MaterialIconButton(params);
-				const sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					const ripple = new materialRipple.MDCRipple($(node).find('.mdc-icon-button')[0]);
-					ripple.unbounded = true;
+				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
+					vm.mdcRipple = new materialRipple.MDCRipple($(node).find('.mdc-icon-button')[0]);
+					vm.mdcRipple.unbounded = true;
 				});
-				vm.dispose = () => sub.dispose();
 				return vm;
 			}
 		},

@@ -9,8 +9,18 @@ function(htmlString, tools, materialCheckbox, materialFormField) {
 		this.noink = params.noink;
 		this.enable = tools.readEnableStatus(params);
 		this.id = tools.getGuid();
+
+		//component lifetime
+		this.bindingSubscription = null;
+		this.mdcCheckbox = null;
+		this.mdcFormField = null;
 	};
 	MaterialCheckbox.prototype = {
+		'dispose': function() {
+			this.mdcFormField.destroy();
+			this.mdcCheckbox.destroy();
+			this.bindingSubscription.dispose();
+		},
 		'onTapped': function(vm, ev) {
 			if (this.clicked)
 				this.clicked(this.checked, ev);
@@ -23,12 +33,11 @@ function(htmlString, tools, materialCheckbox, materialFormField) {
 		'viewModel': {
 			'createViewModel': function(params, componentInfo) {
 				var vm = new MaterialCheckbox(params);
-				const sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					const checkbox = new materialCheckbox.MDCCheckbox($(node).find('.mdc-checkbox')[0]);
-					const formField = new materialFormField.MDCFormField($(node).find('.mdc-form-field')[0]);
-					formField.input = checkbox;
+				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
+					vm.mdcCheckbox = new materialCheckbox.MDCCheckbox($(node).find('.mdc-checkbox')[0]);
+					vm.mdcFormField = new materialFormField.MDCFormField($(node).find('.mdc-form-field')[0]);
+					vm.mdcFormField.input = vm.mdcCheckbox;
 				});
-				vm.dispose = () => sub.dispose();
 				return vm;
 			}
 		},

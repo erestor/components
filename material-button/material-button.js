@@ -12,8 +12,16 @@ function(htmlString, tools, materialRipple) {
 		//data binding
 		this.click = params.click;
 		this.enable = tools.readEnableStatus(params);
+
+		//component lifetime
+		this.bindingSubscription = null;
+		this.mdcRipple = null;
 	};
 	MaterialButton.prototype = {
+		'dispose': function() {
+			this.mdcRipple.destroy();
+			this.bindingSubscription.dispose();
+		},
 		'getCss': function() {
 			return {
 				'mdc-button--outlined': ko.unwrap(this.outlined),
@@ -26,10 +34,9 @@ function(htmlString, tools, materialRipple) {
 		'viewModel': {
 			createViewModel: function(params, componentInfo) {
 				var vm = new MaterialButton(params);
-				const sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					new materialRipple.MDCRipple($(node).find('.mdc-button')[0]);
+				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
+					vm.mdcRipple = new materialRipple.MDCRipple($(node).find('.mdc-button')[0]);
 				});
-				vm.dispose = () => sub.dispose();
 				return vm;
 			}
 		},

@@ -15,8 +15,18 @@ function(htmlString, tools, materialTextfield) {
 		this.label = params.label;
 		this.enable = tools.readEnableStatus(params);
 		this.labelId = tools.getGuid();
+
+		//component lifetime
+		this.bindingSubscription = null;
+		this.mdcTextField = null;
+		this.inputSubscription = null;
 	};
 	MaterialTextField.prototype = {
+		'dispose': function() {
+			this.inputSubscription.dispose();
+			this.mdcTextField.destroy();
+			this.bindingSubscription.dispose();
+		},
 		'getCss': function() {
 			return {
 				'mdc-text-field--filled': this.filled,
@@ -30,10 +40,19 @@ function(htmlString, tools, materialTextfield) {
 		'viewModel': {
 			createViewModel: function(params, componentInfo) {
 				var vm = new MaterialTextField(params);
-				const sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					new materialTextfield.MDCTextField($(node).find('.mdc-text-field')[0]);
+				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
+					vm.mdcTextField = new materialTextfield.MDCTextField($(node).find('.mdc-text-field')[0]);
+					vm.inputSubscription = vm.value.subscribe(() => {
+						//necessary hack to update the label style when knockout changes the value
+						const shouldFloat = vm.mdcTextField.value.length > 0;
+						const foundation = vm.mdcTextField.foundation;
+						foundation.notchOutline(shouldFloat);
+						foundation.adapter.floatLabel(shouldFloat);
+						foundation.styleFloating(shouldFloat);
+						if (vm.value.isValid)
+							vm.mdcTextField.valid = vm.value.isValid();
+					});
 				});
-				vm.dispose = () => sub.dispose();
 				return vm;
 			}
 		},

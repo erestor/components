@@ -4,16 +4,25 @@ function(htmlString, tools, materialRipple) {
 	var MaterialFab = function(params) {
 		this.click = params.click;
 		this.enable = tools.readEnableStatus(params);
+
+		//component lifetime
+		this.bindingSubscription = null;
+		this.mdcRipple = null;
+	};
+	MaterialFab.prototype = {
+		'dispose': function() {
+			this.mdcRipple.destroy();
+			this.bindingSubscription.dispose();
+		}
 	};
 
 	return {
 		'viewModel': {
 			createViewModel: function(params, componentInfo) {
 				var vm = new MaterialFab(params);
-				const sub = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					new materialRipple.MDCRipple($(node).find('.mdc-fab')[0]);
+				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
+					vm.mdcRipple = new materialRipple.MDCRipple($(node).find('.mdc-fab')[0]);
 				});
-				vm.dispose = () => sub.dispose();
 				return vm;
 			}
 		},
