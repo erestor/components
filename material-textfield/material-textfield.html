@@ -12,9 +12,14 @@
 		<span class="mdc-notched-outline__trailing"></span>
 	</span>
 	<!-- /ko -->
-	<input class="mdc-text-field__input"
-		data-bind="textInput: value, enable: enable, attr: {'type': type, 'step': step, 'aria-labelledby': labelId, 'autofocus': autofocus}">
+	<input class="mdc-text-field__input" data-bind="textInput: value, enable: enable, attr: getInputAttrs()">
 	<!-- ko if: filled -->
 	<span class="mdc-line-ripple"></span>
 	<!-- /ko -->
 </label>
+<!-- ko if: validate -->
+<div class="mdc-text-field-helper-line">
+	<div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+		data-bind="id: helperId, validationMessage: value" aria-hidden="true"></div>
+</div>
+<!-- /ko -->
