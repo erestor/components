@@ -14,7 +14,7 @@ function(htmlString, tools, materialTextfield) {
 		this.filled = ko.unwrap(params.filled);
 
 		//data binding
-		this.value = params.textInput;
+		this.value = params.textInput || ko.observable(ko.unwrap(params.initialValue));
 		this.validate = params.validate;
 		this.enable = tools.readEnableStatus(params);
 		this.labelId = tools.getGuid();
@@ -30,10 +30,10 @@ function(htmlString, tools, materialTextfield) {
 	MaterialTextField.prototype = {
 		'dispose': function() {
 			this.inputSubscription.dispose();
-			this.mdcHelperText.destroy();
-			if (this.validate)
-				this.mdcTextField.destroy();
+			if (this.mdcHelperText)
+				this.mdcHelperText.destroy();
 
+			this.mdcTextField.destroy();
 			this.bindingSubscription.dispose();
 		},
 		'getCss': function() {
@@ -62,6 +62,7 @@ function(htmlString, tools, materialTextfield) {
 				var vm = new MaterialTextField(params);
 				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
 					vm.mdcTextField = new materialTextfield.MDCTextField($(node).find('.mdc-text-field')[0]);
+					$(node).data('mdc-text-field', vm.mdcTextField);
 					if (vm.validate)
 						vm.mdcHelperText = new materialTextfield.MDCTextFieldHelperText($(node).find('.mdc-text-field-helper-text')[0]);
 
