@@ -1,18 +1,28 @@
 <label class="mdc-text-field" data-bind="css: getCss()">
 	<!-- ko if: filled-->
 	<span class="mdc-text-field__ripple"></span>
+	<!-- ko ifnot: noLabel -->
 	<span class="mdc-floating-label" data-bind="id: labelId">{{label}}</span>
+	<!-- /ko -->
 	<!-- /ko -->
 	<!-- ko ifnot: filled -->
 	<span class="mdc-notched-outline">
 		<span class="mdc-notched-outline__leading"></span>
+		<!-- ko ifnot: noLabel -->
 		<span class="mdc-notched-outline__notch">
 			<span class="mdc-floating-label" data-bind="id: labelId">{{label}}</span>
 		</span>
+		<!-- /ko -->
 		<span class="mdc-notched-outline__trailing"></span>
 	</span>
 	<!-- /ko -->
+	<!-- ko if: prefix -->
+	<span class="mdc-text-field__affix mdc-text-field__affix--prefix">{{prefix}}</span>
+	<!-- /ko -->
 	<input class="mdc-text-field__input" data-bind="textInput: value, enable: enable, attr: getInputAttrs()">
+	<!-- ko if: suffix -->
+	<span class="mdc-text-field__affix mdc-text-field__affix--suffix">{{suffix}}</span>
+	<!-- /ko -->
 	<!-- ko if: filled -->
 	<span class="mdc-line-ripple"></span>
 	<!-- /ko -->

@@ -12,9 +12,12 @@ function(htmlString, tools, materialTextfield) {
 
 		//css
 		this.filled = ko.unwrap(params.filled);
+		this.noLabel = ko.pureComputed(() => !ko.unwrap(params.label));
 
 		//data binding
 		this.value = params.textInput || ko.observable(ko.unwrap(params.initialValue));
+		this.prefix = params.prefix;
+		this.suffix = params.suffix;
 		this.validate = params.validate;
 		this.enable = tools.readEnableStatus(params);
 		this.labelId = tools.getGuid();
@@ -40,7 +43,8 @@ function(htmlString, tools, materialTextfield) {
 			return {
 				'mdc-text-field--filled': this.filled,
 				'mdc-text-field--outlined': !this.filled,
-				'mdc-text-field--disabled': !this.enable()
+				'mdc-text-field--disabled': !this.enable(),
+				'mdc-text-field--no-label': this.noLabel(),
 			};
 		},
 		'getInputAttrs': function() {
@@ -63,6 +67,9 @@ function(htmlString, tools, materialTextfield) {
 				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
 					vm.mdcTextField = new materialTextfield.MDCTextField($(node).find('.mdc-text-field')[0]);
 					$(node).data('mdc-text-field', vm.mdcTextField);
+					if (vm.autofocus)
+						$(node).find('input').focus();
+
 					if (vm.validate)
 						vm.mdcHelperText = new materialTextfield.MDCTextFieldHelperText($(node).find('.mdc-text-field-helper-text')[0]);
 
