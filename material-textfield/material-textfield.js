@@ -1,6 +1,8 @@
 define(['text!./material-textfield.html', '../tools/tools', '@material/textfield'],
 function(htmlString, tools, materialTextfield) {
 
+	const chromeAutofillTempValue = '__prevent_autofill__';
+
 	var MaterialTextField = function(params) {
 		//attributes
 		this.autofocus = params.autofocus;
@@ -16,6 +18,7 @@ function(htmlString, tools, materialTextfield) {
 
 		//data binding
 		this.value = params.textInput || ko.observable(ko.unwrap(params.initialValue));
+		this.leadingIcon = params.leadingIcon;
 		this.prefix = params.prefix;
 		this.suffix = params.suffix;
 		this.validate = params.validate;
@@ -23,6 +26,10 @@ function(htmlString, tools, materialTextfield) {
 		this.labelId = tools.getGuid();
 		if (this.validate)
 			this.helperId = tools.getGuid();
+
+		//chrome autofill workaround
+		if (params.autofill == 'off' && !this.value())
+			this.value(chromeAutofillTempValue);
 
 		//component lifetime
 		this.bindingSubscription = null;
@@ -45,6 +52,7 @@ function(htmlString, tools, materialTextfield) {
 				'mdc-text-field--outlined': !this.filled,
 				'mdc-text-field--disabled': !this.enable(),
 				'mdc-text-field--no-label': this.noLabel(),
+				'mdc-text-field--with-leading-icon': this.leadingIcon
 			};
 		},
 		'getInputAttrs': function() {
@@ -73,6 +81,16 @@ function(htmlString, tools, materialTextfield) {
 					if (vm.validate)
 						vm.mdcHelperText = new materialTextfield.MDCTextFieldHelperText($(node).find('.mdc-text-field-helper-text')[0]);
 
+					if (vm.value() == chromeAutofillTempValue) {
+						//hack to overrule Chrome stupid autofill
+						setTimeout(() => {
+							vm.value('');
+							vm.value.isModified(false);
+							$(node).find('.mdc-text-field--invalid').removeClass('mdc-text-field--invalid');
+							if (vm.autofocus)
+								$(node).find('input').focus();
+						}, 100);
+					}
 					vm.inputSubscription = vm.value.subscribe(() => {
 						//necessary hack to update the label style when knockout changes the value
 						const shouldFloat = vm.mdcTextField.value.length > 0;
