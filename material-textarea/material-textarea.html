@@ -1,0 +1,29 @@
+<label class="mdc-text-field mdc-text-field--textarea" data-bind="css: getCss()">
+	<!-- ko if: filled-->
+	<span class="mdc-text-field__ripple"></span>
+	<!-- ko ifnot: noLabel -->
+	<span class="mdc-floating-label" data-bind="id: labelId">{{label}}</span>
+	<!-- /ko -->
+	<!-- /ko -->
+	<!-- ko ifnot: filled -->
+	<span class="mdc-notched-outline">
+		<span class="mdc-notched-outline__leading"></span>
+		<!-- ko ifnot: noLabel -->
+		<span class="mdc-notched-outline__notch">
+			<span class="mdc-floating-label" data-bind="id: labelId">{{label}}</span>
+		</span>
+		<!-- /ko -->
+		<span class="mdc-notched-outline__trailing"></span>
+	</span>
+	<!-- /ko -->
+	<textarea class="mdc-text-field__input" data-bind="textInput: value, enable: enable, attr: getInputAttrs()"></textarea>
+	<!-- ko if: filled -->
+	<span class="mdc-line-ripple"></span>
+	<!-- /ko -->
+</label>
+<!-- ko if: validate -->
+<div class="mdc-text-field-helper-line">
+	<div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+		data-bind="id: helperId, validationMessage: value" aria-hidden="true"></div>
+</div>
+<!-- /ko -->
