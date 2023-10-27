@@ -8,7 +8,6 @@ function(htmlString, tools, materialTextfield) {
 		this.placeholder = params.placeholder;
 		this.rows = params.rows;
 		this.cols = params.cols;
-		this.maxRows = params.maxRows;
 
 		//css
 		this.filled = ko.unwrap(params.filled);
@@ -49,7 +48,6 @@ function(htmlString, tools, materialTextfield) {
 			return {
 				'rows': this.rows,
 				'cols': this.cols,
-				'max-rows': this.maxRows,
 				'aria-labelledby': this.labelId,
 				'aria-controls': this.validate ? this.helperId : undefined,
 				'autofocus': this.autofocus,
