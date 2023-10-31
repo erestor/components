@@ -1,4 +1,4 @@
-<div class="mdc-tab-bar" role="tablist" data-bind="id: id">
+<div class="mdc-tab-bar" role="tablist" data-bind="id: id, event: {'MDCTabBar:activated': onActivated}">
 	<div class="mdc-tab-scroller">
 		<div class="mdc-tab-scroller__scroll-area">
 			<div class="mdc-tab-scroller__scroll-content" data-bind="foreach: tabs">

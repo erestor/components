@@ -10,6 +10,16 @@ function(htmlString, tools, materialTabBar) {
 		this.bindingSubscription = null;
 		this.mdcTabBar = null;
 	};
+	MaterialTabBar.prototype = {
+		'dispose': function() {
+			this.mdcTabBar.destroy();
+			this.bindingSubscription.dispose();
+		},
+		'onActivated': function(vm, event) {
+			if (event.target.id === this.id)
+				this.selected(event.detail.index);
+		}
+	};
 
 	return {
 		'viewModel': {
@@ -17,16 +27,6 @@ function(htmlString, tools, materialTabBar) {
 				var vm = new MaterialTabBar(params);
 				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
 					vm.mdcTabBar = new materialTabBar.MDCTabBar($(node).find('.mdc-tab-bar')[0]);
-					$(node).on('MDCTabBar:activated', event => {
-						if (event.target.id === vm.id)
-							vm.selected(event.detail.index);
-					});
-					vm.dispose = () => {
-						//need the node for event off, hence this is not in the prototype
-						$(node).off('MDCTabBar:activated');
-						vm.mdcTabBar.destroy();
-						vm.bindingSubscription.dispose();
-					};
 				});
 				return vm;
 			}

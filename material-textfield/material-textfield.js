@@ -5,6 +5,7 @@ function(htmlString, tools, materialTextfield) {
 
 	var MaterialTextField = function(params) {
 		//attributes
+		this.id = params.id;
 		this.autofocus = params.autofocus;
 		this.label = params.label;
 		this.placeholder = params.placeholder;
@@ -73,8 +74,9 @@ function(htmlString, tools, materialTextfield) {
 			createViewModel: function(params, componentInfo) {
 				var vm = new MaterialTextField(params);
 				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					vm.mdcTextField = new materialTextfield.MDCTextField($(node).find('.mdc-text-field')[0]);
-					$(node).data('mdc-text-field', vm.mdcTextField);
+					const el = $(node).find('.mdc-text-field');
+					vm.mdcTextField = new materialTextfield.MDCTextField(el[0]);
+					el.data('mdc-text-field', vm.mdcTextField);
 					if (vm.autofocus)
 						$(node).find('input').focus();
 

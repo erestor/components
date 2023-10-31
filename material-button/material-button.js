@@ -2,16 +2,17 @@
 function(htmlString, tools, materialRipple) {
 
 	var MaterialButton = function(params) {
-		//attributes
-		this.autofocus = params.autofocus;
+		//data binding
+		this.click = params.click;
+		this.enable = tools.readEnableStatus(params);
 
 		//css
 		this.outlined = params.outlined;
 		this.raised = params.raised;
 
-		//data binding
-		this.click = params.click;
-		this.enable = tools.readEnableStatus(params);
+		//attributes
+		this.autofocus = params.autofocus;
+		this.default = params.default;
 
 		//component lifetime
 		this.bindingSubscription = null;
@@ -21,6 +22,13 @@ function(htmlString, tools, materialRipple) {
 		'dispose': function() {
 			this.mdcRipple.destroy();
 			this.bindingSubscription.dispose();
+		},
+		'getAttrs': function() {
+			return {
+				'aria-disabled': !this.enable(),
+				'autofocus': this.autofocus ? '' : undefined,
+				'data-mdc-dialog-button-default': this.default ? '' : undefined,
+			};
 		},
 		'getCss': function() {
 			return {
@@ -35,7 +43,10 @@ function(htmlString, tools, materialRipple) {
 			createViewModel: function(params, componentInfo) {
 				var vm = new MaterialButton(params);
 				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					vm.mdcRipple = new materialRipple.MDCRipple($(node).find('.mdc-button')[0]);
+					const el = $(node).find('.mdc-button')[0];
+					vm.mdcRipple = new materialRipple.MDCRipple(el);
+					if (vm.autofocus)
+						el.focus();
 				});
 				return vm;
 			}
