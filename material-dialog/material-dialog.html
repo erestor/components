@@ -1,7 +1,9 @@
 ﻿<div class="mdc-dialog" data-bind="id: id, event: {'MDCDialog:closed': onClosed}">
 	<div class="mdc-dialog__container">
 		<div class="mdc-dialog__surface" role="alertdialog" aria-modal="true" tabindex="-1" data-bind="attr: getSurfaceAttrs()">
+			<!-- ko if: title -->
 			<h2 class="mdc-dialog__title" data-bind="id: titleId, html: title"></h2>
+			<!-- /ko -->
 			<!-- ko template: { nodes: $componentTemplateNodes, data: $parent } --><!-- /ko -->
 		</div>
 	</div>
