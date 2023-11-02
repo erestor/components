@@ -27,7 +27,7 @@ function(htmlString, tools, materialRipple) {
 			return {
 				'aria-disabled': !this.enable(),
 				'autofocus': this.autofocus ? '' : undefined,
-				'data-mdc-dialog-button-default': this.default ? '' : undefined,
+				'data-mdc-dialog-button-default': (this.autofocus || this.default) ? '' : undefined,
 			};
 		},
 		'getCss': function() {

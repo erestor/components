@@ -6,6 +6,7 @@ function(htmlString, tools, materialDialog) {
 		this.title = params.title;
 		this.titleId = tools.getGuid();
 		this.contentId = tools.getGuid();
+		this.opened = params.opened;
 		this.closed = params.closed;
 
 		//component lifetime
@@ -17,9 +18,13 @@ function(htmlString, tools, materialDialog) {
 			this.mdcDialog.destroy();
 			this.bindingSubscription.dispose();
 		},
+		'onOpened': function(vm, event) {
+			if (event.target.id === this.id && typeof this.opened == 'function')
+				this.opened(vm, event);
+		},
 		'onClosed': function(vm, event) {
 			if (event.target.id === this.id && typeof this.closed == 'function')
-				this.closed();
+				this.closed(vm, event);
 		},
 		'getSurfaceAttrs': function() {
 			return {
