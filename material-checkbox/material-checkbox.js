@@ -6,7 +6,6 @@ function(htmlString, tools, materialCheckbox, materialFormField) {
 		this.clicked = params.clicked;
 		this.label = params.label;
 		this.noLabel = params.label === undefined;
-		this.noink = params.noink;
 		this.enable = tools.readEnableStatus(params);
 		this.id = tools.getGuid();
 

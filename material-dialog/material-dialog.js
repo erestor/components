@@ -4,6 +4,7 @@ function(htmlString, tools, materialDialog) {
 	var MaterialDialog = function(params) {
 		this.id = params.id;
 		this.title = params.title;
+		this.modal = params.modal;
 		this.titleId = tools.getGuid();
 		this.contentId = tools.getGuid();
 		this.opened = params.opened;
@@ -43,6 +44,10 @@ function(htmlString, tools, materialDialog) {
 					el.find('.mdc-dialog__content').attr('id', vm.contentId);
 					//el.find('.mdc-dialog__actions button').addClass('mdc-dialog__button'); this stacks the buttons vertically
 					vm.mdcDialog = new materialDialog.MDCDialog(el[0]);
+					if (vm.modal) {
+						vm.mdcDialog.scrimClickAction = '';
+						vm.mdcDialog.escapeKeyAction = '';
+					}
 					el.data('mdc-dialog', vm.mdcDialog);
 				});
 				return vm;
