@@ -1,5 +1,5 @@
 ﻿define(['text!./dialog-button.html', '../dialog-button-base/dialog-button-base'],
-	function(htmlString, DialogButtonBase) {
+function(htmlString, DialogButtonBase) {
 
 	var DialogButton = function(params) {
 		DialogButtonBase.call(this, params);
