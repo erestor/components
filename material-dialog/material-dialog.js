@@ -20,8 +20,11 @@ function(htmlString, tools, materialDialog) {
 			this.bindingSubscription.dispose();
 		},
 		'onOpened': function(vm, event) {
-			if (event.target.id === this.id && typeof this.opened == 'function')
-				this.opened(vm, event);
+			if (event.target.id === this.id) {
+				$('#' + this.id).find('button[data-mdc-dialog-button-default]').focus();
+				if (typeof this.opened == 'function')
+					this.opened(vm, event);
+			}
 		},
 		'onClosed': function(vm, event) {
 			if (event.target.id === this.id && typeof this.closed == 'function')
