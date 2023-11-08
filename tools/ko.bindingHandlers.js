@@ -175,14 +175,6 @@
 
 	//#endregion
 
-	//special binding for mdc elements - mdc ripple effects change classes in unpredictable manner, so it's necessary to wait with the update
-	ko.bindingHandlers.delayedCss = {
-		'update': function(element, valueAccessor) {
-			ko.unwrap(valueAccessor()); //this is necessary to initialise the dependency
-			setTimeout(() => ko.bindingHandlers.css.update(element, valueAccessor));
-		}
-	};
-
 	//#region Animation
 
 	ko.bindingHandlers.slideDown = {

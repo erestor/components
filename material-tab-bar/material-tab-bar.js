@@ -9,15 +9,16 @@ function(htmlString, tools, materialTabBar) {
 		//component lifetime
 		this.bindingSubscription = null;
 		this.mdcTabBar = null;
+		this.selectionSubscription = null;
 	};
 	MaterialTabBar.prototype = {
 		'dispose': function() {
+			this.selectionSubscription.dispose();
 			this.mdcTabBar.destroy();
 			this.bindingSubscription.dispose();
 		},
 		'onActivated': function(vm, event) {
-			if (event.target.id === this.id)
-				this.selected(event.detail.index);
+			this.selected(event.detail.index);
 		}
 	};
 
@@ -27,6 +28,10 @@ function(htmlString, tools, materialTabBar) {
 				var vm = new MaterialTabBar(params);
 				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
 					vm.mdcTabBar = new materialTabBar.MDCTabBar($(node).find('.mdc-tab-bar')[0]);
+					vm.mdcTabBar.activateTab(vm.selected());
+					vm.selectionSubscription = vm.selected.subscribe(newVal => {
+						vm.mdcTabBar.activateTab(newVal);
+					});
 				});
 				return vm;
 			}

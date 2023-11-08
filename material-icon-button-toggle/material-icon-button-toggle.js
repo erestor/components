@@ -6,23 +6,21 @@ function(htmlString, tools, materialIconButton) {
 		this.icons = params.icons;
 		this.titles = params.titles;
 		this.enable = tools.readEnableStatus(params);
+		this.id = tools.getGuid();
 
 		//component lifetime
 		this.bindingSubscription = null;
 		this.mdcIconButton = null;
+		this.valueSubscription = null;
 	};
 	MaterialIconButtonToggle.prototype = {
 		'dispose': function() {
+			this.valueSubscription.dispose();
 			this.mdcIconButton.destroy();
 			this.bindingSubscription.dispose();
 		},
-		'toggle': function() {
-			this.value(!this.value());
-		},
-		'getCss': function() {
-			return {
-				'mdc-icon-button--on': this.value()
-			};
+		'onChange': function(vm, event) {
+			this.value(event.detail.isOn);
 		}
 	};
 
@@ -32,6 +30,10 @@ function(htmlString, tools, materialIconButton) {
 				var vm = new MaterialIconButtonToggle(params);
 				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
 					vm.mdcIconButton = new materialIconButton.MDCIconButtonToggle($(node).find('.mdc-icon-button')[0]);
+					vm.mdcIconButton.on = vm.value();
+					vm.valueSubscription = vm.value.subscribe(newVal => {
+						vm.mdcIconButton.on = newVal;
+					});
 				});
 				return vm;
 			}

@@ -21,8 +21,7 @@ function(htmlString, materialLinearProgress) {
 		},
 		'getAttrs': function() {
 			return {
-				'aria-label': this.label,
-				'aria-valuenow': this.value
+				'aria-label': this.label
 			};
 		},
 		'getCss': function() {

@@ -1,4 +1,4 @@
-﻿<button class="mdc-icon-button" data-bind="click: toggle, delayedCss: getCss(), enable: enable">
+﻿<button class="mdc-icon-button" data-bind="id: id, enable: enable, event: {'MDCIconButtonToggle:change': onChange}">
 	<div class="mdc-icon-button__ripple"></div>
 	<span class="mdc-icon-button__focus-ring"></span>
 	<!-- ko if: icons -->
