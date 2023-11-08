@@ -43,8 +43,8 @@ function(htmlString, tools, materialDialog) {
 			'createViewModel': function(params, componentInfo) {
 				var vm = new MaterialDialog(params);
 				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					const el = $(node).find('.mdc-dialog');
-					el.find('.mdc-dialog__content').attr('id', vm.contentId);
+					const el = $(node).children('.mdc-dialog'); //there can be nested dialogs, make sure we get the right one
+					el.find('.mdc-dialog__content').first().attr('id', vm.contentId);
 					//el.find('.mdc-dialog__actions button').addClass('mdc-dialog__button'); this stacks the buttons vertically
 					vm.mdcDialog = new materialDialog.MDCDialog(el[0]);
 					if (vm.modal) {

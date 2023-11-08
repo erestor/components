@@ -13,9 +13,19 @@
 			if (!this.dialogEl)
 				this.dialogEl = $('#' + this.dialogId);
 
-			var mdcDialog = this.dialogEl.data('mdc-dialog');
+			var mdcDialog = this._getMdcDialog();
 			if (mdcDialog)
 				mdcDialog.open();
+		},
+		'close': function() {
+			if (this.dialogEl) {
+				var mdcDialog = this._getMdcDialog();
+				if (mdcDialog)
+					mdcDialog.close();
+			}
+		},
+		'_getMdcDialog': function() {
+			return this.dialogEl.data('mdc-dialog');
 		}
 	};
 	return DialogButtonBase;
