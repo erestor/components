@@ -1,3 +1,40 @@
 ﻿material-switch {
-	display: inline-block;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+
+	> label {
+		flex: 1;
+
+		&.material-switch-label__structured {
+			display: flex;
+			flex-direction: column;
+
+			span.material-switch-label-help {
+				opacity: 0.54;
+				font-size: 13px;
+				font-weight: 500;
+			}
+		}
+	}
+}
+
+material-switch + material-switch {
+	margin-top: 24px;
+}
+
+html[dir="ltr"] {
+	material-switch {
+		> label {
+			margin-right: 8px;
+		}
+	}
+}
+
+html[dir="rtl"] {
+	material-switch {
+		> label {
+			margin-left: 8px;
+		}
+	}
 }

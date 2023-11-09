@@ -7,6 +7,9 @@ function(htmlString, tools, materialSwitch) {
 		this.enable = tools.readEnableStatus(params);
 		this.id = tools.getGuid();
 
+		this.structuredLabel = this.label instanceof Array;
+		this.singleLabel = this.label !== undefined && !this.structuredLabel;
+
 		if (!params.invert)
 			this.value = params.value;
 		else {
@@ -40,6 +43,11 @@ function(htmlString, tools, materialSwitch) {
 			setTimeout(() => {
 				this.value(!this.value());
 			});
+		},
+		'getLabelCss': function() {
+			return {
+				'material-switch-label__structured': this.structuredLabel
+			};
 		}
 	};
 
