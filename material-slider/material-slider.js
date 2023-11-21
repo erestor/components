@@ -1,54 +1,63 @@
-﻿define(['text!./material-slider.html', '../tools/tools'],
-function(htmlString, tools) {
+﻿define(['text!./material-slider.html', '../tools/tools', '@material/slider'],
+function(htmlString, tools, materialSlider) {
 
 	var MaterialSlider = function(params) {
-		//the order of the attributes matter - especially the value must be after min and max
-		this.dialogId = tools.getGuid();
+		this.id = tools.getGuid();
+		this.min = params.min || 0;
+		this.max = params.max || 100;
+		this.step = params.step || 1;
 		this.value = params.value;
 		this.enable = tools.readEnableStatus(params);
-		this.sliderAttrs = {
-			'id': this.dialogId,
-			'min': params.min || 0,
-			'max': params.max || 100,
-			'value': this.value,
-			'pin': params.pin,
-			'expand': params.expand
-		};
 
-		var self = this;
-		if (params.secondaryProgress)
-			this.sliderAttrs['secondary-progress'] = params.secondaryProgress;
-
-		if (params.step) {
-			this.sliderAttrs.snaps = true;
-			this.sliderAttrs.step = params.step;
-		}
-		if (params.marked) {
-			this.sliderAttrs.snaps = true;
-			this.sliderAttrs.step = 1;
-			this.sliderAttrs['max-markers'] = this.sliderAttrs.max;
-		}
-		this.label = !params.label ? null : ko.pureComputed(function() {
+		this.label = !params.label ? null : ko.pureComputed(() => {
 			var txt = ko.unwrap(params.label);
-			var value = ko.unwrap(self.value);
+			var value = ko.unwrap(this.value);
 			var valueDesc = typeof params.valueDesc == 'function' ? params.valueDesc(value) : value;
 			txt += ' (' + valueDesc + ')';
 			return txt;
 		});
+
+		//component lifetime
+		this.bindingSubscription = null;
+		this.mdcSlider = null;
 	};
 	MaterialSlider.prototype = {
-		'onChanged': function() {
-			var d = $('#' + this.dialogId)[0];
-			this.value(d.value);
+		'dispose': function() {
+			this.mdcSlider.destroy();
+			this.bindingSubscription.dispose();
 		},
-		'onImmediateChange': function() {
-			var d = $('#' + this.dialogId)[0];
-			this.value(d.immediateValue);
+		'getSliderCss': function() {
+			return {
+				'mdc-slider--disabled': !this.enable(),
+				'mdc-slider--discrete': this.step > 1
+			};
+		},
+		'getInputAttrs': function() {
+			return {
+				'id': this.id,
+				'min': this.min,
+				'max': this.max,
+				'step': this.step,
+				'value': this.value,
+				'name': this.label,
+				'aria-label': this.label
+			};
+		},
+		'onInput': function(vm, event) {
+			this.value(event.detail.value);
 		}
 	};
 
 	return {
-		'viewModel': MaterialSlider,
+		'viewModel': {
+			'createViewModel': function(params, componentInfo) {
+				var vm = new MaterialSlider(params);
+				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
+					vm.mdcSlider = new materialSlider.MDCSlider($(node).find('.mdc-slider')[0]);
+				});
+				return vm;
+			}
+		},
 		'template': htmlString
 	};
 });
