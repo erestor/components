@@ -6,14 +6,16 @@ function(htmlString, materialCircularProgress) {
 		this.label = params.label;
 
 		//component lifetime
-		this.bindingSubscription = null;
 		this.mdcProgress = null;
 	};
 	MaterialSpinner.prototype = {
+		'koDescendantsComplete': function(node) {
+			this.mdcProgress = new materialCircularProgress.MDCCircularProgress($(node).find('.mdc-circular-progress')[0]);
+		},
 		'dispose': function() {
 			this.mdcProgress.destroy();
-			this.bindingSubscription.dispose();
 		},
+
 		'getAttrs': function() {
 			return {
 				'aria-label': this.label,
@@ -30,15 +32,7 @@ function(htmlString, materialCircularProgress) {
 	};
 
 	return {
-		'viewModel': {
-			'createViewModel': function(params, componentInfo) {
-				var vm = new MaterialSpinner(params);
-				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					vm.mdcProgress = new materialCircularProgress.MDCCircularProgress($(node).find('.mdc-circular-progress')[0]);
-				});
-				return vm;
-			}
-		},
+		'viewModel': MaterialSpinner,
 		'template': htmlString
 	};
 });

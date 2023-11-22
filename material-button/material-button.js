@@ -15,14 +15,19 @@ function(htmlString, tools, materialRipple) {
 		this.default = params.default;
 
 		//component lifetime
-		this.bindingSubscription = null;
 		this.mdcRipple = null;
 	};
 	MaterialButton.prototype = {
+		'koDescendantsComplete': function(node) {
+			const el = $(node).find('.mdc-button')[0];
+			this.mdcRipple = new materialRipple.MDCRipple(el);
+			if (this.autofocus)
+				el.focus();
+		},
 		'dispose': function() {
 			this.mdcRipple.destroy();
-			this.bindingSubscription.dispose();
 		},
+
 		'getAttrs': function() {
 			return {
 				'aria-disabled': !this.enable(),
@@ -39,18 +44,7 @@ function(htmlString, tools, materialRipple) {
 	};
 
 	return {
-		'viewModel': {
-			createViewModel: function(params, componentInfo) {
-				var vm = new MaterialButton(params);
-				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					const el = $(node).find('.mdc-button')[0];
-					vm.mdcRipple = new materialRipple.MDCRipple(el);
-					if (vm.autofocus)
-						el.focus();
-				});
-				return vm;
-			}
-		},
+		'viewModel': MaterialButton,
 		'template': htmlString
 	};
 });

@@ -11,14 +11,24 @@ function(htmlString, tools, materialDialog) {
 		this.closed = params.closed;
 
 		//component lifetime
-		this.bindingSubscription = null;
 		this.mdcDialog = null;
 	};
 	MaterialDialog.prototype = {
+		'koDescendantsComplete': function(node) {
+			const el = $(node).children('.mdc-dialog'); //there can be nested dialogs, make sure we get the right one
+			el.find('.mdc-dialog__content').first().attr('id', this.contentId);
+			//el.find('.mdc-dialog__actions button').addClass('mdc-dialog__button'); this stacks the buttons vertically
+			this.mdcDialog = new materialDialog.MDCDialog(el[0]);
+			if (this.modal) {
+				this.mdcDialog.scrimClickAction = '';
+				this.mdcDialog.escapeKeyAction = '';
+			}
+			el.data('mdc-dialog', this.mdcDialog);
+		},
 		'dispose': function() {
 			this.mdcDialog.destroy();
-			this.bindingSubscription.dispose();
 		},
+
 		'onOpened': function(vm, event) {
 			$('#' + this.id).find('button[data-mdc-dialog-button-default]').focus();
 			if (typeof this.opened == 'function')
@@ -37,23 +47,7 @@ function(htmlString, tools, materialDialog) {
 	};
 
 	return {
-		'viewModel': {
-			'createViewModel': function(params, componentInfo) {
-				var vm = new MaterialDialog(params);
-				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					const el = $(node).children('.mdc-dialog'); //there can be nested dialogs, make sure we get the right one
-					el.find('.mdc-dialog__content').first().attr('id', vm.contentId);
-					//el.find('.mdc-dialog__actions button').addClass('mdc-dialog__button'); this stacks the buttons vertically
-					vm.mdcDialog = new materialDialog.MDCDialog(el[0]);
-					if (vm.modal) {
-						vm.mdcDialog.scrimClickAction = '';
-						vm.mdcDialog.escapeKeyAction = '';
-					}
-					el.data('mdc-dialog', vm.mdcDialog);
-				});
-				return vm;
-			}
-		},
+		'viewModel': MaterialDialog,
 		'template': htmlString
 	};
 });

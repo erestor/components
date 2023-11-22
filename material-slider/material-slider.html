@@ -9,11 +9,13 @@
 		</div>
 	</div>
 	<div class="mdc-slider__thumb">
+		<!-- ko if: discrete -->
 		<div class="mdc-slider__value-indicator-container" aria-hidden="true">
 			<div class="mdc-slider__value-indicator">
 				<span class="mdc-slider__value-indicator-text">{{value}}</span>
 			</div>
 		</div>
+		<!-- /ko -->
 		<div class="mdc-slider__thumb-knob"></div>
 		<input class="mdc-slider__input" type="range" data-bind="attr: getInputAttrs(), enable: enable">
 	</div>

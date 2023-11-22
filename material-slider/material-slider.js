@@ -2,10 +2,11 @@
 function(htmlString, tools, materialSlider) {
 
 	var MaterialSlider = function(params) {
-		this.id = tools.getGuid();
+		//this.id = tools.getGuid();
 		this.min = params.min || 0;
 		this.max = params.max || 100;
 		this.step = params.step || 1;
+		this.discrete = !params.continuous;
 		this.value = params.value;
 		this.enable = tools.readEnableStatus(params);
 
@@ -18,28 +19,43 @@ function(htmlString, tools, materialSlider) {
 		});
 
 		//component lifetime
-		this.bindingSubscription = null;
 		this.mdcSlider = null;
+		this.valueSubscription = null;
 	};
 	MaterialSlider.prototype = {
-		'dispose': function() {
-			this.mdcSlider.destroy();
-			this.bindingSubscription.dispose();
+		'koDescendantsComplete': function(node) {
+			//mdc-slider uses a rectangle internally to calculate the thumb position,
+			//so we must defer if it's not visible at the time of initialization
+			const el = $(node),
+				visible = el.is(':visible');
+
+			if (!visible) {
+				setTimeout(() => this.koDescendantsComplete(node), 10);
+				return;
+			}
+			this.mdcSlider = new materialSlider.MDCSlider(el.find('.mdc-slider')[0]);
+			this.valueSubscription = this.value.subscribe(newVal => {
+				this.mdcSlider.setValue(newVal);
+			});
 		},
+		'dispose': function() {
+			this.valueSubscription.dispose();
+			this.mdcSlider.destroy();
+		},
+
 		'getSliderCss': function() {
 			return {
 				'mdc-slider--disabled': !this.enable(),
-				'mdc-slider--discrete': this.step > 1
+				'mdc-slider--discrete': this.discrete
 			};
 		},
 		'getInputAttrs': function() {
 			return {
-				'id': this.id,
+				//'id': this.id,
 				'min': this.min,
 				'max': this.max,
 				'step': this.step,
 				'value': this.value,
-				'name': this.label,
 				'aria-label': this.label
 			};
 		},
@@ -49,15 +65,7 @@ function(htmlString, tools, materialSlider) {
 	};
 
 	return {
-		'viewModel': {
-			'createViewModel': function(params, componentInfo) {
-				var vm = new MaterialSlider(params);
-				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					vm.mdcSlider = new materialSlider.MDCSlider($(node).find('.mdc-slider')[0]);
-				});
-				return vm;
-			}
-		},
+		'viewModel': MaterialSlider,
 		'template': htmlString
 	};
 });

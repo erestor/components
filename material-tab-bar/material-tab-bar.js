@@ -7,35 +7,29 @@ function(htmlString, tools, materialTabBar) {
 		this.id = tools.getGuid();
 
 		//component lifetime
-		this.bindingSubscription = null;
 		this.mdcTabBar = null;
 		this.selectionSubscription = null;
 	};
 	MaterialTabBar.prototype = {
+		'koDescendantsComplete': function(node) {
+			this.mdcTabBar = new materialTabBar.MDCTabBar($(node).find('.mdc-tab-bar')[0]);
+			this.mdcTabBar.activateTab(this.selected());
+			this.selectionSubscription = this.selected.subscribe(newVal => {
+				this.mdcTabBar.activateTab(newVal);
+			});
+		},
 		'dispose': function() {
 			this.selectionSubscription.dispose();
 			this.mdcTabBar.destroy();
-			this.bindingSubscription.dispose();
 		},
+
 		'onActivated': function(vm, event) {
 			this.selected(event.detail.index);
 		}
 	};
 
 	return {
-		'viewModel': {
-			createViewModel: function(params, componentInfo) {
-				var vm = new MaterialTabBar(params);
-				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					vm.mdcTabBar = new materialTabBar.MDCTabBar($(node).find('.mdc-tab-bar')[0]);
-					vm.mdcTabBar.activateTab(vm.selected());
-					vm.selectionSubscription = vm.selected.subscribe(newVal => {
-						vm.mdcTabBar.activateTab(newVal);
-					});
-				});
-				return vm;
-			}
-		},
+		'viewModel': MaterialTabBar,
 		'template': htmlString
 	};
 });

@@ -25,18 +25,24 @@ function(htmlString, tools, materialSwitch) {
 		}
 
 		//component lifetime
-		this.bindingSubscription = null;
 		this.mdcSwitch = null;
 		this.valueSubscription = null;
 	};
 	MaterialSwitch.prototype = {
+		'koDescendantsComplete': function(node) {
+			this.mdcSwitch = new materialSwitch.MDCSwitch($(node).find('.mdc-switch')[0]);
+			this.mdcSwitch.selected = this.value();
+			this.valueSubscription = this.value.subscribe(newVal => {
+				this.mdcSwitch.selected = newVal;
+			});
+		},
 		'dispose': function() {
 			this.valueSubscription.dispose();
 			this.mdcSwitch.destroy();
-			this.bindingSubscription.dispose();
 			if (this.inverted)
 				this.value.dispose();
 		},
+
 		'toggle': function() {
 			//the switch doesn't emit an event, so we need to manually update the value
 			//but we must do it after the internal value of the switch has been updated
@@ -52,19 +58,7 @@ function(htmlString, tools, materialSwitch) {
 	};
 
 	return {
-		'viewModel': {
-			'createViewModel': function(params, componentInfo) {
-				var vm = new MaterialSwitch(params);
-				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					vm.mdcSwitch = new materialSwitch.MDCSwitch($(node).find('.mdc-switch')[0]);
-					vm.mdcSwitch.selected = vm.value();
-					vm.valueSubscription = vm.value.subscribe(newVal => {
-						vm.mdcSwitch.selected = newVal;
-					});
-				});
-				return vm;
-			}
-		},
+		'viewModel': MaterialSwitch,
 		'template': htmlString
 	};
 });

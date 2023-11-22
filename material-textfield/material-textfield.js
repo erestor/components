@@ -33,20 +33,50 @@ function(htmlString, tools, materialTextfield) {
 			this.value(chromeAutofillTempValue);
 
 		//component lifetime
-		this.bindingSubscription = null;
 		this.mdcTextField = null;
 		this.mdcHelperText = null;
-		this.inputSubscription = null;
+		this.valueSubscription = null;
 	};
 	MaterialTextField.prototype = {
+		'koDescendantsComplete': function(node) {
+			const el = $(node).find('.mdc-text-field');
+			this.mdcTextField = new materialTextfield.MDCTextField(el[0]);
+			el.data('mdc-text-field', this.mdcTextField);
+			if (this.autofocus)
+				$(node).find('input').focus();
+
+			if (this.validate)
+				this.mdcHelperText = new materialTextfield.MDCTextFieldHelperText($(node).find('.mdc-text-field-helper-text')[0]);
+
+			if (this.value() == chromeAutofillTempValue) {
+				//hack to overrule Chrome stupid autofill
+				setTimeout(() => {
+					this.value('');
+					this.value.isModified(false);
+					$(node).find('.mdc-text-field--invalid').removeClass('mdc-text-field--invalid');
+					if (this.autofocus)
+						$(node).find('input').focus();
+				}, 100);
+			}
+			this.valueSubscription = this.value.subscribe(() => {
+				//necessary hack to update the label style when knockout changes the value
+				const shouldFloat = this.mdcTextField.value.length > 0;
+				const foundation = this.mdcTextField.foundation;
+				foundation.notchOutline(shouldFloat);
+				foundation.adapter.floatLabel(shouldFloat);
+				foundation.styleFloating(shouldFloat);
+				if (this.value.isValid)
+					this.mdcTextField.valid = this.value.isValid();
+			});
+		},
 		'dispose': function() {
-			this.inputSubscription.dispose();
+			this.valueSubscription.dispose();
 			if (this.mdcHelperText)
 				this.mdcHelperText.destroy();
 
 			this.mdcTextField.destroy();
-			this.bindingSubscription.dispose();
 		},
+
 		'getCss': function() {
 			return {
 				'mdc-text-field--filled': this.filled,
@@ -70,43 +100,7 @@ function(htmlString, tools, materialTextfield) {
 	};
 
 	return {
-		'viewModel': {
-			createViewModel: function(params, componentInfo) {
-				var vm = new MaterialTextField(params);
-				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					const el = $(node).find('.mdc-text-field');
-					vm.mdcTextField = new materialTextfield.MDCTextField(el[0]);
-					el.data('mdc-text-field', vm.mdcTextField);
-					if (vm.autofocus)
-						$(node).find('input').focus();
-
-					if (vm.validate)
-						vm.mdcHelperText = new materialTextfield.MDCTextFieldHelperText($(node).find('.mdc-text-field-helper-text')[0]);
-
-					if (vm.value() == chromeAutofillTempValue) {
-						//hack to overrule Chrome stupid autofill
-						setTimeout(() => {
-							vm.value('');
-							vm.value.isModified(false);
-							$(node).find('.mdc-text-field--invalid').removeClass('mdc-text-field--invalid');
-							if (vm.autofocus)
-								$(node).find('input').focus();
-						}, 100);
-					}
-					vm.inputSubscription = vm.value.subscribe(() => {
-						//necessary hack to update the label style when knockout changes the value
-						const shouldFloat = vm.mdcTextField.value.length > 0;
-						const foundation = vm.mdcTextField.foundation;
-						foundation.notchOutline(shouldFloat);
-						foundation.adapter.floatLabel(shouldFloat);
-						foundation.styleFloating(shouldFloat);
-						if (vm.value.isValid)
-							vm.mdcTextField.valid = vm.value.isValid();
-					});
-				});
-				return vm;
-			}
-		},
+		'viewModel': MaterialTextField,
 		'template': htmlString
 	};
 });

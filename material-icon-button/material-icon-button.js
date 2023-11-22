@@ -7,27 +7,20 @@ function(htmlString, tools, materialRipple) {
 		this.icon = params.icon;
 
 		//component lifetime
-		this.bindingSubscription = null;
 		this.mdcRipple = null;
 	};
 	MaterialIconButton.prototype = {
+		'koDescendantsComplete': function(node) {
+			this.mdcRipple = new materialRipple.MDCRipple($(node).find('.mdc-icon-button')[0]);
+			this.mdcRipple.unbounded = true;
+		},
 		'dispose': function() {
 			this.mdcRipple.destroy();
-			this.bindingSubscription.dispose();
 		}
 	};
 
 	return {
-		'viewModel': {
-			createViewModel: function(params, componentInfo) {
-				var vm = new MaterialIconButton(params);
-				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					vm.mdcRipple = new materialRipple.MDCRipple($(node).find('.mdc-icon-button')[0]);
-					vm.mdcRipple.unbounded = true;
-				});
-				return vm;
-			}
-		},
+		'viewModel': MaterialIconButton,
 		'template': htmlString
 	};
 });

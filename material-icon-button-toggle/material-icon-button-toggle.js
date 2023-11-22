@@ -9,35 +9,29 @@ function(htmlString, tools, materialIconButton) {
 		this.id = tools.getGuid();
 
 		//component lifetime
-		this.bindingSubscription = null;
 		this.mdcIconButton = null;
 		this.valueSubscription = null;
 	};
 	MaterialIconButtonToggle.prototype = {
+		'koDescendantsComplete': function(node) {
+			this.mdcIconButton = new materialIconButton.MDCIconButtonToggle($(node).find('.mdc-icon-button')[0]);
+			this.mdcIconButton.on = this.value();
+			this.valueSubscription = this.value.subscribe(newVal => {
+				this.mdcIconButton.on = newVal;
+			});
+		},
 		'dispose': function() {
 			this.valueSubscription.dispose();
 			this.mdcIconButton.destroy();
-			this.bindingSubscription.dispose();
 		},
+
 		'onChange': function(vm, event) {
 			this.value(event.detail.isOn);
 		}
 	};
 
 	return {
-		'viewModel': {
-			createViewModel: function(params, componentInfo) {
-				var vm = new MaterialIconButtonToggle(params);
-				vm.bindingSubscription = ko.bindingEvent.subscribe(componentInfo.element, 'descendantsComplete', node => {
-					vm.mdcIconButton = new materialIconButton.MDCIconButtonToggle($(node).find('.mdc-icon-button')[0]);
-					vm.mdcIconButton.on = vm.value();
-					vm.valueSubscription = vm.value.subscribe(newVal => {
-						vm.mdcIconButton.on = newVal;
-					});
-				});
-				return vm;
-			}
-		},
+		'viewModel': MaterialIconButtonToggle,
 		'template': htmlString
 	};
 });
