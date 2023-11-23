@@ -2,7 +2,6 @@
 function(htmlString, tools, materialSlider) {
 
 	var MaterialSlider = function(params) {
-		//this.id = tools.getGuid();
 		this.min = params.min || 0;
 		this.max = params.max || 100;
 		this.step = params.step || 1;
@@ -19,39 +18,47 @@ function(htmlString, tools, materialSlider) {
 		});
 
 		//component lifetime
+		this.observer = null;
 		this.mdcSlider = null;
 		this.valueSubscription = null;
+		this.enableSubscription = null;
 	};
 	MaterialSlider.prototype = {
 		'koDescendantsComplete': function(node) {
 			//mdc-slider uses a rectangle internally to calculate the thumb position,
-			//so we must defer if it's not visible at the time of initialization
-			const el = $(node),
-				visible = el.is(':visible');
-
-			if (!visible) {
-				setTimeout(() => this.koDescendantsComplete(node), 10);
-				return;
-			}
-			this.mdcSlider = new materialSlider.MDCSlider(el.find('.mdc-slider')[0]);
-			this.valueSubscription = this.value.subscribe(newVal => {
-				this.mdcSlider.setValue(newVal);
+			//so we must defer initialization till it's visible
+			this.observer = new IntersectionObserver(entries => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						this._init(entry.target);
+						this.observer.disconnect();
+						this.observer = null;
+					}
+				});
 			});
+			this.observer.observe(node);
 		},
 		'dispose': function() {
-			this.valueSubscription.dispose();
-			this.mdcSlider.destroy();
+			if (this.observer)
+				this.observer.disconnect();
+
+			if (this.enableSubscription)
+				this.enableSubscription.dispose();
+
+			if (this.valueSubscription)
+				this.valueSubscription.dispose();
+
+			if (this.mdcSlider)
+				this.mdcSlider.destroy();
 		},
 
 		'getSliderCss': function() {
 			return {
-				'mdc-slider--disabled': !this.enable(),
 				'mdc-slider--discrete': this.discrete
 			};
 		},
 		'getInputAttrs': function() {
 			return {
-				//'id': this.id,
 				'min': this.min,
 				'max': this.max,
 				'step': this.step,
@@ -61,6 +68,19 @@ function(htmlString, tools, materialSlider) {
 		},
 		'onInput': function(vm, event) {
 			this.value(event.detail.value);
+		},
+
+		'_init': function(node) {
+			this.mdcSlider = new materialSlider.MDCSlider($(node).find('.mdc-slider')[0]);
+			this.mdcSlider.setDisabled(!ko.unwrap(this.enable));
+			this.valueSubscription = this.value.subscribe(newVal => {
+				this.mdcSlider.setValue(newVal);
+			});
+			if (ko.isObservable(this.enable)) {
+				this.enableSubscription = this.enable.subscribe(newVal => {
+					this.mdcSlider.setDisabled(!newVal);
+				});
+			}
 		}
 	};
 
