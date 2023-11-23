@@ -4,7 +4,6 @@ function(htmlString, tools, materialIconButton) {
 	var MaterialIconButtonToggle = function(params) {
 		this.value = params.value;
 		this.icons = params.icons;
-		this.titles = params.titles;
 		this.enable = tools.readEnableStatus(params);
 		this.id = tools.getGuid();
 

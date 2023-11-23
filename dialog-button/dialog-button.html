@@ -1,5 +1,5 @@
 ﻿<material-icon-button data-bind="click: open, css: dialogId" alt="open">{{$parent.icon}}</material-icon-button>
-<paper-tooltip data-bind="text: tooltip"></paper-tooltip>
+<material-tooltip>{{tooltip}}</material-tooltip>
 <!-- ko if: raw -->
 <material-dialog params="id: dialogId">
 	<!-- ko template: { nodes: $componentTemplateNodes, data: data } --><!-- /ko -->
