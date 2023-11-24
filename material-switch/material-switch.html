@@ -1,11 +1,11 @@
-﻿<label data-bind="attr: {'for': id}, title: title, css: getLabelCss()">
+﻿<label data-bind="attr: {'for': id}, css: getLabelCss()">
 <!-- ko if: singleLabel -->{{label}}<!-- /ko -->
 <!-- ko if: structuredLabel -->
 	<span data-bind="text: label[0]"></span>
 	<span class="material-switch-label-help" data-bind="html: value() ? label[1] : label[2]"></span>
 <!-- /ko -->
 </label>
-<button class="mdc-switch" type="button" role="switch" data-bind="id: id, click: toggle, enable: enable, title: title">
+<button class="mdc-switch" type="button" role="switch" data-bind="id: id, click: toggle, enable: enable">
 	<div class="mdc-switch__track"></div>
 	<div class="mdc-switch__handle-track">
 		<div class="mdc-switch__handle">

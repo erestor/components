@@ -3,7 +3,6 @@ function(htmlString, tools, materialSwitch) {
 
 	var MaterialSwitch = function(params) {
 		this.label = params.label;
-		this.title = params.title;
 		this.enable = tools.readEnableStatus(params);
 		this.id = tools.getGuid();
 
