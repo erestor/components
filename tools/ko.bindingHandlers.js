@@ -54,22 +54,9 @@
 
 	//#region Attributes
 
-	ko.bindingHandlers.flex = {
-		'update': function(element, valueAccessor) {
-			ko.bindingHandlers.attr.update(element, () => ({ flex: valueAccessor() }));
-		}
-	};
-
 	ko.bindingHandlers.href = {
 		'update': function(element, valueAccessor) {
 			ko.bindingHandlers.attr.update(element, () => ({ href: valueAccessor() }));
-		}
-	};
-
-	ko.bindingHandlers.icon = {
-		'update': function(element, valueAccessor) {
-			var val = valueAccessor();
-			ko.bindingHandlers.attr.update(element, () => ({ icon: val, alt: val }));
 		}
 	};
 
@@ -104,12 +91,6 @@
 	ko.bindingHandlers.title = {
 		'update': function(element, valueAccessor) {
 			ko.bindingHandlers.attr.update(element, () => ({ title: valueAccessor() }));
-		}
-	};
-
-	ko.bindingHandlers.raised = {
-		'update': function(element, valueAccessor) {
-			ko.bindingHandlers.attr.update(element, () => ({ raised: valueAccessor() }));
 		}
 	};
 

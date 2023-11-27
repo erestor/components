@@ -1,5 +1,5 @@
-﻿<paper-dropdown-menu-light class="material-select-impl" data-bind="label: label, enable: enable, attr: dropdownAttrs, event: { 'opened-changed': openedChanged }">
-	<paper-listbox slot="dropdown-content" data-bind="attr: { 'selected': selectedIndex }, event: { 'selected-changed': selectedChanged }">
+﻿<paper-dropdown-menu-light class="material-select-impl" data-bind="label: label, enable: enable, attr: dropdownAttrs, event: {'opened-changed': openedChanged}">
+	<paper-listbox slot="dropdown-content" data-bind="attr: {'selected': selectedIndex}, event: {'selected-changed': selectedChanged}">
 		<!-- ko if: title -->
 		<paper-item disabled>
 			<span class="paper-listbox-title" data-bind="html: title"></span>

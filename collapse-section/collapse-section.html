@@ -1,11 +1,11 @@
-﻿<div class="collapse-section-header" data-bind="css: { 'justified': justified, 'center': centerTitle }">
-	<div class="collapse-section-title" data-bind="css: { 'iconified': titleIcon }">
+﻿<div class="collapse-section-header" data-bind="css: {'justified': justified, 'center': centerTitle}">
+	<div class="collapse-section-title" data-bind="css: {'iconified': titleIcon}">
 		<i class="material-icons" data-bind="visible: titleIcon">{{titleIcon}}</i>
 		<span data-bind="text: title, click: click, css: titleClass"></span>
 	</div>
 	<material-icon-button data-bind="click: click, css: {'flip': opened}" alt="toggle">{{$parent.buttonIcon}}</material-icon-button>
 </div>
-<iron-collapse data-bind="attr: { 'opened': opened }">
+<iron-collapse data-bind="attr: {'opened': opened}">
 	<div class="collapse-content">
 		<!-- ko template: { nodes: $componentTemplateNodes, data: data } --><!-- /ko -->
 	</div>
