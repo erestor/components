@@ -8,6 +8,7 @@ function(htmlString, tools, materialSwitch) {
 
 		this.structuredLabel = this.label instanceof Array;
 		this.singleLabel = this.label !== undefined && !this.structuredLabel;
+		this.showLabel = this.structuredLabel || this.singleLabel;
 
 		if (!params.invert)
 			this.value = params.value;
