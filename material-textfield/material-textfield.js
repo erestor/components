@@ -43,7 +43,7 @@ function(htmlString, tools, materialTextfield) {
 			this.mdcTextField = new materialTextfield.MDCTextField(el[0]);
 			el.data('mdc-text-field', this.mdcTextField);
 			if (this.autofocus)
-				$(node).find('input').focus();
+				$(node).find('input')[0].focus();
 
 			if (this.validate)
 				this.mdcHelperText = new materialTextfield.MDCTextFieldHelperText($(node).find('.mdc-text-field-helper-text')[0]);
@@ -55,7 +55,7 @@ function(htmlString, tools, materialTextfield) {
 					this.value.isModified(false);
 					$(node).find('.mdc-text-field--invalid').removeClass('mdc-text-field--invalid');
 					if (this.autofocus)
-						$(node).find('input').focus();
+						$(node).find('input')[0].focus();
 				}, 100);
 			}
 			this.valueSubscription = this.value.subscribe(() => {

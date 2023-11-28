@@ -33,7 +33,7 @@ function(htmlString, tools, materialTextfield) {
 			this.mdcTextField = new materialTextfield.MDCTextField(el[0]);
 			el.data('mdc-text-field', this.mdcTextField);
 			if (this.autofocus)
-				$(node).find('textarea').focus();
+				$(node).find('textarea')[0].focus();
 
 			if (this.validate)
 				this.mdcHelperText = new materialTextfield.MDCTextFieldHelperText($(node).find('.mdc-text-field-helper-text')[0]);

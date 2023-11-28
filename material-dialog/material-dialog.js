@@ -30,7 +30,18 @@ function(htmlString, tools, materialDialog) {
 		},
 
 		'onOpened': function(vm, event) {
-			$('#' + this.id).find('button[data-mdc-dialog-button-default]').focus();
+			const defaultEl = $('#' + this.id).find('> .mdc-dialog__container > .mdc-dialog__surface > .mdc-dialog__actions button[data-mdc-dialog-button-default]');
+			//prevent finding nested dialogs' actions
+			if (defaultEl.length > 1)
+				throw 'More than one default button found in dialog ' + this.id;
+
+			if (defaultEl.length === 1)
+				defaultEl[0].focus();
+			else {
+				const autofocusEl = $('#' + this.id).find('[autofocus]');
+				if (autofocusEl.length === 1)
+					autofocusEl[0].focus();
+			}
 			if (typeof this.opened == 'function')
 				this.opened(vm, event);
 		},
