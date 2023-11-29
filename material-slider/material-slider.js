@@ -1,7 +1,7 @@
 ﻿define(['text!./material-slider.html', '../tools/tools', '@material/slider'],
 function(htmlString, tools, materialSlider) {
 
-	var MaterialSlider = function(params) {
+	const MaterialSlider = function(params) {
 		this.min = params.min || 0;
 		this.max = params.max || 100;
 		this.step = params.step || 1;

@@ -4,7 +4,7 @@
 ],
 function(htmlString, materialSelectComponent) {
 
-	var MaterialSelectVM = materialSelectComponent.viewModel;
+	const MaterialSelectVM = materialSelectComponent.viewModel;
 
 	function MaterialMenuButton(params) {
 

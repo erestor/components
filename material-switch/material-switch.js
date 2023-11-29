@@ -1,7 +1,7 @@
 ﻿define(['text!./material-switch.html', '../tools/tools', '@material/switch'],
 function(htmlString, tools, materialSwitch) {
 
-	var MaterialSwitch = function(params) {
+	const MaterialSwitch = function(params) {
 		this.label = params.label;
 		this.enable = tools.readEnableStatus(params);
 		this.id = tools.getGuid();

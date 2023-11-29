@@ -1,7 +1,7 @@
 ﻿define(['text!./material-icon-button-toggle.html', '../tools/tools', '@material/icon-button'],
 function(htmlString, tools, materialIconButton) {
 
-	var MaterialIconButtonToggle = function(params) {
+	const MaterialIconButtonToggle = function(params) {
 		this.value = params.value;
 		this.icons = params.icons;
 		this.enable = tools.readEnableStatus(params);

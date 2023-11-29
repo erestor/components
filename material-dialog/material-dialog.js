@@ -1,7 +1,7 @@
 ﻿define(['text!./material-dialog.html', '../tools/tools', '@material/dialog'],
 function(htmlString, tools, materialDialog) {
 
-	var MaterialDialog = function(params) {
+	const MaterialDialog = function(params) {
 		this.id = params.id;
 		this.title = params.title;
 		this.modal = params.modal;

@@ -1,7 +1,7 @@
 ﻿define(['text!./material-button.html', '../tools/tools', '@material/ripple'],
 function(htmlString, tools, materialRipple) {
 
-	var MaterialButton = function(params) {
+	const MaterialButton = function(params) {
 		//data binding
 		this.click = params.click;
 		this.enable = tools.readEnableStatus(params);

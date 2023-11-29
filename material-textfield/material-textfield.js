@@ -3,7 +3,7 @@ function(htmlString, tools, materialTextfield) {
 
 	const chromeAutofillTempValue = '__prevent_autofill__';
 
-	var MaterialTextField = function(params) {
+	const MaterialTextField = function(params) {
 		//attributes
 		this.id = params.id;
 		this.autofocus = params.autofocus;

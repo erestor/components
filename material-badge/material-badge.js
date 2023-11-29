@@ -1,7 +1,7 @@
 ﻿define(['text!./material-badge.html'],
 function(htmlString) {
 
-	var MaterialBadge = function() {
+	const MaterialBadge = function() {
 	};
 
 	return {

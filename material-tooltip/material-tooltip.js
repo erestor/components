@@ -1,7 +1,7 @@
 ﻿define(['text!./material-tooltip.html', '../tools/tools', '@material/tooltip'],
 function(htmlString, tools, materialTooltip) {
 
-	var MaterialTooltip = function() {
+	const MaterialTooltip = function() {
 		this.id = tools.getGuid();
 
 		//component lifetime

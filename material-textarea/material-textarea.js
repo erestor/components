@@ -1,7 +1,7 @@
 define(['text!./material-textarea.html', '../tools/tools', '@material/textfield'],
 function(htmlString, tools, materialTextfield) {
 
-	var MaterialTextArea = function(params) {
+	const MaterialTextArea = function(params) {
 		//attributes
 		this.id = params.id;
 		this.autofocus = params.autofocus;

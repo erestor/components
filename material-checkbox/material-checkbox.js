@@ -1,7 +1,7 @@
 ﻿define(['text!./material-checkbox.html', '../tools/tools', '@material/checkbox', '@material/form-field'],
 function(htmlString, tools, materialCheckbox, materialFormField) {
 
-	var MaterialCheckbox = function(params) {
+	const MaterialCheckbox = function(params) {
 		this.checked = params.checked;
 		this.clicked = params.clicked;
 		this.label = params.label;

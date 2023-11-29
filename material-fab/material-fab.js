@@ -1,7 +1,7 @@
 ﻿define(['text!./material-fab.html', '../tools/tools', '@material/ripple'],
 function(htmlString, tools, materialRipple) {
 
-	var MaterialFab = function(params) {
+	const MaterialFab = function(params) {
 		this.click = params.click;
 		this.enable = tools.readEnableStatus(params);
 

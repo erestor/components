@@ -1,7 +1,7 @@
 define(['text!./material-tab-bar.html', '../tools/tools', '@material/tab-bar'],
 function(htmlString, tools, materialTabBar) {
 
-	var MaterialTabBar = function(params) {
+	const MaterialTabBar = function(params) {
 		this.tabs = params.tabs;
 		this.selected = params.selected;
 		this.id = tools.getGuid();

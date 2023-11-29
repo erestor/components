@@ -1,7 +1,7 @@
 ﻿define(['text!./material-progress.html', '@material/linear-progress'],
 function(htmlString, materialLinearProgress) {
 
-	var MaterialProgress = function(params) {
+	const MaterialProgress = function(params) {
 		this.label = params.label;
 		this.value = params.value;
 		this.indeterminate = params.indeterminate;

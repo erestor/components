@@ -5,8 +5,6 @@
 	<i class="material-icons">{{icon}}</i>
 	<!-- /ko -->
 	<!-- ko ifnot: icon -->
-	<i class="material-icons">
-		<!-- ko template: {'nodes': $componentTemplateNodes} --><!-- /ko -->
-	</i>
+	<i class="material-icons" data-bind="template: {'nodes': $componentTemplateNodes, 'data': $parent}"></i>
 	<!-- /ko -->
 </button>

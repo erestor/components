@@ -1,7 +1,7 @@
 ﻿define(['text!./material-snackbar.html', '@material/snackbar'],
 function(htmlString, materialSnackbar) {
 
-	var MaterialSnackbar = function(params) {
+	const MaterialSnackbar = function(params) {
 		this.id = params.id;
 		this.label = params.label;
 		this.button = params.button;

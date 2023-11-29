@@ -1,7 +1,7 @@
 ﻿define(['text!./material-spinner.html', '@material/circular-progress'],
 function(htmlString, materialCircularProgress) {
 
-	var MaterialSpinner = function(params) {
+	const MaterialSpinner = function(params) {
 		this.size = ko.unwrap(params.size) || 'large';
 		this.label = params.label;
 

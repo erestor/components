@@ -1,8 +1,6 @@
 ﻿<aside class="mdc-snackbar mdc-snackbar--leading" data-bind="id: id">
 	<div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
-		<div class="mdc-snackbar__label" aria-atomic="false">
-			<!-- ko template: {'nodes': $componentTemplateNodes} --><!-- /ko -->
-		</div>
+		<div class="mdc-snackbar__label" aria-atomic="false" data-bind="template: {'nodes': $componentTemplateNodes, 'data': $parent}"></div>
 		<!-- ko if: button -->
 		<div class="mdc-snackbar__actions" aria-atomic="true">
 			<button type="button" class="mdc-button mdc-snackbar__action" data-bind="click: button().click">

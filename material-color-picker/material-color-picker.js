@@ -1,7 +1,7 @@
 ﻿define(['text!./material-color-picker.html', '../tools/tools'],
 function(htmlString, tools) {
 
-	var MaterialColorPicker = function(params) {
+	const MaterialColorPicker = function(params) {
 		this.color = params.color;
 		this.halign = params.halign;
 		this.dialogId = tools.getGuid();
