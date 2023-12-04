@@ -1,7 +1,7 @@
 ﻿define(['text!./material-list-icon-item.html', '../material-list-item/material-list-item'],
-function(htmlString, materialListItem) {
+function(htmlString, materialListItemComponent) {
 
-	const base = materialListItem.viewModel;
+	const base = materialListItemComponent.viewModel;
 
 	const MaterialListIconItem = function(params) {
 		base.call(this, params);
