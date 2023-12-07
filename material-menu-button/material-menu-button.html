@@ -1,26 +1,14 @@
-﻿<paper-menu-button class="material-menu-button-impl" close-on-activate="true" dynamic-align
-	data-bind="attr: dropdownAttrs, enable: enable, event: {'opened-changed': openedChanged}">
-	<!-- ko if: buttonCaption -->
-	<material-button slot="dropdown-trigger" params="enable: enable">
-		<span class="caption" data-bind="html: dropdownTriggerCaption"></span>
-		<i class="material-icons">{{icon}}</i>
-	</material-button>
-	<!-- /ko -->
-	<!-- ko ifnot: buttonCaption -->
-	<material-icon-button slot="dropdown-trigger" params="enable: enable">{{icon}}</material-icon-button>
-	<!-- /ko -->
-	<paper-listbox slot="dropdown-content"
-		data-bind="attr: {'selected': selectedIndex}, event: {'selected-changed': selectedChanged}, css: {'noselect': noselect || alwaysNotify}">
-		<!-- ko if: title -->
-		<paper-item disabled>
-			<span class="paper-listbox-title" data-bind="html: title"></span>
-		</paper-item>
-		<!-- /ko -->
-		<!-- ko if: optionsCaption -->
-		<paper-item data-bind="text: optionsCaption"></paper-item>
-		<!-- /ko -->
-		<!-- ko foreach: options -->
-		<paper-item data-bind="text: $parent.getOptionText($data, $index()), css: {'disabled': $data.isDisabled}"></paper-item>
-		<!-- /ko -->
-	</paper-listbox>
-</paper-menu-button>
+﻿<!-- ko ifnot: caption -->
+<material-icon-button params="click: onButtonClick.bind($component), enable: enable">{{icon}}</material-icon-button>
+<!-- /ko -->
+<!-- ko if: caption -->
+<material-button params="click: onButtonClick.bind($component), enable: enable">
+	<span class="material-button__caption">{{caption}}</span>
+	<i class="material-icons">{{icon}}</i>
+</material-button>
+<!-- /ko -->
+<!-- ko ifnot: customMenu -->
+<div class="mdc-menu mdc-menu-surface" data-bind="event: {'MDCMenu:selected': onSelected}">
+	<ul class="mdc-deprecated-list" data-bind="css: childMenu.childList.getCss(), template: {'nodes': $componentTemplateNodes, 'data': $parent}"></ul>
+</div>
+<!-- /ko -->

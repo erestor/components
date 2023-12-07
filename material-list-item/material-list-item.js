@@ -2,7 +2,11 @@
 function(htmlString, tools) {
 
 	const MaterialListItem = function(params) {
-		this.click = params.click;
+		this.click = typeof params.click != 'function' ? params.click : function(vm, event) {
+			//the timeout means the parent list's selection handler will execute
+			//even if the clicked item gets disabled as a result of click processing
+			setTimeout(() => params.click(vm, event));
+		};
 		this.text = params.text;
 		this.enable = tools.readEnableStatus(params);
 	};

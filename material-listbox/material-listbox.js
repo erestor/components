@@ -1,44 +1,35 @@
-﻿define(['text!./material-listbox.html', '@material/list', '@material/ripple'],
-function(htmlString, materialList, materialRipple) {
+﻿define(['text!./material-listbox.html', '../material-list/material-list'],
+function(htmlString, materialListComponent) {
+
+	const base = materialListComponent.viewModel;
 
 	const MaterialListbox = function(params) {
+		base.call(this, params);
 		this.selected = params.selected;
 
 		//component lifetime
-		this.mdcList = null;
-		this.mdcRipples = null;
 		this.selectedSubscription = null;
 	};
-	MaterialListbox.prototype = {
-		'koDescendantsComplete': function(node) {
-			this.mdcList = new materialList.MDCList($(node).find('.mdc-list')[0]);
-			this.mdcRipples = this.mdcList.listElements.map(listItemEl => new materialRipple.MDCRipple(listItemEl));
-			this.mdcList.singleSelection = true;
-			this.mdcList.selectedIndex = ko.unwrap(this.selected);
-			this.selectedSubscription = this.selected.subscribe(newVal => {
-				this.mdcList.selectedIndex = newVal;
-			});
-		},
-		'dispose': function() {
-			if (this.selectedSubscription)
-				this.selectedSubscription.dispose();
+	MaterialListbox.prototype = Object.create(base.prototype);
+	MaterialListbox.prototype.constructor = MaterialListbox;
 
-			this.mdcRipples.forEach(ripple => ripple.destroy());
-			this.mdcList.destroy();
-		},
+	MaterialListbox.prototype.koDescendantsComplete = function(node) {
+		base.prototype.koDescendantsComplete.call(this, node);
+		this.mdcList.singleSelection = true;
+		this.mdcList.selectedIndex = ko.unwrap(this.selected);
+		this.selectedSubscription = this.selected.subscribe(newVal => {
+			this.mdcList.selectedIndex = newVal;
+		});
+	};
+	MaterialListbox.prototype.dispose = function() {
+		if (this.selectedSubscription)
+			this.selectedSubscription.dispose();
 
-		'getAttrs': function() {
-			return {
-			};
-		},
-		'getCss': function() {
-			return {
-			};
-		},
+		base.prototype.dispose.call(this);
+	};
 
-		'onAction': function(vm, event) {
-			this.selected(event.detail.index);
-		}
+	MaterialListbox.prototype.onAction = function(vm, event) {
+		this.selected(event.detail.index);
 	};
 
 	return {

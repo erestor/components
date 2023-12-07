@@ -40,7 +40,7 @@ function(htmlString, tools) {
 		});
 	}
 	MaterialSelect.prototype = {
-		//this function is meant as virtual when material-select is used as base for other selection elements, such as material-menu-button
+		//this function is meant as virtual when material-select is used as base for other selection elements, such as material-select-button
 		'getDropdown': function() {
 			if (!this.dropdownEl)
 				this.dropdownEl = $('#' + this.rootId)[0].$.menuButton.$.dropdown;

@@ -1,36 +1,42 @@
-﻿define([
-	'text!./material-menu-button.html',
-	'../material-select/material-select'
-],
-function(htmlString, materialSelectComponent) {
+﻿define(['text!./material-menu-button.html', '../material-menu/material-menu'],
+function(htmlString, materialMenuComponent) {
 
-	const MaterialSelectVM = materialSelectComponent.viewModel;
+	const MaterialMenuButton = function(params) {
+		this.customMenu = params.customMenu;
+		this.icon = params.icon || 'more_vert';
+		this.caption = params.caption;
+		this.enable = params.enable;
 
-	function MaterialMenuButton(params) {
+		if (!this.customMenu)
+			this.childMenu = new materialMenuComponent.viewModel(params);
+		else
+			this.node = null;
+	};
+	MaterialMenuButton.prototype = {
+		'koDescendantsComplete': function(node) {
+			$(node).addClass('mdc-menu-surface--anchor');
+			if (!this.customMenu)
+				this.childMenu.koDescendantsComplete(node);
+			else
+				this.node = node;
+		},
+		'dispose': function() {
+			if (!this.customMenu)
+				this.childMenu.dispose();
+			else
+				this.node = null;
+		},
 
-		//fix polymer bug where dropdown appears as much below the button as the page is scrolled, making it possibly appear below viewscreen
-		//(even though paper-menu-button vertical-align should be 'top' by default!)
-		if (params.valign === undefined)
-			params.valign = 'top';
-
-		MaterialSelectVM.call(this, params);
-		this.buttonCaption = params.buttonCaption;
-		this.noselect = params.noselect;
-		this.icon = params.icon || 'arrow_drop_down';
-
-		var self = this;
-		this.dropdownTriggerCaption = ko.computed(function() {
-			return self.buttonCaption == 'selection' ? self.selectedItemText() : ko.unwrap(self.buttonCaption);
-		});
-	}
-	MaterialMenuButton.prototype = Object.create(MaterialSelectVM.prototype);
-	MaterialMenuButton.prototype.constructor = MaterialMenuButton;
-
-	MaterialMenuButton.prototype.getDropdown = function() {
-		if (!this.dropdownEl)
-			this.dropdownEl = $('#' + this.rootId)[0].$.dropdown;
-
-		return this.dropdownEl;
+		'onButtonClick': function() {
+			if (!this.customMenu)
+				this.childMenu.mdcMenu.open = true;
+			else
+				$(this.node).find('.mdc-menu').data('mdc-menu').open = true;
+		},
+		'onSelected': function(vm, event) {
+			if (!this.customMenu)
+				this.childMenu.onSelected(vm, event);
+		}
 	};
 
 	return {
