@@ -13,6 +13,9 @@ function(htmlString, tools, materialIconButton) {
 	};
 	MaterialIconButtonToggle.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			this.mdcIconButton = new materialIconButton.MDCIconButtonToggle($(node).find('.mdc-icon-button')[0]);
 			this.mdcIconButton.on = this.value();
 			this.valueSubscription = this.value.subscribe(newVal => {
@@ -20,8 +23,10 @@ function(htmlString, tools, materialIconButton) {
 			});
 		},
 		'dispose': function() {
-			this.valueSubscription.dispose();
-			this.mdcIconButton.destroy();
+			if (this.mdcIconButton) {
+				this.valueSubscription.dispose();
+				this.mdcIconButton.destroy();
+			}
 		},
 
 		'onChange': function(vm, event) {

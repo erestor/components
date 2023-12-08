@@ -11,11 +11,15 @@ function(htmlString, tools, materialRipple) {
 	};
 	MaterialIconButton.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			this.mdcRipple = new materialRipple.MDCRipple($(node).find('.mdc-icon-button')[0]);
 			this.mdcRipple.unbounded = true;
 		},
 		'dispose': function() {
-			this.mdcRipple.destroy();
+			if (this.mdcRipple)
+				this.mdcRipple.destroy();
 		}
 	};
 

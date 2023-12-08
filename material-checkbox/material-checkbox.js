@@ -15,13 +15,18 @@ function(htmlString, tools, materialCheckbox, materialFormField) {
 	};
 	MaterialCheckbox.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			this.mdcCheckbox = new materialCheckbox.MDCCheckbox($(node).find('.mdc-checkbox')[0]);
 			this.mdcFormField = new materialFormField.MDCFormField($(node).find('.mdc-form-field')[0]);
 			this.mdcFormField.input = this.mdcCheckbox;
 		},
 		'dispose': function() {
-			this.mdcFormField.destroy();
-			this.mdcCheckbox.destroy();
+			if (this.mdcFormField) {
+				this.mdcFormField.destroy();
+				this.mdcCheckbox.destroy();
+			}
 		},
 
 		'onTapped': function(vm, ev) {

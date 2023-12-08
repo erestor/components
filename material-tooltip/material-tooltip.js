@@ -9,12 +9,16 @@ function(htmlString, tools, materialTooltip) {
 	};
 	MaterialTooltip.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			const el = $(node);
 			el.prev().attr('aria-describedby', this.id);
 			this.mdcTooltip = new materialTooltip.MDCTooltip(el.find('.mdc-tooltip')[0]);
 		},
 		'dispose': function() {
-			this.mdcTooltip.destroy();
+			if (this.mdcTooltip)
+				this.mdcTooltip.destroy();
 		}
 	};
 

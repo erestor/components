@@ -14,6 +14,9 @@ function(htmlString, materialMenuComponent) {
 	};
 	MaterialMenuButton.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			$(node).addClass('mdc-menu-surface--anchor');
 			if (!this.customMenu)
 				this.childMenu.koDescendantsComplete(node);
@@ -21,7 +24,7 @@ function(htmlString, materialMenuComponent) {
 				this.node = node;
 		},
 		'dispose': function() {
-			if (!this.customMenu)
+			if (this.childMenu)
 				this.childMenu.dispose();
 			else
 				this.node = null;

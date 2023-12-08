@@ -30,6 +30,9 @@ function(htmlString, tools, materialSwitch) {
 	};
 	MaterialSwitch.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			this.mdcSwitch = new materialSwitch.MDCSwitch($(node).find('.mdc-switch')[0]);
 			this.mdcSwitch.selected = this.value();
 			this.valueSubscription = this.value.subscribe(newVal => {
@@ -37,10 +40,12 @@ function(htmlString, tools, materialSwitch) {
 			});
 		},
 		'dispose': function() {
-			this.valueSubscription.dispose();
-			this.mdcSwitch.destroy();
-			if (this.inverted)
-				this.value.dispose();
+			if (this.mdcSwitch) {
+				this.valueSubscription.dispose();
+				this.mdcSwitch.destroy();
+				if (this.inverted)
+					this.value.dispose();
+			}
 		},
 
 		'toggle': function() {

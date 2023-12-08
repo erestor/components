@@ -10,10 +10,14 @@ function(htmlString, materialCircularProgress) {
 	};
 	MaterialSpinner.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			this.mdcProgress = new materialCircularProgress.MDCCircularProgress($(node).find('.mdc-circular-progress')[0]);
 		},
 		'dispose': function() {
-			this.mdcProgress.destroy();
+			if (this.mdcProgress)
+				this.mdcProgress.destroy();
 		},
 
 		'getAttrs': function() {

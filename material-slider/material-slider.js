@@ -25,6 +25,9 @@ function(htmlString, tools, materialSlider) {
 	};
 	MaterialSlider.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			//mdc-slider uses a rectangle internally to calculate the thumb position,
 			//so we must defer initialization till it's visible
 			this.observer = new IntersectionObserver(entries => {

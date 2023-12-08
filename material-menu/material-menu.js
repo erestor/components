@@ -13,6 +13,9 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 	};
 	MaterialMenu.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			const el = $(node).find('.mdc-menu');
 			this.mdcMenu = new materialMenu.MDCMenu(el[0]);
 			if (!this.fast)
@@ -38,7 +41,8 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 				this.selectedSubscription.dispose();
 
 			this.mdcRipples.forEach(ripple => ripple.destroy());
-			this.mdcMenu.destroy();
+			if (this.mdcMenu)
+				this.mdcMenu.destroy();
 		},
 
 		'onSelected': function(vm, event) {

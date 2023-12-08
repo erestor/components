@@ -8,12 +8,18 @@ function(htmlString, tools) {
 			setTimeout(() => params.click(vm, event));
 		};
 		this.text = params.text;
+		this.value = params.value;
 		this.enable = tools.readEnableStatus(params);
 	};
 	MaterialListItem.prototype = {
 		'getCss': function() {
 			return {
 				'mdc-deprecated-list-item--disabled': !this.enable()
+			};
+		},
+		'getAttrs': function() {
+			return {
+				'data-value': this.value
 			};
 		}
 	};

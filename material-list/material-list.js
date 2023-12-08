@@ -13,6 +13,9 @@ function(htmlString, materialList, materialRipple) {
 	};
 	MaterialList.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			this.mdcList = new materialList.MDCList($(node).find('.mdc-deprecated-list')[0]);
 			if (!this.fast)
 				this.mdcRipples = this.mdcList.listElements.map(listItemEl => new materialRipple.MDCRipple(listItemEl));

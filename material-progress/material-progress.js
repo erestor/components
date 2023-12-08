@@ -12,6 +12,9 @@ function(htmlString, materialLinearProgress) {
 	};
 	MaterialProgress.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			this.mdcLinearProgress = new materialLinearProgress.MDCLinearProgress($(node).find('.mdc-linear-progress')[0]);
 			if (this.value) {
 				this.mdcLinearProgress.progress = ko.unwrap(this.value);
@@ -24,7 +27,8 @@ function(htmlString, materialLinearProgress) {
 			if (this.valueSubscription)
 				this.valueSubscription.dispose();
 
-			this.mdcLinearProgress.destroy();
+			if (this.mdcLinearProgress)
+				this.mdcLinearProgress.destroy();
 		},
 
 		'getAttrs': function() {

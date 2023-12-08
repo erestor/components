@@ -10,10 +10,14 @@ function(htmlString, tools, materialRipple) {
 	};
 	MaterialFab.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			this.mdcRipple = new materialRipple.MDCRipple($(node).find('.mdc-fab')[0]);
 		},
 		'dispose': function() {
-			this.mdcRipple.destroy();
+			if (this.mdcRipple)
+				this.mdcRipple.destroy();
 		}
 	};
 

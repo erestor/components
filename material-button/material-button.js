@@ -19,13 +19,17 @@ function(htmlString, tools, materialRipple) {
 	};
 	MaterialButton.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			const el = $(node).find('.mdc-button')[0];
 			this.mdcRipple = new materialRipple.MDCRipple(el);
 			if (this.autofocus)
 				el.focus();
 		},
 		'dispose': function() {
-			this.mdcRipple.destroy();
+			if (this.mdcRipple)
+				this.mdcRipple.destroy();
 		},
 
 		'getAttrs': function() {

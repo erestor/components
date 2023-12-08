@@ -12,6 +12,9 @@ function(htmlString, tools, materialTabBar) {
 	};
 	MaterialTabBar.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			this.mdcTabBar = new materialTabBar.MDCTabBar($(node).find('.mdc-tab-bar')[0]);
 			this.mdcTabBar.activateTab(this.selected());
 			this.selectionSubscription = this.selected.subscribe(newVal => {
@@ -19,8 +22,10 @@ function(htmlString, tools, materialTabBar) {
 			});
 		},
 		'dispose': function() {
-			this.selectionSubscription.dispose();
-			this.mdcTabBar.destroy();
+			if (this.mdcTabBar) {
+				this.selectionSubscription.dispose();
+				this.mdcTabBar.destroy();
+			}
 		},
 
 		'onActivated': function(vm, event) {

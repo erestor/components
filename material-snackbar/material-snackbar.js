@@ -12,6 +12,9 @@ function(htmlString, materialSnackbar) {
 	};
 	MaterialSnackbar.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			const el = $(node).find('.mdc-snackbar');
 			this.mdcSnackbar = new materialSnackbar.MDCSnackbar(el[0]);
 			if (this.timeoutMs)
@@ -24,7 +27,8 @@ function(htmlString, materialSnackbar) {
 			el.data('mdc-snackbar', this.mdcSnackbar); //this is necessary to allow opening the snackbar from outside the component
 		},
 		'dispose': function() {
-			this.mdcSnackbar.destroy();
+			if (this.mdcSnackbar)
+				this.mdcSnackbar.destroy();
 		}
 	};
 

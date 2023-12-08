@@ -39,6 +39,9 @@ function(htmlString, tools, materialTextfield) {
 	};
 	MaterialTextField.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			const el = $(node).find('.mdc-text-field');
 			this.mdcTextField = new materialTextfield.MDCTextField(el[0]);
 			el.data('mdc-text-field', this.mdcTextField);
@@ -70,6 +73,9 @@ function(htmlString, tools, materialTextfield) {
 			});
 		},
 		'dispose': function() {
+			if (!this.mdcTextField)
+				return;
+
 			this.valueSubscription.dispose();
 			if (this.mdcHelperText)
 				this.mdcHelperText.destroy();

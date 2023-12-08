@@ -15,6 +15,9 @@ function(htmlString, tools, materialDialog) {
 	};
 	MaterialDialog.prototype = {
 		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
 			const el = $(node).children('.mdc-dialog'); //there can be nested dialogs, make sure we get the right one
 			el.find('.mdc-dialog__content').first().attr('id', this.contentId);
 			//el.find('.mdc-dialog__actions button').addClass('mdc-dialog__button'); this stacks the buttons vertically
@@ -26,7 +29,8 @@ function(htmlString, tools, materialDialog) {
 			el.data('mdc-dialog', this.mdcDialog);
 		},
 		'dispose': function() {
-			this.mdcDialog.destroy();
+			if (this.mdcDialog)
+				this.mdcDialog.destroy();
 		},
 
 		'onOpened': function(vm, event) {
