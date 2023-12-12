@@ -1,8 +1,8 @@
 ﻿<!-- ko ifnot: caption -->
-<material-icon-button params="click: onButtonClick.bind($component), enable: enable">{{icon}}</material-icon-button>
+<material-icon-button params="click: onButtonClick.bind($component), enable: enable, disable: disable">{{icon}}</material-icon-button>
 <!-- /ko -->
 <!-- ko if: caption -->
-<material-button params="click: onButtonClick.bind($component), enable: enable">
+<material-button params="click: onButtonClick.bind($component), enable: enable, disable: disable">
 	<span class="material-button__caption">{{caption}}</span>
 	<i class="material-icons">{{icon}}</i>
 </material-button>

@@ -5,6 +5,7 @@ function(htmlString, materialMenuComponent) {
 		this.icon = params.icon || 'more_vert';
 		this.caption = params.caption;
 		this.enable = params.enable;
+		this.disable = params.disable;
 		this.childMenu = new materialMenuComponent.viewModel(params);
 	};
 	MaterialMenuButton.prototype = {

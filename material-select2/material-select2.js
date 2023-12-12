@@ -8,10 +8,24 @@ function(htmlString, tools, materialSelect) {
 
 		this.selectedIndex = params.selectedIndex;
 		this.select = params.select;
-		this.value = params.value;
+
+		this.valueIsNumeric = typeof ko.unwrap(params.value) == 'number';
+		this.value = !this.valueIsNumeric ? params.value : ko.computed({
+			//convert numeric values to string and back to work nicely with mdc-select
+			'read': () => ko.unwrap(params.value) + '',
+			'write': value => params.value(parseFloat(value))
+		});
 
 		this.enable = tools.readEnableStatus(params);
 		this.noLabel = ko.pureComputed(() => !ko.unwrap(params.label));
+
+		this.layoutUpdater = ko.computed(() => {
+			if (ko.isObservable(params.items))
+				params.items(); //introduce dependency
+
+			if (this.mdcSelect)
+				setTimeout(() => ko.ignoreDependencies(() => this.mdcSelect.layoutOptions()));
+		});
 
 		//data binding
 		this.labelId = tools.getGuid();
@@ -19,6 +33,7 @@ function(htmlString, tools, materialSelect) {
 
 		//component lifecycle
 		this.mdcSelect = null;
+		this.enableSubscription = null;
 		this.selectedIndexSubscription = null;
 		this.valueSubscription = null;
 	};
@@ -29,22 +44,32 @@ function(htmlString, tools, materialSelect) {
 
 			this.mdcSelect = new materialSelect.MDCSelect($(node).find('.mdc-select')[0]);
 			this.mdcSelect.menu.setFixedPosition(true);
+			this.mdcSelect.disabled = !this.enable();
+			this.enableSubscription = this.enable.subscribe(newVal => this.mdcSelect.disabled = !newVal);
 			if (this.selectedIndex) {
-				this.mdcSelect.setSelectedIndex(ko.unwrap(this.selectedIndex), true);
+				this.mdcSelect.selectedIndex = ko.unwrap(this.selectedIndex);
 				this.selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
 					if (this.mdcSelect.selectedIndex != newVal)
-						this.mdcSelect.setSelectedIndex(newVal);
+						this.mdcSelect.selectedIndex = newVal;
 				});
 			}
 			if (this.value) {
-				this.mdcSelect.setValue(ko.unwrap(this.value), true);
+				this.mdcSelect.value = ko.unwrap(this.value);
 				this.valueSubscription = this.value.subscribe(newVal => {
 					if (this.mdcSelect.value != newVal)
-						this.mdcSelect.setValue(newVal);
+						this.mdcSelect.value = newVal;
 				});
 			}
 		},
 		'dispose': function() {
+			if (this.valueIsNumeric)
+				this.value.dispose();
+
+			this.layoutUpdater.dispose();
+
+			if (this.enableSubscription)
+				this.enableSubscription.dispose();
+
 			if (this.selectedIndexSubscription)
 				this.selectedIndexSubscription.dispose();
 
@@ -60,15 +85,13 @@ function(htmlString, tools, materialSelect) {
 				'mdc-select--filled': this.filled,
 				'mdc-select--outlined': !this.filled,
 				'mdc-select--required': this.required,
-				'mdc-select--disabled': !this.enable(),
 				'mdc-select--no-label': this.noLabel
 			};
 		},
 		'getAnchorAttrs': function() {
 			return {
 				'aria-labelledby': this.labelId + ' ' + this.selectedTextId,
-				'aria-required': this.required,
-				'aria-disabled': !this.enable()
+				'aria-required': this.required
 			};
 		},
 
