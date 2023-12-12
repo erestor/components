@@ -2,14 +2,14 @@
 function(htmlString, materialListComponent, materialMenu, materialRipple) {
 
 	const MaterialMenu = function(params) {
-		this.selected = params.selected;
-		this.align = params.align;
+		this.selectedIndex = params.selectedIndex;
+		this.select = params.select;
 		this.childList = new materialListComponent.viewModel(params);
 
 		//component lifetime
 		this.mdcMenu = null;
 		this.mdcRipples = [];
-		this.selectedSubscription = null;
+		this.selectedIndexSubscription = null;
 	};
 	MaterialMenu.prototype = {
 		'koDescendantsComplete': function(node) {
@@ -21,14 +21,11 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 			if (!this.fast)
 				this.mdcRipples = this.mdcMenu.list.listElements.map(listItemEl => new materialRipple.MDCRipple(listItemEl));
 
-			if (this.align == 'right') {
-				this.mdcMenu.setAnchorCorner(materialMenu.Corner.TOP_END);
-				//this.mdcMenu.setAnchorMargin({'right': '4px'}); doesn't work
-			}
-			if (this.selected) {
+			this.mdcMenu.setFixedPosition(true);
+			if (this.selectedIndex) {
 				this.mdcMenu.list.singleSelection = true;
-				this.mdcMenu.setSelectedIndex(ko.unwrap(this.selected));
-				this.selectedSubscription = this.selected.subscribe(newVal => {
+				this.mdcMenu.setSelectedIndex(ko.unwrap(this.selectedIndex));
+				this.selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
 					this.mdcMenu.setSelectedIndex(newVal);
 				});
 			}
@@ -37,8 +34,8 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 			el.data('mdc-menu', this.mdcMenu); //this is necessary to allow opening the menu from outside the component
 		},
 		'dispose': function() {
-			if (this.selectedSubscription)
-				this.selectedSubscription.dispose();
+			if (this.selectedIndexSubscription)
+				this.selectedIndexSubscription.dispose();
 
 			this.mdcRipples.forEach(ripple => ripple.destroy());
 			if (this.mdcMenu)
@@ -46,8 +43,13 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 		},
 
 		'onSelected': function(vm, event) {
-			if (this.selected)
-				this.selected(event.detail.index);
+			if (this.selectedIndex)
+				this.selectedIndex(event.detail.index);
+
+			if (this.select) {
+				//the action could lead to menu items changing, so wait till mdc processing is done
+				setTimeout(() => this.select($(event.detail.item).attr('data-value'), event.detail.index));
+			}
 		}
 	};
 

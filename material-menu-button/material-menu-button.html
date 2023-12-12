@@ -7,8 +7,6 @@
 	<i class="material-icons">{{icon}}</i>
 </material-button>
 <!-- /ko -->
-<!-- ko ifnot: customMenu -->
 <div class="mdc-menu mdc-menu-surface" data-bind="event: {'MDCMenu:selected': onSelected}">
 	<ul class="mdc-deprecated-list" data-bind="css: childMenu.childList.getCss(), template: {'nodes': $componentTemplateNodes, 'data': $parent}"></ul>
 </div>
-<!-- /ko -->

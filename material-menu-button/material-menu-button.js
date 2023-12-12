@@ -2,15 +2,10 @@
 function(htmlString, materialMenuComponent) {
 
 	const MaterialMenuButton = function(params) {
-		this.customMenu = params.customMenu;
 		this.icon = params.icon || 'more_vert';
 		this.caption = params.caption;
 		this.enable = params.enable;
-
-		if (!this.customMenu)
-			this.childMenu = new materialMenuComponent.viewModel(params);
-		else
-			this.node = null;
+		this.childMenu = new materialMenuComponent.viewModel(params);
 	};
 	MaterialMenuButton.prototype = {
 		'koDescendantsComplete': function(node) {
@@ -18,27 +13,18 @@ function(htmlString, materialMenuComponent) {
 				return;
 
 			$(node).addClass('mdc-menu-surface--anchor');
-			if (!this.customMenu)
-				this.childMenu.koDescendantsComplete(node);
-			else
-				this.node = node;
+			this.childMenu.koDescendantsComplete(node);
 		},
 		'dispose': function() {
 			if (this.childMenu)
 				this.childMenu.dispose();
-			else
-				this.node = null;
 		},
 
 		'onButtonClick': function() {
-			if (!this.customMenu)
-				this.childMenu.mdcMenu.open = true;
-			else
-				$(this.node).find('.mdc-menu').data('mdc-menu').open = true;
+			this.childMenu.mdcMenu.open = true;
 		},
 		'onSelected': function(vm, event) {
-			if (!this.customMenu)
-				this.childMenu.onSelected(vm, event);
+			this.childMenu.onSelected(vm, event);
 		}
 	};
 

@@ -7,10 +7,8 @@ function(htmlString, tools, materialSelect) {
 		this.required = ko.unwrap(params.required);
 
 		this.selectedIndex = params.selectedIndex;
+		this.select = params.select;
 		this.value = params.value;
-
-		if (!this.value && !this.selectedIndex)
-			throw 'Must specify at least one of value and selectedIndex when creating a material-select';
 
 		this.enable = tools.readEnableStatus(params);
 		this.noLabel = ko.pureComputed(() => !ko.unwrap(params.label));
@@ -32,14 +30,14 @@ function(htmlString, tools, materialSelect) {
 			this.mdcSelect = new materialSelect.MDCSelect($(node).find('.mdc-select')[0]);
 			this.mdcSelect.menu.setFixedPosition(true);
 			if (this.selectedIndex) {
-				this.mdcSelect.setSelectedIndex(ko.unwrap(this.selectedIndex));
+				this.mdcSelect.setSelectedIndex(ko.unwrap(this.selectedIndex), true);
 				this.selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
 					if (this.mdcSelect.selectedIndex != newVal)
 						this.mdcSelect.setSelectedIndex(newVal);
 				});
 			}
 			if (this.value) {
-				this.mdcSelect.setValue(ko.unwrap(this.value));
+				this.mdcSelect.setValue(ko.unwrap(this.value), true);
 				this.valueSubscription = this.value.subscribe(newVal => {
 					if (this.mdcSelect.value != newVal)
 						this.mdcSelect.setValue(newVal);
@@ -80,6 +78,11 @@ function(htmlString, tools, materialSelect) {
 
 			if (this.value)
 				this.value(event.detail.value);
+
+			if (this.select) {
+				//the action could lead to menu items changing, so wait till mdc processing is done
+				setTimeout(() => this.select(event.detail.value, event.detail.index));
+			}
 		}
 	};
 
