@@ -9,12 +9,32 @@ function(htmlString, tools, materialSelect) {
 		this.selectedIndex = params.selectedIndex;
 		this.select = params.select;
 
-		this.valueIsNumeric = typeof ko.unwrap(params.value) == 'number';
-		this.value = !this.valueIsNumeric ? params.value : ko.computed({
-			//convert numeric values to string and back to work nicely with mdc-select
-			'read': () => ko.unwrap(params.value) + '',
-			'write': value => params.value(parseFloat(value))
-		});
+		if (params.value !== undefined) {
+			if (params.allowNull) {
+				this.value = ko.computed({
+					//this is a little adaptor so that null values are converted to -1 and back to work nicely with mdc-select
+					'read': function() {
+						const actual = ko.unwrap(params.value);
+						return actual === undefined || actual === null ? '-1' : (actual + '');
+					},
+					'write': value => params.value(value == '-1' ? null : value)
+				});
+				this.disposeValue = true;
+			}
+			else {
+				const valueIsNumeric = typeof ko.unwrap(params.value) == 'number';
+				if (!valueIsNumeric)
+					this.value = params.value;
+				else {
+					this.value = ko.computed({
+						//convert numeric values to string and back to work nicely with mdc-select
+						'read': () => ko.unwrap(params.value) + '',
+						'write': value => params.value(parseFloat(value))
+					});
+					this.disposeValue = true;
+				}
+			}
+		}
 
 		this.enable = tools.readEnableStatus(params);
 		this.noLabel = ko.pureComputed(() => !ko.unwrap(params.label));
@@ -62,7 +82,7 @@ function(htmlString, tools, materialSelect) {
 			}
 		},
 		'dispose': function() {
-			if (this.valueIsNumeric)
+			if (this.disposeValue)
 				this.value.dispose();
 
 			this.layoutUpdater.dispose();
@@ -96,16 +116,17 @@ function(htmlString, tools, materialSelect) {
 		},
 
 		'onChanged': function(vm, event) {
-			if (this.selectedIndex)
-				this.selectedIndex(event.detail.index);
+			//the changes to the observables could lead to menu items changing, so must wait till mdc processing is done
+			setTimeout(() => {
+				if (this.selectedIndex)
+					this.selectedIndex(event.detail.index);
 
-			if (this.value)
-				this.value(event.detail.value);
+				if (this.value)
+					this.value(event.detail.value);
 
-			if (this.select) {
-				//the action could lead to menu items changing, so wait till mdc processing is done
-				setTimeout(() => this.select(event.detail.value, event.detail.index));
-			}
+				if (this.select)
+					this.select(event.detail.value, event.detail.index);
+			});
 		}
 	};
 
