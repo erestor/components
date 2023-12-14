@@ -62,7 +62,8 @@ function(htmlString, tools, materialSelect) {
 			if (!node.isConnected)
 				return;
 
-			this.mdcSelect = new materialSelect.MDCSelect($(node).find('.mdc-select')[0]);
+			var el = $(node).find('.mdc-select');
+			this.mdcSelect = new materialSelect.MDCSelect(el[0]);
 			this.mdcSelect.menu.setFixedPosition(true);
 			this.mdcSelect.disabled = !this.enable();
 			this.enableSubscription = this.enable.subscribe(newVal => this.mdcSelect.disabled = !newVal);
@@ -80,6 +81,7 @@ function(htmlString, tools, materialSelect) {
 						this.mdcSelect.value = newVal;
 				});
 			}
+			el.data('mdc-select', this.mdcSelect);
 		},
 		'dispose': function() {
 			if (this.disposeValue)
