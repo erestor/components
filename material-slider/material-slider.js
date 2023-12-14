@@ -84,6 +84,9 @@ function(htmlString, tools, materialSlider) {
 					this.mdcSlider.setDisabled(!newVal);
 				});
 			}
+			//Funny thing is that when the slider is in an opening dialog, its position is not calculated correctly.
+			//Let's try to work around it by waiting a bit and recalculating.
+			setTimeout(() => this.mdcSlider.foundation.layout(), 150);
 		}
 	};
 
