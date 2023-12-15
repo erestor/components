@@ -3,41 +3,27 @@ function(htmlString, tools, materialSelect) {
 
 	const MaterialSelect = function(params) {
 		this.label = params.label;
-		this.filled = ko.unwrap(params.filled);
-		this.required = ko.unwrap(params.required);
-
 		this.selectedIndex = params.selectedIndex;
 		this.select = params.select;
 
 		if (params.value !== undefined) {
-			if (params.allowNull) {
+			const valueIsNumeric = typeof ko.unwrap(params.value) == 'number';
+			if (!valueIsNumeric)
+				this.value = params.value;
+			else {
 				this.value = ko.computed({
-					//this is a little adaptor so that null values are converted to -1 and back to work nicely with mdc-select
-					'read': function() {
-						const actual = ko.unwrap(params.value);
-						return actual === undefined || actual === null ? '-1' : (actual + '');
-					},
-					'write': value => params.value(value == '-1' ? null : value)
+					//convert numeric values to string and back to work nicely with mdc-select
+					'read': () => ko.unwrap(params.value) + '',
+					'write': value => params.value(parseFloat(value))
 				});
 				this.disposeValue = true;
-			}
-			else {
-				const valueIsNumeric = typeof ko.unwrap(params.value) == 'number';
-				if (!valueIsNumeric)
-					this.value = params.value;
-				else {
-					this.value = ko.computed({
-						//convert numeric values to string and back to work nicely with mdc-select
-						'read': () => ko.unwrap(params.value) + '',
-						'write': value => params.value(parseFloat(value))
-					});
-					this.disposeValue = true;
-				}
 			}
 		}
 
 		this.enable = tools.readEnableStatus(params);
 		this.noLabel = ko.pureComputed(() => !ko.unwrap(params.label));
+		this.filled = ko.unwrap(params.filled);
+		this.required = ko.unwrap(params.required);
 
 		this.layoutUpdater = ko.computed(() => {
 			if (ko.isObservable(params.items))

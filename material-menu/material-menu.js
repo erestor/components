@@ -4,12 +4,14 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 	const MaterialMenu = function(params) {
 		this.selectedIndex = params.selectedIndex;
 		this.select = params.select;
+		this.value = params.value;
 		this.childList = new materialListComponent.viewModel(params);
 
 		//component lifetime
 		this.mdcMenu = null;
 		this.mdcRipples = [];
 		this.selectedIndexSubscription = null;
+		this.valueSubscription = null;
 	};
 	MaterialMenu.prototype = {
 		'koDescendantsComplete': function(node) {
@@ -22,11 +24,19 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 				this.mdcRipples = this.mdcMenu.list.listElements.map(listItemEl => new materialRipple.MDCRipple(listItemEl));
 
 			this.mdcMenu.setFixedPosition(true);
-			if (this.selectedIndex) {
+			if (this.selectedIndex || this.value)
 				this.mdcMenu.list.singleSelection = true;
-				this.mdcMenu.setSelectedIndex(ko.unwrap(this.selectedIndex));
+
+			if (this.selectedIndex) {
+				this.mdcMenu.list.selectedIndex = this.selectedIndex();
 				this.selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
-					this.mdcMenu.setSelectedIndex(newVal);
+					this.mdcMenu.list.selectedIndex = newVal;
+				});
+			}
+			if (this.value) {
+				this.mdcMenu.list.selectedIndex = this.mdcMenu.list.listElements.findIndex(listEl => $(listEl).attr('data-value') == this.value());
+				this.valueSubscription = this.value.subscribe(newVal => {
+					this.mdcMenu.list.selectedIndex = this.mdcMenu.list.listElements.findIndex(listEl => $(listEl).attr('data-value') == newVal);
 				});
 			}
 
@@ -37,19 +47,27 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 			if (this.selectedIndexSubscription)
 				this.selectedIndexSubscription.dispose();
 
+			if (this.valueSubscription)
+				this.valueSubscription.dispose();
+
 			this.mdcRipples.forEach(ripple => ripple.destroy());
 			if (this.mdcMenu)
 				this.mdcMenu.destroy();
 		},
 
 		'onSelected': function(vm, event) {
-			if (this.selectedIndex)
-				this.selectedIndex(event.detail.index);
+			//the action could lead to menu items changing, so wait till mdc processing is done
+			const value = $(event.detail.item).attr('data-value');
+			setTimeout(() => {
+				if (this.selectedIndex)
+					this.selectedIndex(event.detail.index);
 
-			if (this.select) {
-				//the action could lead to menu items changing, so wait till mdc processing is done
-				setTimeout(() => this.select($(event.detail.item).attr('data-value'), event.detail.index));
-			}
+				if (this.value)
+					this.value(value);
+
+				if (this.select)
+					this.select(value, event.detail.index);
+			});
 		}
 	};
 

@@ -6,6 +6,7 @@
 				return v.toString(16);
 			});
 		},
+
 		'readEnableStatus': function(params) {
 			if (params.enable !== undefined && params.disable !== undefined)
 				throw 'Cannot specify both \'enable\' and \'disable\' parameters';
@@ -17,6 +18,7 @@
 				ko.pureComputed(() => true) :
 				ko.isComputed(params.enable) ? params.enable : ko.pureComputed(() => ko.unwrap(params.enable));
 		},
+
 		'trimString': function(value) {
             return value === null || value === undefined ? '' : value.trim();
         }
