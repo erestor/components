@@ -1,25 +1,13 @@
-﻿define(['text!./material-select2.html', '../tools/tools', '@material/select'],
-function(htmlString, tools, materialSelect) {
+﻿define(['text!./material-select2.html', '../tools/tools', '../tools/tools.mdc', '@material/select'],
+function(htmlString, tools, mdcTools, materialSelect) {
 
 	const MaterialSelect = function(params) {
 		this.label = params.label;
 		this.selectedIndex = params.selectedIndex;
 		this.select = params.select;
-
-		if (params.value !== undefined) {
-			const valueIsNumeric = typeof ko.unwrap(params.value) == 'number';
-			if (!valueIsNumeric)
-				this.value = params.value;
-			else {
-				this.value = ko.computed({
-					//convert numeric values to string and back to work nicely with mdc-select
-					'read': () => ko.unwrap(params.value) + '',
-					'write': value => params.value(parseFloat(value))
-				});
-				this.disposeValue = true;
-			}
-		}
-
+		this.valueIsNumeric = params.numeric;
+		this.value = !this.valueIsNumeric ? params.value : mdcTools.makeMdcSelectAdaptorForNumber(params.value);
+		
 		this.enable = tools.readEnableStatus(params);
 		this.noLabel = ko.pureComputed(() => !ko.unwrap(params.label));
 		this.filled = ko.unwrap(params.filled);
@@ -70,7 +58,7 @@ function(htmlString, tools, materialSelect) {
 			el.data('mdc-select', this.mdcSelect);
 		},
 		'dispose': function() {
-			if (this.disposeValue)
+			if (this.valueIsNumeric)
 				this.value.dispose();
 
 			this.layoutUpdater.dispose();

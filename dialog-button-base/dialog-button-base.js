@@ -1,10 +1,7 @@
 ﻿define(['../tools/tools'], function(tools) {
 
 	var DialogButtonBase = function(params) {
-		this.content = params.content;
 		this.enable = tools.readEnableStatus(params);
-		this.title = params.title;
-		this.data = params.data; //for templated version
 		this.dialogId = tools.getGuid();
 		this.dialogEl = null;
 	};

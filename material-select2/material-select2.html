@@ -40,6 +40,8 @@
 		<!-- /ko -->
 	</div>
 	<div class="mdc-select__menu mdc-menu mdc-menu-surface">
-		<ul class="mdc-deprecated-list" data-bind="template: {'nodes': $componentTemplateNodes, 'data': $parent}"></ul>
+		<ul class="mdc-deprecated-list"
+			data-bind="template: {'nodes': $componentTemplateNodes.length > 0 ? $componentTemplateNodes : $parentContext.$componentTemplateNodes, 'data': $parent}"></ul>
+		<!-- this special binding allows one level of nesting, hence custom components can be created wrapping the material-select -->
 	</div>
 </div>
