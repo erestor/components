@@ -6,11 +6,11 @@
 		flex-direction: row;
 		align-items: center;
 
-		&.justified {
+		&.collapse-section-header--justified {
 			justify-content: space-between;
 		}
 
-		&.center {
+		&.collapse-section-header--center {
 			justify-content: center;
 		}
 	}
@@ -26,6 +26,26 @@
 
 		&.flip {
 			transform: rotate(180deg);
+		}
+	}
+}
+
+html[dir="ltr"] {
+	collapse-section {
+		.collapse-section-header {
+			i.material-icons {
+				margin-right: 4px;
+			}
+		}
+	}
+}
+
+html[dir="rtl"] {
+	collapse-section {
+		.collapse-section-header {
+			i.material-icons {
+				margin-left: 4px;
+			}
 		}
 	}
 }

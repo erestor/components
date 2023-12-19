@@ -1,30 +1,28 @@
-﻿define([
-	'text!./collapse-section.html'],
-	function(htmlString) {
+﻿define(['text!./collapse-section.html'], function(htmlString) {
 
 	var CollapseSection = function(params) {
 		this.title = params.title;
 		this.titleIcon = params.titleIcon;
 		this.opened = params.opened || ko.observable();
 		this.icon = params.icon;
-		this.data = params.data;
-		this.centerTitle = params.centerTitle;
-		this.justified = !params.tight && !params.centerTitle;
+		this.tooltip = params.tooltip;
+		this.centerTitle = ko.unwrap(params.centerTitle);
+		this.justified = !ko.unwrap(params.tight) && !ko.unwrap(params.centerTitle);
 
-		var self = this;
-		this.buttonIcon = ko.pureComputed(function() {
-			if (!self.icon)
-				return 'expand_more';
-
-			return self.icon;
-		});
-
+		this.buttonIcon = ko.pureComputed(() => !this.icon ? 'expand_more' : this.icon);
 		this.titleClass = {};
-		this.titleClass[params.titleClass || 'subhead'] = true;
+		if (params.titleClass)
+			this.titleClass[params.titleClass] = true;
 	};
 	CollapseSection.prototype = {
 		'click': function() {
 			this.opened(!this.opened());
+		},
+		'getHeaderCss': function() {
+			return {
+				'collapse-section-header--center': this.centerTitle,
+				'collapse-section-header--justified': this.justified
+			};
 		}
 	};
 
