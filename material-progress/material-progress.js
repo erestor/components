@@ -17,7 +17,7 @@ function(htmlString, materialLinearProgress) {
 
 			this.mdcLinearProgress = new materialLinearProgress.MDCLinearProgress($(node).find('.mdc-linear-progress')[0]);
 			if (this.value) {
-				this.mdcLinearProgress.progress = ko.unwrap(this.value);
+				this.mdcLinearProgress.progress = this.value();
 				this.valueSubscription = this.value.subscribe(newVal => {
 					this.mdcLinearProgress.progress = newVal;
 				});

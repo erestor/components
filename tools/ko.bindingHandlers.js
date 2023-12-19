@@ -10,43 +10,43 @@
 	//#region Keyboard
 
 	ko.bindingHandlers.escape = {
-		'update': function(element, valueAccessor, allBindingsAccessor, viewModel) {
-			var command = valueAccessor();
-			if (!command)
-				return;
+		'init': function(element, valueAccessor, allBindingsAccessor, viewModel) {
+			const eventName = 'keyup.escapeBindingHandler',
+				command = valueAccessor();
 
-			$(element).off('keyup.escapeBindingHandler').on('keyup.escapeBindingHandler', function(event) {
-				if (event.keyCode === 27) { // <ESC>
+			$(element).on(eventName, handler);
+			ko.utils.domNodeDisposal.addDisposeCallback(element, () => $(element).off(eventName, handler));
+
+			function handler(event) {
+				if (event.keyCode === 27) // <ESC>
 					command.call(viewModel, viewModel, event);
-				}
-			});
+			}
 		}
 	};
 
 	ko.bindingHandlers.enter = {
-		'update': function(element, valueAccessor, allBindingsAccessor, viewModel) {
-			var command = valueAccessor();
-			if (!command)
-				return;
+		'init': function(element, valueAccessor, allBindingsAccessor, viewModel) {
+			const eventName = 'keyup.enterBindingHandler',
+				command = valueAccessor();
 
-			$(element).off('keyup.enterBindingHandler').on('keyup.enterBindingHandler', function(event) {
-				if (event.keyCode === 13) { // <Enter>
+			$(element).on(eventName, handler);
+			ko.utils.domNodeDisposal.addDisposeCallback(element, () => $(element).off(eventName, handler));
+
+			function handler(event) {
+				if (event.keyCode === 13) // <Enter>
 					command.call(viewModel, viewModel, event);
-				}
-			});
+			}
 		}
 	};
 
 	//global keydown, not usable for single elements
 	ko.bindingHandlers.keydown = {
 		'init': function(element, valueAccessor) {
-			var handler = valueAccessor();
-			$(document).on('keydown', handler);
+			const eventName = 'keydown.keydownBindingHandler',
+				command = valueAccessor();
 
-			//handle disposal (if KO removes by the template binding)
-			ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
-				$(document).off('keydown', handler);
-			});
+			$(document).on(eventName, command);
+			ko.utils.domNodeDisposal.addDisposeCallback(element, () => $(document).off(eventName, command));
 		}
 	};
 
@@ -202,7 +202,7 @@
 				});
 			}
 
-			ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+			ko.utils.domNodeDisposal.addDisposeCallback(element, () => {
 				subscription.dispose();
 				if (resetSubscription)
 					resetSubscription.dispose();

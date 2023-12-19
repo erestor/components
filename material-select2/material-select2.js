@@ -42,14 +42,14 @@ function(htmlString, tools, mdcTools, materialSelect) {
 			this.mdcSelect.disabled = !this.enable();
 			this.enableSubscription = this.enable.subscribe(newVal => this.mdcSelect.disabled = !newVal);
 			if (this.selectedIndex) {
-				this.mdcSelect.selectedIndex = ko.unwrap(this.selectedIndex);
+				this.mdcSelect.selectedIndex = this.selectedIndex();
 				this.selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
 					if (this.mdcSelect.selectedIndex != newVal)
 						this.mdcSelect.selectedIndex = newVal;
 				});
 			}
 			if (this.value) {
-				this.mdcSelect.value = ko.unwrap(this.value);
+				this.mdcSelect.value = this.value();
 				this.valueSubscription = this.value.subscribe(newVal => {
 					if (this.mdcSelect.value != newVal)
 						this.mdcSelect.value = newVal;
