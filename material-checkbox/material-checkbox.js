@@ -29,10 +29,11 @@ function(htmlString, tools, materialCheckbox, materialFormField) {
 			}
 		},
 
-		'onTapped': function(vm, ev) {
-			if (this.clicked)
-				this.clicked(this.checked, ev);
-
+		'onClicked': function(vm, event) {
+			setTimeout(() => {
+				if (this.clicked)
+					this.clicked(this.checked, event);
+			});
 			return true;
 		}
 	};
