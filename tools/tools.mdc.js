@@ -9,7 +9,7 @@
 						const actual = observable();
 						return actual === undefined || actual === null ? '-1' : (actual + '');
 					},
-					'write': value => observable(value == '-1' ? null : parseInt(value))
+					'write': value => observable(value === '-1' ? null : parseInt(value))
 				});
 			}
 			return ko.computed({
@@ -34,7 +34,7 @@
 					const actual = observable();
 					return actual === undefined || actual === null ? '-1' : actual;
 				},
-				'write': value => observable(value == '-1' ? null : value)
+				'write': value => observable(value === '-1' ? null : value)
 			});
 		}
 	};

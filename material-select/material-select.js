@@ -1,4 +1,4 @@
-﻿define(['text!./material-select2.html', '../tools/tools', '../tools/tools.mdc', '@material/select'],
+﻿define(['text!./material-select.html', '../tools/tools', '../tools/tools.mdc', '@material/select'],
 function(htmlString, tools, mdcTools, materialSelect) {
 
 	const MaterialSelect = function(params) {
@@ -17,8 +17,11 @@ function(htmlString, tools, mdcTools, materialSelect) {
 			if (ko.isObservable(params.items))
 				params.items(); //introduce dependency
 
-			if (this.mdcSelect)
-				setTimeout(() => ko.ignoreDependencies(() => this.mdcSelect.layoutOptions()));
+			if (this.mdcSelect) {
+				setTimeout(() => {
+					ko.ignoreDependencies(() => this.mdcSelect.layoutOptions());
+				});
+			}
 		});
 
 		//data binding
@@ -44,23 +47,24 @@ function(htmlString, tools, mdcTools, materialSelect) {
 			if (this.selectedIndex) {
 				this.mdcSelect.selectedIndex = this.selectedIndex();
 				this.selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
-					if (this.mdcSelect.selectedIndex != newVal)
-						this.mdcSelect.selectedIndex = newVal;
+					setTimeout(() => {
+						if (this.mdcSelect.selectedIndex != newVal)
+							this.mdcSelect.selectedIndex = newVal;
+					});
 				});
 			}
 			if (this.value) {
 				this.mdcSelect.value = this.value();
 				this.valueSubscription = this.value.subscribe(newVal => {
-					if (this.mdcSelect.value != newVal)
-						this.mdcSelect.value = newVal;
+					setTimeout(() => {
+						if (this.mdcSelect.value != newVal)
+							this.mdcSelect.value = newVal;
+					});
 				});
 			}
 			el.data('mdc-select', this.mdcSelect);
 		},
 		'dispose': function() {
-			if (this.valueIsNumeric)
-				this.value.dispose();
-
 			this.layoutUpdater.dispose();
 
 			if (this.enableSubscription)
@@ -71,6 +75,9 @@ function(htmlString, tools, mdcTools, materialSelect) {
 
 			if (this.valueSubscription)
 				this.valueSubscription.dispose();
+
+			if (this.valueIsNumeric)
+				this.value.dispose();
 
 			if (this.mdcSelect)
 				this.mdcSelect.destroy();
