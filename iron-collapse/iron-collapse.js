@@ -22,7 +22,9 @@
 					content.style.maxHeight = '100vh';
 				else {
 					this._setMaxHeight(content);
-					setTimeout(() => this._setMaxHeight(content), 100); //fixes dynamic content
+					//fix dynamic content
+					setTimeout(() => this._setMaxHeight(content), 100);
+					setTimeout(() => this._setMaxHeight(content), 250);
 				}
 			}
 		},
