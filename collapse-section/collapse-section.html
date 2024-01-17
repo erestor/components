@@ -1,6 +1,6 @@
-﻿<div class="collapse-section-header" data-bind="css: getHeaderCss()">
+﻿<div class="collapse-section__header" data-bind="css: getHeaderCss()">
 	<!-- ko if: title -->
-	<div class="collapse-section-title">
+	<div class="collapse-section__title">
 		<i class="material-icons" data-bind="visible: titleIcon">{{titleIcon}}</i>
 		<span data-bind="click: click, css: titleClass">{{title}}</span>
 	</div>
@@ -10,4 +10,4 @@
 	<material-tooltip>{{tooltip}}</material-tooltip>
 	<!-- /ko -->
 </div>
-<iron-collapse params="opened: opened"></iron-collapse>
+<material-collapse params="opened: opened"></material-collapse>

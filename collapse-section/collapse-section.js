@@ -20,8 +20,8 @@
 		},
 		'getHeaderCss': function() {
 			return {
-				'collapse-section-header--center': this.centerTitle,
-				'collapse-section-header--justified': this.justified
+				'collapse-section__header--center': this.centerTitle,
+				'collapse-section__header--justified': this.justified
 			};
 		}
 	};
