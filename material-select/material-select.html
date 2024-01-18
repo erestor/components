@@ -45,3 +45,7 @@
 		<!-- this special binding allows one level of nesting, hence custom components can be created wrapping the material-select -->
 	</div>
 </div>
+<!-- ko if: validate -->
+<p class="mdc-select-helper-text mdc-select-helper-text--validation-msg" aria-hidden="true"
+	data-bind="id: helperTextId, validationMessage: validationValue"></p>
+<!-- /ko -->

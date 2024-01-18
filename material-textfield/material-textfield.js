@@ -34,7 +34,6 @@ function(htmlString, tools, materialTextfield) {
 
 		//component lifetime
 		this.mdcTextField = null;
-		this.mdcHelperText = null;
 		this.valueSubscription = null;
 	};
 	MaterialTextField.prototype = {
@@ -47,9 +46,6 @@ function(htmlString, tools, materialTextfield) {
 			el.data('mdc-text-field', this.mdcTextField);
 			if (this.autofocus)
 				$(node).find('input')[0].focus();
-
-			if (this.validate)
-				this.mdcHelperText = new materialTextfield.MDCTextFieldHelperText($(node).find('.mdc-text-field-helper-text')[0]);
 
 			if (this.value() == chromeAutofillTempValue) {
 				//hack to overrule Chrome stupid autofill
@@ -77,9 +73,6 @@ function(htmlString, tools, materialTextfield) {
 				return;
 
 			this.valueSubscription.dispose();
-			if (this.mdcHelperText)
-				this.mdcHelperText.destroy();
-
 			this.mdcTextField.destroy();
 		},
 
