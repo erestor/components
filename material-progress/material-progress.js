@@ -8,7 +8,7 @@ function(htmlString, materialLinearProgress) {
 
 		//component lifetime
 		this.mdcLinearProgress = null;
-		this.valueSubscription = null;
+		this._valueSubscription = null;
 	};
 	MaterialProgress.prototype = {
 		'koDescendantsComplete': function(node) {
@@ -18,14 +18,14 @@ function(htmlString, materialLinearProgress) {
 			this.mdcLinearProgress = new materialLinearProgress.MDCLinearProgress($(node).find('.mdc-linear-progress')[0]);
 			if (this.value) {
 				this.mdcLinearProgress.progress = this.value();
-				this.valueSubscription = this.value.subscribe(newVal => {
+				this._valueSubscription = this.value.subscribe(newVal => {
 					this.mdcLinearProgress.progress = newVal;
 				});
 			}
 		},
 		'dispose': function() {
-			if (this.valueSubscription)
-				this.valueSubscription.dispose();
+			if (this._valueSubscription)
+				this._valueSubscription.dispose();
 
 			if (this.mdcLinearProgress)
 				this.mdcLinearProgress.destroy();

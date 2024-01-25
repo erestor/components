@@ -26,7 +26,7 @@ function(htmlString, tools, materialSwitch) {
 
 		//component lifetime
 		this.mdcSwitch = null;
-		this.valueSubscription = null;
+		this._valueSubscription = null;
 	};
 	MaterialSwitch.prototype = {
 		'koDescendantsComplete': function(node) {
@@ -35,13 +35,13 @@ function(htmlString, tools, materialSwitch) {
 
 			this.mdcSwitch = new materialSwitch.MDCSwitch($(node).find('.mdc-switch')[0]);
 			this.mdcSwitch.selected = this.value();
-			this.valueSubscription = this.value.subscribe(newVal => {
+			this._valueSubscription = this.value.subscribe(newVal => {
 				this.mdcSwitch.selected = newVal;
 			});
 		},
 		'dispose': function() {
 			if (this.mdcSwitch) {
-				this.valueSubscription.dispose();
+				this._valueSubscription.dispose();
 				this.mdcSwitch.destroy();
 				if (this.inverted)
 					this.value.dispose();

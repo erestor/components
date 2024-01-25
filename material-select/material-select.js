@@ -35,9 +35,9 @@ function(htmlString, tools, mdcTools, materialSelect) {
 		//component lifecycle
 		this.mdcSelect = null;
 		this.enableSubscription = null;
-		this.selectedIndexSubscription = null;
+		this._selectedIndexSubscription = null;
 		this.validationSubscription = null;
-		this.valueSubscription = null;
+		this._valueSubscription = null;
 	};
 	MaterialSelect.prototype = {
 		'koDescendantsComplete': function(node) {
@@ -52,7 +52,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 			this.enableSubscription = this.enable.subscribe(newVal => this.mdcSelect.disabled = !newVal);
 			if (this.selectedIndex) {
 				this.mdcSelect.selectedIndex = this.selectedIndex();
-				this.selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
+				this._selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
 					setTimeout(() => {
 						if (this.mdcSelect.selectedIndex != newVal)
 							this.mdcSelect.selectedIndex = newVal;
@@ -61,7 +61,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 			}
 			if (this.value) {
 				this.mdcSelect.value = this.value();
-				this.valueSubscription = this.value.subscribe(newVal => {
+				this._valueSubscription = this.value.subscribe(newVal => {
 					setTimeout(() => {
 						if (this.mdcSelect.value != newVal)
 							this.mdcSelect.value = newVal;
@@ -81,11 +81,11 @@ function(htmlString, tools, mdcTools, materialSelect) {
 			if (this.validationSubscription)
 				this.validationSubscription.dispose();
 
-			if (this.selectedIndexSubscription)
-				this.selectedIndexSubscription.dispose();
+			if (this._selectedIndexSubscription)
+				this._selectedIndexSubscription.dispose();
 
-			if (this.valueSubscription)
-				this.valueSubscription.dispose();
+			if (this._valueSubscription)
+				this._valueSubscription.dispose();
 
 			if (this.mdcSelect) {
 				this.enableSubscription.dispose();

@@ -20,7 +20,7 @@ function(htmlString, tools, materialSlider) {
 		//component lifetime
 		this.observer = null;
 		this.mdcSlider = null;
-		this.valueSubscription = null;
+		this._valueSubscription = null;
 		this.enableSubscription = null;
 	};
 	MaterialSlider.prototype = {
@@ -48,8 +48,8 @@ function(htmlString, tools, materialSlider) {
 			if (this.enableSubscription)
 				this.enableSubscription.dispose();
 
-			if (this.valueSubscription)
-				this.valueSubscription.dispose();
+			if (this._valueSubscription)
+				this._valueSubscription.dispose();
 
 			if (this.mdcSlider)
 				this.mdcSlider.destroy();
@@ -76,7 +76,7 @@ function(htmlString, tools, materialSlider) {
 		'_init': function(node) {
 			this.mdcSlider = new materialSlider.MDCSlider($(node).find('.mdc-slider')[0]);
 			this.mdcSlider.setDisabled(!ko.unwrap(this.enable));
-			this.valueSubscription = this.value.subscribe(newVal => {
+			this._valueSubscription = this.value.subscribe(newVal => {
 				this.mdcSlider.setValue(newVal);
 			});
 			if (ko.isObservable(this.enable)) {

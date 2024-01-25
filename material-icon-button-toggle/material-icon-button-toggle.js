@@ -9,7 +9,7 @@ function(htmlString, tools, materialIconButton) {
 
 		//component lifetime
 		this.mdcIconButton = null;
-		this.valueSubscription = null;
+		this._valueSubscription = null;
 	};
 	MaterialIconButtonToggle.prototype = {
 		'koDescendantsComplete': function(node) {
@@ -18,13 +18,13 @@ function(htmlString, tools, materialIconButton) {
 
 			this.mdcIconButton = new materialIconButton.MDCIconButtonToggle($(node).find('.mdc-icon-button')[0]);
 			this.mdcIconButton.on = this.value();
-			this.valueSubscription = this.value.subscribe(newVal => {
+			this._valueSubscription = this.value.subscribe(newVal => {
 				this.mdcIconButton.on = newVal;
 			});
 		},
 		'dispose': function() {
 			if (this.mdcIconButton) {
-				this.valueSubscription.dispose();
+				this._valueSubscription.dispose();
 				this.mdcIconButton.destroy();
 			}
 		},

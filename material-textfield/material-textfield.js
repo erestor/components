@@ -34,7 +34,7 @@ function(htmlString, tools, materialTextfield) {
 
 		//component lifetime
 		this.mdcTextField = null;
-		this.valueSubscription = null;
+		this._valueSubscription = null;
 	};
 	MaterialTextField.prototype = {
 		'koDescendantsComplete': function(node) {
@@ -57,7 +57,7 @@ function(htmlString, tools, materialTextfield) {
 						$(node).find('input')[0].focus();
 				}, 100);
 			}
-			this.valueSubscription = this.value.subscribe(() => {
+			this._valueSubscription = this.value.subscribe(() => {
 				//necessary hack to update the label style when knockout changes the value
 				const shouldFloat = this.mdcTextField.value.length > 0;
 				const foundation = this.mdcTextField.foundation;
@@ -72,7 +72,7 @@ function(htmlString, tools, materialTextfield) {
 			if (!this.mdcTextField)
 				return;
 
-			this.valueSubscription.dispose();
+			this._valueSubscription.dispose();
 			this.mdcTextField.destroy();
 		},
 

@@ -10,8 +10,9 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 		//component lifetime
 		this.mdcMenu = null;
 		this.mdcRipples = [];
-		this.selectedIndexSubscription = null;
-		this.valueSubscription = null;
+		this._selectedIndexSubscription = null;
+		this._valueSubscription = null;
+		this._handleKeyDown = null;
 	};
 	MaterialMenu.prototype = {
 		'koDescendantsComplete': function(node) {
@@ -29,26 +30,46 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 
 			if (this.selectedIndex) {
 				this.mdcMenu.list.selectedIndex = this.selectedIndex();
-				this.selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
+				this._selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
 					this.mdcMenu.list.selectedIndex = newVal;
 				});
 			}
 			if (this.value) {
-				this.mdcMenu.list.selectedIndex = this.mdcMenu.list.listElements.findIndex(listEl => $(listEl).attr('data-value') == this.value());
-				this.valueSubscription = this.value.subscribe(newVal => {
-					this.mdcMenu.list.selectedIndex = this.mdcMenu.list.listElements.findIndex(listEl => $(listEl).attr('data-value') == newVal);
+				this.mdcMenu.list.selectedIndex = this._findListItemIndex(this.value());
+				this._valueSubscription = this.value.subscribe(newVal => {
+					this.mdcMenu.list.selectedIndex = this._findListItemIndex(newVal);
 				});
 			}
 
 			this.mdcMenu.list.listElements.forEach(listEl => $(listEl).attr('role', 'menuitem'));
 			el.data('mdc-menu', this.mdcMenu); //this is necessary to allow opening the menu from outside the component
+
+			this._handleKeyDown = ev => {
+				if (ev.target == el || $(ev.target).parents().find(el).length ||
+					$(ev.target.parentElement?.parentElement).find('.mdc-menu').data('mdc-menu') == this.mdcMenu) {
+					const key = ev.key.toLowerCase();
+					const items = this.mdcMenu.list.listElements;
+
+					//loop through list items and find the first item that starts with the pressed key
+					for (const item of items) {
+						if (item.textContent.trim().toLowerCase().startsWith(key)) {
+							this.mdcMenu.foundation.adapter.focusItemAtIndex(items.indexOf(item));
+							break;
+						}
+					}
+				}
+			};
+			document.addEventListener('keydown', this._handleKeyDown);
 		},
 		'dispose': function() {
-			if (this.selectedIndexSubscription)
-				this.selectedIndexSubscription.dispose();
+			if (this._handleKeyDown)
+				document.removeEventListener('keydown', this._handleKeyDown);
 
-			if (this.valueSubscription)
-				this.valueSubscription.dispose();
+			if (this._selectedIndexSubscription)
+				this._selectedIndexSubscription.dispose();
+
+			if (this._valueSubscription)
+				this._valueSubscription.dispose();
 
 			this.mdcRipples.forEach(ripple => ripple.destroy());
 			if (this.mdcMenu)
@@ -68,6 +89,11 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 				if (this.select)
 					this.select(value, event.detail.index);
 			});
+		},
+
+		'_findListItemIndex': function(value) {
+			const listItems = this.mdcMenu.list.listElements;
+			return listItems.findIndex(listItem => $(listItem).attr('data-value') == value);
 		}
 	};
 
