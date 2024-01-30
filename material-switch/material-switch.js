@@ -14,9 +14,7 @@ function(htmlString, tools, materialSwitch) {
 			this.value = params.value;
 		else {
 			this.value = ko.computed({
-				'read': function() {
-					return !params.value();
-				},
+				'read': () => !params.value(),
 				'write': function(newValue) {
 					params.value(!newValue);
 				}
@@ -25,6 +23,7 @@ function(htmlString, tools, materialSwitch) {
 		}
 
 		//component lifetime
+		this.observer = null;
 		this.mdcSwitch = null;
 		this._valueSubscription = null;
 	};
@@ -33,13 +32,21 @@ function(htmlString, tools, materialSwitch) {
 			if (!node.isConnected)
 				return;
 
-			this.mdcSwitch = new materialSwitch.MDCSwitch($(node).find('.mdc-switch')[0]);
-			this.mdcSwitch.selected = this.value();
-			this._valueSubscription = this.value.subscribe(newVal => {
-				this.mdcSwitch.selected = newVal;
+			this.observer = new IntersectionObserver(entries => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						this._init(entry.target);
+						this.observer.disconnect();
+						this.observer = null;
+					}
+				});
 			});
+			this.observer.observe(node);
 		},
 		'dispose': function() {
+			if (this.observer)
+				this.observer.disconnect();
+
 			if (this.mdcSwitch) {
 				this._valueSubscription.dispose();
 				this.mdcSwitch.destroy();
@@ -59,6 +66,14 @@ function(htmlString, tools, materialSwitch) {
 			return {
 				'material-switch-label__structured': this.structuredLabel
 			};
+		},
+
+		'_init': function(node) {
+			this.mdcSwitch = new materialSwitch.MDCSwitch($(node).find('.mdc-switch')[0]);
+			this.mdcSwitch.selected = this.value();
+			this._valueSubscription = this.value.subscribe(newVal => {
+				this.mdcSwitch.selected = newVal;
+			});
 		}
 	};
 
