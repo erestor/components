@@ -35,6 +35,7 @@ function(htmlString, tools, materialTextfield) {
 		//component lifetime
 		this.mdcTextField = null;
 		this._valueSubscription = null;
+		this._requiredSubscription = null;
 	};
 	MaterialTextField.prototype = {
 		'koDescendantsComplete': function(node) {
@@ -67,10 +68,20 @@ function(htmlString, tools, materialTextfield) {
 				if (this.value.isValid)
 					this.mdcTextField.valid = this.value.isValid();
 			});
+
+			this.mdcTextField.required = ko.unwrap(this.required);
+			if (ko.isObservable(this.required)) {
+				this._requiredSubscription = this.required.subscribe(() => {
+					this.mdcTextField.required = this.required();
+				});
+			}
 		},
 		'dispose': function() {
 			if (!this.mdcTextField)
 				return;
+
+			if (this._requiredSubscription)
+				this._requiredSubscription.dispose();
 
 			this._valueSubscription.dispose();
 			this.mdcTextField.destroy();
@@ -92,8 +103,7 @@ function(htmlString, tools, materialTextfield) {
 				'aria-labelledby': this.labelId,
 				'aria-controls': this.validate ? this.helperId : undefined,
 				'autofocus': this.autofocus,
-				'placeholder': this.placeholder,
-				'required': this.required
+				'placeholder': this.placeholder
 			};
 		}
 	};
