@@ -1,5 +1,5 @@
-﻿define(['text!./material-menu-button.html', '../material-menu/material-menu'],
-function(htmlString, materialMenuComponent) {
+﻿define(['text!./material-menu-button.html', '../material-menu/material-menu', '../tools/tools'],
+function(htmlString, materialMenuComponent, tools) {
 
 	const MaterialMenuButton = function(params) {
 		this.icon = params.icon || 'more_vert';
@@ -7,13 +7,14 @@ function(htmlString, materialMenuComponent) {
 		this.enable = params.enable;
 		this.disable = params.disable;
 		this.childMenu = new materialMenuComponent.viewModel(params);
+		this.menuId = tools.getGuid();
 	};
 	MaterialMenuButton.prototype = {
 		'koDescendantsComplete': function(node) {
 			if (!node.isConnected)
 				return;
 
-			$(node).addClass('mdc-menu-surface--anchor');
+			$(node).addClass('mdc-menu-surface--anchor').attr('data-menu', this.menuId);
 			this.childMenu.koDescendantsComplete(node);
 		},
 		'dispose': function() {

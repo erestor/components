@@ -1,5 +1,11 @@
 ﻿define([], function() {
 	return {
+		'cleanNode': function(node) {
+			ko.cleanNode(node);
+			for (let i = 0; i < node.childNodes.length; i++)
+				this.cleanNode(node.childNodes[i]);
+		},
+
 		'getGuid': function() {
 			return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
 				var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -20,7 +26,7 @@
 		},
 
 		'trimString': function(value) {
-            return value === null || value === undefined ? '' : value.trim();
-        }
+			return value === null || value === undefined ? '' : value.trim();
+		}
 	};
 });

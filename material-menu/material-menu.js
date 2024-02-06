@@ -1,5 +1,5 @@
-﻿define(['text!./material-menu.html', '../material-list/material-list', '@material/menu', '@material/ripple'],
-function(htmlString, materialListComponent, materialMenu, materialRipple) {
+﻿define(['text!./material-menu.html', '../material-list/material-list', '../tools/tools', '@material/menu', '@material/ripple'],
+function(htmlString, materialListComponent, tools, materialMenu, materialRipple) {
 
 	const MaterialMenu = function(params) {
 		this.selectedIndex = params.selectedIndex;
@@ -44,24 +44,34 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 			this.mdcMenu.list.listElements.forEach(listEl => $(listEl).attr('role', 'menuitem'));
 			el.data('mdc-menu', this.mdcMenu); //this is necessary to allow opening the menu from outside the component
 
+			let typedChars = '';
 			this._handleKeyDown = ev => {
-				const targetMenu = $(ev.target).closest('.mdc-menu').data('mdc-menu') ||
-					($(ev.target).is('button') && $(ev.target.parentElement?.parentElement).find('.mdc-menu').data('mdc-menu'));
+				if (!this.mdcMenu.open)
+					return;
 
-				if (targetMenu == this.mdcMenu) {
-					const key = ev.key.toLowerCase();
-					const items = this.mdcMenu.list.listElements;
+				const isMenuButton = $(ev.target).closest('.mdc-menu-surface--anchor').attr('data-menu') == el.attr('id');
+				const targetMenu = $(ev.target).closest('.mdc-menu').data('mdc-menu');
+				if (isMenuButton || targetMenu == this.mdcMenu) {
+					typedChars += ev.key.toLowerCase();
+					const items = this.mdcMenu.items;
 
-					//loop through list items and find the first item that starts with the pressed key
+					//loop through list items and find the first item that starts with the pressed keys
 					for (const item of items) {
-						if (item.textContent.trim().toLowerCase().startsWith(key)) {
+						if (!$(item).is(':visible'))
+							continue;
+
+						if ($(item).find('.mdc-deprecated-list-item__text')[0].textContent.trim().toLowerCase().startsWith(typedChars)) {
 							this.mdcMenu.foundation.adapter.focusItemAtIndex(items.indexOf(item));
 							break;
 						}
 					}
+					setTimeout(() => typedChars = '', 500);
 				}
 			};
 			document.addEventListener('keydown', this._handleKeyDown);
+
+			//menu must be on top level to ensure proper function
+			document.body.appendChild(this.mdcMenu.root);
 		},
 		'dispose': function() {
 			if (this._handleKeyDown)
@@ -74,8 +84,12 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 				this._valueSubscription.dispose();
 
 			this.mdcRipples.forEach(ripple => ripple.destroy());
-			if (this.mdcMenu)
+			if (this.mdcMenu) {
+				const el = this.mdcMenu.root;
 				this.mdcMenu.destroy();
+				tools.cleanNode(el);
+				document.body.removeChild(el);
+			}
 		},
 
 		'onSelected': function(vm, event) {

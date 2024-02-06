@@ -1,3 +1,4 @@
 ﻿<div class="mdc-menu mdc-menu-surface" data-bind="event: {'MDCMenu:selected': onSelected}">
-	<ul class="mdc-deprecated-list" data-bind="css: childList.getCss(), template: {'nodes': $componentTemplateNodes, 'data': $parent}"></ul>
+	<ul class="mdc-deprecated-list" role="menu" aria-orientation="vertical"
+		data-bind="css: childList.getCss(), template: {'nodes': $componentTemplateNodes, 'data': $parent}"></ul>
 </div>

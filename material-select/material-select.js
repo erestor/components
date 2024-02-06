@@ -74,6 +74,9 @@ function(htmlString, tools, mdcTools, materialSelect) {
 			}
 
 			el.data('mdc-select', this.mdcSelect);
+
+			//menu must be on top level to ensure proper function
+			document.body.appendChild(this.mdcSelect.menu.root);
 		},
 		'dispose': function() {
 			this.layoutUpdater.dispose();
@@ -89,7 +92,10 @@ function(htmlString, tools, mdcTools, materialSelect) {
 
 			if (this.mdcSelect) {
 				this.enableSubscription.dispose();
+				const el = this.mdcSelect.menu.root;
 				this.mdcSelect.destroy();
+				tools.cleanNode(el);
+				document.body.removeChild(el);
 			}
 
 			if (this.valueIsNumeric)
