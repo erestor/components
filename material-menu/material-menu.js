@@ -45,8 +45,10 @@ function(htmlString, materialListComponent, materialMenu, materialRipple) {
 			el.data('mdc-menu', this.mdcMenu); //this is necessary to allow opening the menu from outside the component
 
 			this._handleKeyDown = ev => {
-				if (ev.target == el || $(ev.target).parents().find(el).length ||
-					$(ev.target.parentElement?.parentElement).find('.mdc-menu').data('mdc-menu') == this.mdcMenu) {
+				const targetMenu = $(ev.target).closest('.mdc-menu').data('mdc-menu') ||
+					($(ev.target).is('button') && $(ev.target.parentElement?.parentElement).find('.mdc-menu').data('mdc-menu'));
+
+				if (targetMenu == this.mdcMenu) {
 					const key = ev.key.toLowerCase();
 					const items = this.mdcMenu.list.listElements;
 
