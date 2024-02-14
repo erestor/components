@@ -34,7 +34,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 
 		//component lifecycle
 		this.mdcSelect = null;
-		this.enableSubscription = null;
+		this._enableSubscription = null;
 		this._selectedIndexSubscription = null;
 		this.validationSubscription = null;
 		this._valueSubscription = null;
@@ -49,7 +49,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 			this.mdcSelect.menu.setFixedPosition(true);
 			this.mdcSelect.disabled = !this.enable();
 			this.mdcSelect.required = !!this.required;
-			this.enableSubscription = this.enable.subscribe(newVal => this.mdcSelect.disabled = !newVal);
+			this._enableSubscription = this.enable.subscribe(newVal => this.mdcSelect.disabled = !newVal);
 			if (this.selectedIndex) {
 				this.mdcSelect.selectedIndex = this.selectedIndex();
 				this._selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
@@ -91,7 +91,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 				this._valueSubscription.dispose();
 
 			if (this.mdcSelect) {
-				this.enableSubscription.dispose();
+				this._enableSubscription.dispose();
 				const el = this.mdcSelect.menu.root;
 				this.mdcSelect.destroy();
 				tools.cleanNode(el);

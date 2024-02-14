@@ -1,5 +1,5 @@
-define(['text!./material-textarea.html', '../tools/tools', '@material/textfield'],
-function(htmlString, tools, materialTextfield) {
+define(['text!./material-textarea.html', '../tools/tools', '../tools/tools.mdc', '@material/textfield'],
+function(htmlString, tools, mdcTools, materialTextfield) {
 
 	const MaterialTextArea = function(params) {
 		//attributes
@@ -25,23 +25,24 @@ function(htmlString, tools, materialTextfield) {
 		//component lifetime
 		this.mdcTextField = null;
 		this.mdcHelperText = null;
-		this.inputSubscription = null;
+		this._inputSubscription = null;
 	};
 	MaterialTextArea.prototype = {
 		'koDescendantsComplete': function(node) {
 			if (!node.isConnected)
 				return;
 
-			const el = $(node).find('.mdc-text-field');
-			this.mdcTextField = new materialTextfield.MDCTextField(el[0]);
-			el.data('mdc-text-field', this.mdcTextField);
+			const el = node.querySelector('.mdc-text-field');
+			this.mdcTextField = new materialTextfield.MDCTextField(el);
+			mdcTools.setMdcComponent(el, this.mdcTextField);
+
 			if (this.autofocus)
 				$(node).find('textarea')[0].focus();
 
 			if (this.validate)
 				this.mdcHelperText = new materialTextfield.MDCTextFieldHelperText($(node).find('.mdc-text-field-helper-text')[0]);
 
-			this.inputSubscription = this.value.subscribe(() => {
+			this._inputSubscription = this.value.subscribe(() => {
 				//necessary hack to update the label style when knockout changes the value
 				const shouldFloat = this.mdcTextField.value.length > 0;
 				const foundation = this.mdcTextField.foundation;
@@ -53,14 +54,9 @@ function(htmlString, tools, materialTextfield) {
 			});
 		},
 		'dispose': function() {
-			if (!this.mdcTextField)
-				return;
-
-			this.inputSubscription.dispose();
-			if (this.mdcHelperText)
-				this.mdcHelperText.destroy();
-
-			this.mdcTextField.destroy();
+			this._inputSubscription?.dispose();
+			this.mdcHelperText?.destroy();
+			this.mdcTextField?.destroy();
 		},
 
 		'getCss': function() {
@@ -78,7 +74,7 @@ function(htmlString, tools, materialTextfield) {
 				'aria-labelledby': this.labelId,
 				'aria-controls': this.validate ? this.helperId : undefined,
 				'autofocus': this.autofocus,
-				'placeholder': this.placeholder,
+				'placeholder': this.placeholder
 			};
 		}
 	};

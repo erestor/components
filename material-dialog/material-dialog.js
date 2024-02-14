@@ -1,5 +1,5 @@
-﻿define(['text!./material-dialog.html', '../tools/tools', '@material/dialog'],
-function(htmlString, tools, materialDialog) {
+﻿define(['text!./material-dialog.html', '../tools/tools.mdc', '../tools/tools', '@material/dialog'],
+function(htmlString, mdcTools, tools, materialDialog) {
 
 	const MaterialDialog = function(params) {
 		this.id = params.id;
@@ -18,33 +18,29 @@ function(htmlString, tools, materialDialog) {
 			if (!node.isConnected)
 				return;
 
-			const el = $(node).children('.mdc-dialog'); //there can be nested dialogs, make sure we get the right one
-			el.find('.mdc-dialog__content').first().attr('id', this.contentId);
-			//el.find('.mdc-dialog__actions button').addClass('mdc-dialog__button'); this stacks the buttons vertically
-			this.mdcDialog = new materialDialog.MDCDialog(el[0]);
+			const el = node.querySelector('.mdc-dialog');
+			el.querySelector('.mdc-dialog__content').id = this.contentId;
+
+			this.mdcDialog = new materialDialog.MDCDialog(el);
+			mdcTools.setMdcComponent(el, this.mdcDialog);
+
 			if (this.modal) {
 				this.mdcDialog.scrimClickAction = '';
 				this.mdcDialog.escapeKeyAction = '';
 			}
-			el.data('mdc-dialog', this.mdcDialog);
 		},
 		'dispose': function() {
-			if (this.mdcDialog)
-				this.mdcDialog.destroy();
+			this.mdcDialog?.destroy();
 		},
 
 		'onOpened': function(vm, event) {
-			const defaultEl = $('#' + this.id).find('> .mdc-dialog__container > .mdc-dialog__surface > .mdc-dialog__actions button[data-mdc-dialog-button-default]');
-			//prevent finding nested dialogs' actions
-			if (defaultEl.length > 1)
-				throw 'More than one default button found in dialog ' + this.id;
-
-			if (defaultEl.length === 1)
-				defaultEl[0].focus();
+			const dialogEl = document.getElementById(this.id);
+			const defaultEl = dialogEl.querySelector('.mdc-dialog__container .mdc-dialog__surface .mdc-dialog__actions button[data-mdc-dialog-button-default]');
+			if (defaultEl)
+				defaultEl.focus();
 			else {
-				const autofocusEl = $('#' + this.id).find('[autofocus]');
-				if (autofocusEl.length === 1)
-					autofocusEl[0].focus();
+				const autofocusEl = dialogEl.querySelector('[autofocus]');
+				autofocusEl?.focus();
 			}
 			if (typeof this.opened == 'function')
 				this.opened(vm, event);

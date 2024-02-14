@@ -23,10 +23,8 @@ function(htmlString, tools, materialIconButton) {
 			});
 		},
 		'dispose': function() {
-			if (this.mdcIconButton) {
-				this._valueSubscription.dispose();
-				this.mdcIconButton.destroy();
-			}
+			this._valueSubscription?.dispose();
+			this.mdcIconButton?.destroy();
 		},
 
 		'onChange': function(vm, event) {

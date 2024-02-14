@@ -24,11 +24,8 @@ function(htmlString, materialLinearProgress) {
 			}
 		},
 		'dispose': function() {
-			if (this._valueSubscription)
-				this._valueSubscription.dispose();
-
-			if (this.mdcLinearProgress)
-				this.mdcLinearProgress.destroy();
+			this._valueSubscription?.dispose();
+			this.mdcLinearProgress?.destroy();
 		},
 
 		'getAttrs': function() {

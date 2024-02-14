@@ -1,5 +1,5 @@
-define(['text!./material-textfield.html', '../tools/tools', '@material/textfield'],
-function(htmlString, tools, materialTextfield) {
+define(['text!./material-textfield.html', '../tools/tools', '../tools/tools.mdc', '@material/textfield'],
+function(htmlString, tools, mdcTools, materialTextfield) {
 
 	const chromeAutofillTempValue = '__prevent_autofill__';
 
@@ -42,9 +42,10 @@ function(htmlString, tools, materialTextfield) {
 			if (!node.isConnected)
 				return;
 
-			const el = $(node).find('.mdc-text-field');
-			this.mdcTextField = new materialTextfield.MDCTextField(el[0]);
-			el.data('mdc-text-field', this.mdcTextField);
+			const el = node.querySelector('.mdc-text-field');
+			this.mdcTextField = new materialTextfield.MDCTextField(el);
+			mdcTools.setMdcComponent(el, this.mdcTextField);
+
 			if (this.autofocus)
 				$(node).find('input')[0].focus();
 
@@ -77,14 +78,9 @@ function(htmlString, tools, materialTextfield) {
 			}
 		},
 		'dispose': function() {
-			if (!this.mdcTextField)
-				return;
-
-			if (this._requiredSubscription)
-				this._requiredSubscription.dispose();
-
-			this._valueSubscription.dispose();
-			this.mdcTextField.destroy();
+			this._requiredSubscription?.dispose();
+			this._valueSubscription?.dispose();
+			this.mdcTextField?.destroy();
 		},
 
 		'getCss': function() {

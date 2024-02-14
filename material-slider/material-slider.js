@@ -1,11 +1,11 @@
-﻿define(['text!./material-slider.html', '../tools/tools', '@material/slider'],
-function(htmlString, tools, materialSlider) {
+﻿define(['text!./material-slider.html', '../tools/tools.mdc', '../tools/tools', '@material/slider'],
+function(htmlString, mdcTools, tools, materialSlider) {
 
 	const MaterialSlider = function(params) {
-		this.min = params.min || 0;
-		this.max = params.max || 100;
-		this.step = params.step || 1;
-		this.discrete = !params.continuous;
+		this.min = ko.unwrap(params.min) || 0;
+		this.max = ko.unwrap(params.max) || 100;
+		this.step = ko.unwrap(params.step) || 1;
+		this.discrete = !ko.unwrap(params.continuous);
 		this.value = params.value;
 		this.enable = tools.readEnableStatus(params);
 
@@ -18,41 +18,28 @@ function(htmlString, tools, materialSlider) {
 		});
 
 		//component lifetime
-		this.observer = null;
 		this.mdcSlider = null;
 		this._valueSubscription = null;
-		this.enableSubscription = null;
+		this._enableSubscription = null;
+		this._intersectionObserver = null;
+		this._resizeObserver = null;
 	};
 	MaterialSlider.prototype = {
 		'koDescendantsComplete': function(node) {
 			if (!node.isConnected)
 				return;
 
-			//mdc-slider uses a rectangle internally to calculate the thumb position,
-			//so we must defer initialization till it's visible
-			this.observer = new IntersectionObserver(entries => {
-				entries.forEach(entry => {
-					if (entry.isIntersecting) {
-						this._init(entry.target);
-						this.observer.disconnect();
-						this.observer = null;
-					}
-				});
-			});
-			this.observer.observe(node);
+			const el = node.querySelector('.mdc-slider');
+			this._intersectionObserver = mdcTools.initOnVisible(el, this);
+			this._resizeObserver = mdcTools.layoutOnResize(el);
 		},
 		'dispose': function() {
-			if (this.observer)
-				this.observer.disconnect();
-
-			if (this.enableSubscription)
-				this.enableSubscription.dispose();
-
-			if (this._valueSubscription)
-				this._valueSubscription.dispose();
-
-			if (this.mdcSlider)
-				this.mdcSlider.destroy();
+			this._resizeObserver?.disconnect();
+			this._intersectionObserver?.disconnect();
+			this._enableSubscription?.dispose();
+			this._valueSubscription?.dispose();
+			this.mdcSlider?.destroy();
+			this.mdcSlider = null; //because of the timeout hack in _init
 		},
 
 		'getSliderCss': function() {
@@ -65,29 +52,34 @@ function(htmlString, tools, materialSlider) {
 				'min': this.min,
 				'max': this.max,
 				'step': this.step,
-				'value': this.value,
+				'value': ko.unwrap(this.value),
 				'aria-label': this.label
 			};
 		},
+
 		'onInput': function(vm, event) {
-			this.value(event.detail.value);
+			setTimeout(() => {
+				this.value(event.detail.value);
+			});
 		},
 
-		'_init': function(node) {
-			this.mdcSlider = new materialSlider.MDCSlider($(node).find('.mdc-slider')[0]);
-			this.mdcSlider.setDisabled(!ko.unwrap(this.enable));
+		'_init': function(el) {
+			this.mdcSlider = new materialSlider.MDCSlider(el);
+			mdcTools.setMdcComponent(el, this.mdcSlider);
+
 			this._valueSubscription = this.value.subscribe(newVal => {
 				this.mdcSlider.setValue(newVal);
 			});
+
+			this.mdcSlider.setDisabled(!ko.unwrap(this.enable));
 			if (ko.isObservable(this.enable)) {
-				this.enableSubscription = this.enable.subscribe(newVal => {
+				this._enableSubscription = this.enable.subscribe(newVal => {
 					this.mdcSlider.setDisabled(!newVal);
 				});
 			}
-			//Funny thing is that when the slider is in an opening dialog, its position is not calculated correctly.
-			//Let's try to work around it by waiting a bit and recalculating.
-			setTimeout(() => this.mdcSlider && this.mdcSlider.foundation.layout(), 100);
-			setTimeout(() => this.mdcSlider && this.mdcSlider.foundation.layout(), 250);
+
+			//sometimes, in dynamic layouts, the element is moved after the layout has been calculated, but resize isn't observed
+			setTimeout(() => this.mdcSlider?.foundation.layout(), 250);
 		}
 	};
 

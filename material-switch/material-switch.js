@@ -1,5 +1,5 @@
-﻿define(['text!./material-switch.html', '../tools/tools', '@material/switch'],
-function(htmlString, tools, materialSwitch) {
+﻿define(['text!./material-switch.html', '../tools/tools.mdc', '../tools/tools', '@material/switch'],
+function(htmlString, mdcTools, tools, materialSwitch) {
 
 	const MaterialSwitch = function(params) {
 		this.label = params.label;
@@ -15,44 +15,37 @@ function(htmlString, tools, materialSwitch) {
 		else {
 			this.value = ko.computed({
 				'read': () => !params.value(),
-				'write': function(newValue) {
-					params.value(!newValue);
-				}
+				'write': newValue => params.value(!newValue)
 			});
-			this.inverted = true;
+			this._inverted = true;
 		}
 
 		//component lifetime
-		this.observer = null;
 		this.mdcSwitch = null;
 		this._valueSubscription = null;
+		this._intersectionObserver = null;
 	};
 	MaterialSwitch.prototype = {
 		'koDescendantsComplete': function(node) {
 			if (!node.isConnected)
 				return;
 
-			this.observer = new IntersectionObserver(entries => {
-				entries.forEach(entry => {
-					if (entry.isIntersecting) {
-						this._init(entry.target);
-						this.observer.disconnect();
-						this.observer = null;
-					}
-				});
-			});
-			this.observer.observe(node);
+			const el = node.querySelector('.mdc-switch');
+			this._intersectionObserver = mdcTools.initOnVisible(el, this);
 		},
 		'dispose': function() {
-			if (this.observer)
-				this.observer.disconnect();
+			this._intersectionObserver?.disconnect();
+			this._valueSubscription?.dispose();
+			if (this._inverted)
+				this.value.dispose();
 
-			if (this.mdcSwitch) {
-				this._valueSubscription.dispose();
-				this.mdcSwitch.destroy();
-				if (this.inverted)
-					this.value.dispose();
-			}
+			this.mdcSwitch?.destroy();
+		},
+
+		'getLabelCss': function() {
+			return {
+				'material-switch-label__structured': this.structuredLabel
+			};
 		},
 
 		'toggle': function() {
@@ -62,14 +55,11 @@ function(htmlString, tools, materialSwitch) {
 				this.value(!this.value());
 			});
 		},
-		'getLabelCss': function() {
-			return {
-				'material-switch-label__structured': this.structuredLabel
-			};
-		},
 
-		'_init': function(node) {
-			this.mdcSwitch = new materialSwitch.MDCSwitch($(node).find('.mdc-switch')[0]);
+		'_init': function(el) {
+			this.mdcSwitch = new materialSwitch.MDCSwitch(el);
+			mdcTools.setMdcComponent(el, this.mdcSwitch);
+
 			this.mdcSwitch.selected = this.value();
 			this._valueSubscription = this.value.subscribe(newVal => {
 				this.mdcSwitch.selected = newVal;

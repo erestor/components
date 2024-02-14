@@ -1,5 +1,5 @@
-﻿define(['text!./material-snackbar.html', '@material/snackbar'],
-function(htmlString, materialSnackbar) {
+﻿define(['text!./material-snackbar.html', '../tools/tools.mdc', '@material/snackbar'],
+function(htmlString, mdcTools, materialSnackbar) {
 
 	const MaterialSnackbar = function(params) {
 		this.id = params.id;
@@ -15,20 +15,19 @@ function(htmlString, materialSnackbar) {
 			if (!node.isConnected)
 				return;
 
-			const el = $(node).find('.mdc-snackbar');
-			this.mdcSnackbar = new materialSnackbar.MDCSnackbar(el[0]);
+			const el = node.querySelector('.mdc-snackbar');
+			this.mdcSnackbar = new materialSnackbar.MDCSnackbar(el);
+			mdcTools.setMdcComponent(el, this.mdcSnackbar);
+
 			if (this.timeoutMs)
 				this.mdcSnackbar.timeoutMs = this.timeoutMs;
 			else if (this.button)
 				this.mdcSnackbar.timeoutMs = -1;
 			else
 				this.mdcSnackbar.timeoutMs = 4000; //default paper-toast timeout was 3000, but that's below the range
-
-			el.data('mdc-snackbar', this.mdcSnackbar); //this is necessary to allow opening the snackbar from outside the component
 		},
 		'dispose': function() {
-			if (this.mdcSnackbar)
-				this.mdcSnackbar.destroy();
+			this.mdcSnackbar?.destroy();
 		}
 	};
 

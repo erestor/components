@@ -1,4 +1,4 @@
-﻿define(['../tools/tools'], function(tools) {
+﻿define(['../tools/tools', '../tools/tools.mdc'], function(tools, mdcTools) {
 
 	var DialogButtonBase = function(params) {
 		this.enable = tools.readEnableStatus(params);
@@ -22,7 +22,7 @@
 			}
 		},
 		'_getMdcDialog': function() {
-			return this.dialogEl.data('mdc-dialog');
+			return mdcTools.getMdcComponent(this.dialogEl);
 		}
 	};
 	return DialogButtonBase;
