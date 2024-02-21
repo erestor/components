@@ -54,7 +54,7 @@ function(htmlString, tools, mdcTools, materialTextfield) {
 				setTimeout(() => {
 					this.value('');
 					this.value.isModified(false);
-					node.querySelector('.mdc-text-field--invalid').classList.remove('mdc-text-field--invalid');
+					node.querySelector('.mdc-text-field--invalid')?.classList.remove('mdc-text-field--invalid');
 					if (this.autofocus)
 						node.querySelector('input').focus();
 				}, 100);

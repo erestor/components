@@ -6,6 +6,7 @@ function(htmlString, materialMenuComponent, tools) {
 		this.caption = params.caption;
 		this.enable = params.enable;
 		this.disable = params.disable;
+		this.customMenuClass = params.customMenuClass;
 		this.childMenu = new materialMenuComponent.viewModel(params);
 		this.menuId = tools.getGuid();
 	};

@@ -7,7 +7,7 @@
 	<i class="material-icons">{{icon}}</i>
 </material-button>
 <!-- /ko -->
-<div class="mdc-menu mdc-menu-surface" data-bind="id: menuId, event: {'MDCMenu:selected': onSelected}">
+<div class="mdc-menu mdc-menu-surface" data-bind="id: menuId, event: {'MDCMenu:selected': onSelected}, css: customMenuClass">
 	<ul class="mdc-deprecated-list" role="menu" aria-orientation="vertical"
 		data-bind="css: childMenu.childList.getCss(), template: {'nodes': $componentTemplateNodes, 'data': $parent}"></ul>
 </div>
