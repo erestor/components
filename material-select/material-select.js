@@ -36,7 +36,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 		this.mdcSelect = null;
 		this._enableSubscription = null;
 		this._selectedIndexSubscription = null;
-		this.validationSubscription = null;
+		this._validationSubscription = null;
 		this._valueSubscription = null;
 	};
 	MaterialSelect.prototype = {
@@ -44,8 +44,10 @@ function(htmlString, tools, mdcTools, materialSelect) {
 			if (!node.isConnected)
 				return;
 
-			var el = $(node).find('.mdc-select');
-			this.mdcSelect = new materialSelect.MDCSelect(el[0]);
+			var el = node.querySelector('.mdc-select');
+			this.mdcSelect = new materialSelect.MDCSelect(el);
+			mdcTools.setMdcComponent(el, this.mdcSelect);
+
 			this.mdcSelect.menu.setFixedPosition(true);
 			this.mdcSelect.disabled = !this.enable();
 			this.mdcSelect.required = !!this.required;
@@ -70,34 +72,23 @@ function(htmlString, tools, mdcTools, materialSelect) {
 			}
 			if (this.validate) {
 				this.mdcSelect.valid = this.validationValue.isValid();
-				this.validationSubscription = this.validationValue.isValid.subscribe(newVal => this.mdcSelect.valid = newVal);
+				this._validationSubscription = this.validationValue.isValid.subscribe(newVal => this.mdcSelect.valid = newVal);
 			}
-
-			el.data('mdc-select', this.mdcSelect);
 
 			//menu must be on top level to ensure proper function
 			document.body.appendChild(this.mdcSelect.menu.root);
 		},
 		'dispose': function() {
 			this.layoutUpdater.dispose();
-
-			if (this.validationSubscription)
-				this.validationSubscription.dispose();
-
-			if (this._selectedIndexSubscription)
-				this._selectedIndexSubscription.dispose();
-
-			if (this._valueSubscription)
-				this._valueSubscription.dispose();
-
+			this._validationSubscription?.dispose();
+			this._selectedIndexSubscription?.dispose();
+			this._valueSubscription?.dispose();
+			this._enableSubscription?.dispose();
 			if (this.mdcSelect) {
-				this._enableSubscription.dispose();
 				const el = this.mdcSelect.menu.root;
 				this.mdcSelect.destroy();
-				tools.cleanNode(el);
-				document.body.removeChild(el);
+				ko.removeNode(el);
 			}
-
 			if (this.valueIsNumeric)
 				this.value.dispose();
 		},

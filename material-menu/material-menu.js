@@ -1,5 +1,10 @@
-﻿define(['text!./material-menu.html', '../material-list/material-list', '../tools/tools', '@material/menu', '@material/ripple'],
-function(htmlString, materialListComponent, tools, materialMenu, materialRipple) {
+﻿define([
+	'text!./material-menu.html',
+	'../material-list/material-list',
+	'../tools/tools.mdc',
+	'@material/menu',
+	'@material/ripple'],
+function(htmlString, materialListComponent, mdcTools, materialMenu, materialRipple) {
 
 	const MaterialMenu = function(params) {
 		this.selectedIndex = params.selectedIndex;
@@ -19,8 +24,10 @@ function(htmlString, materialListComponent, tools, materialMenu, materialRipple)
 			if (!node.isConnected)
 				return;
 
-			const el = $(node).find('.mdc-menu');
-			this.mdcMenu = new materialMenu.MDCMenu(el[0]);
+			const el = node.querySelector('.mdc-menu');
+			this.mdcMenu = new materialMenu.MDCMenu(el);
+			mdcTools.setMdcComponent(el, this.mdcMenu);
+
 			if (!this.fast)
 				this.mdcRipples = this.mdcMenu.list.listElements.map(listItemEl => new materialRipple.MDCRipple(listItemEl));
 
@@ -42,15 +49,15 @@ function(htmlString, materialListComponent, tools, materialMenu, materialRipple)
 			}
 
 			this.mdcMenu.list.listElements.forEach(listEl => $(listEl).attr('role', 'menuitem'));
-			el.data('mdc-menu', this.mdcMenu); //this is necessary to allow opening the menu from outside the component
 
 			let typedChars = '';
 			this._handleKeyDown = ev => {
 				if (!this.mdcMenu.open)
 					return;
 
-				const isMenuButton = $(ev.target).closest('.mdc-menu-surface--anchor').attr('data-menu') == el.attr('id');
-				const targetMenu = $(ev.target).closest('.mdc-menu').data('mdc-menu');
+				const isMenuButton = $(ev.target).closest('.mdc-menu-surface--anchor').attr('data-menu') == this.mdcMenu.root.id;
+				const closestMenu = $(ev.target).closest('.mdc-menu');
+				const targetMenu = closestMenu.length > 0 && mdcTools.getMdcComponent(closestMenu[0]);
 				if (isMenuButton || targetMenu == this.mdcMenu) {
 					typedChars += ev.key.toLowerCase();
 					const items = this.mdcMenu.items;
@@ -77,18 +84,14 @@ function(htmlString, materialListComponent, tools, materialMenu, materialRipple)
 			if (this._handleKeyDown)
 				document.removeEventListener('keydown', this._handleKeyDown);
 
-			if (this._selectedIndexSubscription)
-				this._selectedIndexSubscription.dispose();
-
-			if (this._valueSubscription)
-				this._valueSubscription.dispose();
+			this._selectedIndexSubscription?.dispose();
+			this._valueSubscription?.dispose();
 
 			this.mdcRipples.forEach(ripple => ripple.destroy());
 			if (this.mdcMenu) {
 				const el = this.mdcMenu.root;
 				this.mdcMenu.destroy();
-				tools.cleanNode(el);
-				document.body.removeChild(el);
+				ko.removeNode(el);
 			}
 		},
 
