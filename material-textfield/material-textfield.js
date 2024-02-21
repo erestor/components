@@ -47,16 +47,16 @@ function(htmlString, tools, mdcTools, materialTextfield) {
 			mdcTools.setMdcComponent(el, this.mdcTextField);
 
 			if (this.autofocus)
-				$(node).find('input')[0].focus();
+				node.querySelector('input').focus();
 
 			if (this.value() == chromeAutofillTempValue) {
 				//hack to overrule Chrome stupid autofill
 				setTimeout(() => {
 					this.value('');
 					this.value.isModified(false);
-					$(node).find('.mdc-text-field--invalid').removeClass('mdc-text-field--invalid');
+					node.querySelector('.mdc-text-field--invalid').classList.remove('mdc-text-field--invalid');
 					if (this.autofocus)
-						$(node).find('input')[0].focus();
+						node.querySelector('input').focus();
 				}, 100);
 			}
 			this._valueSubscription = this.value.subscribe(() => {

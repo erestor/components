@@ -22,14 +22,13 @@ function(htmlString, tools, materialRipple) {
 			if (!node.isConnected)
 				return;
 
-			const el = $(node).find('.mdc-button')[0];
+			const el = node.querySelector('.mdc-button');
 			this.mdcRipple = new materialRipple.MDCRipple(el);
 			if (this.autofocus)
 				el.focus();
 		},
 		'dispose': function() {
-			if (this.mdcRipple)
-				this.mdcRipple.destroy();
+			this.mdcRipple?.destroy();
 		},
 
 		'getAttrs': function() {

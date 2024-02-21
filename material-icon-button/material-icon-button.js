@@ -14,12 +14,11 @@ function(htmlString, tools, materialRipple) {
 			if (!node.isConnected)
 				return;
 
-			this.mdcRipple = new materialRipple.MDCRipple($(node).find('.mdc-icon-button')[0]);
+			this.mdcRipple = new materialRipple.MDCRipple(node.querySelector('.mdc-icon-button'));
 			this.mdcRipple.unbounded = true;
 		},
 		'dispose': function() {
-			if (this.mdcRipple)
-				this.mdcRipple.destroy();
+			this.mdcRipple?.destroy();
 		}
 	};
 

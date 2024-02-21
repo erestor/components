@@ -13,11 +13,10 @@ function(htmlString, materialCircularProgress) {
 			if (!node.isConnected)
 				return;
 
-			this.mdcProgress = new materialCircularProgress.MDCCircularProgress($(node).find('.mdc-circular-progress')[0]);
+			this.mdcProgress = new materialCircularProgress.MDCCircularProgress(node.querySelector('.mdc-circular-progress'));
 		},
 		'dispose': function() {
-			if (this.mdcProgress)
-				this.mdcProgress.destroy();
+			this.mdcProgress?.destroy();
 		},
 
 		'getAttrs': function() {

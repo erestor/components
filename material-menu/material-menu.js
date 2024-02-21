@@ -67,7 +67,7 @@ function(htmlString, materialListComponent, mdcTools, materialMenu, materialRipp
 						if (!$(item).is(':visible'))
 							continue;
 
-						if ($(item).find('.mdc-deprecated-list-item__text')[0].textContent.trim().toLowerCase().startsWith(typedChars)) {
+						if (item.querySelector('.mdc-deprecated-list-item__text').textContent.trim().toLowerCase().startsWith(typedChars)) {
 							this.mdcMenu.foundation.adapter.focusItemAtIndex(items.indexOf(item));
 							break;
 						}

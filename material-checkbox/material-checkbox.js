@@ -18,15 +18,13 @@ function(htmlString, tools, materialCheckbox, materialFormField) {
 			if (!node.isConnected)
 				return;
 
-			this.mdcCheckbox = new materialCheckbox.MDCCheckbox($(node).find('.mdc-checkbox')[0]);
-			this.mdcFormField = new materialFormField.MDCFormField($(node).find('.mdc-form-field')[0]);
+			this.mdcCheckbox = new materialCheckbox.MDCCheckbox(node.querySelector('.mdc-checkbox'));
+			this.mdcFormField = new materialFormField.MDCFormField(node.querySelector('.mdc-form-field'));
 			this.mdcFormField.input = this.mdcCheckbox;
 		},
 		'dispose': function() {
-			if (this.mdcFormField) {
-				this.mdcFormField.destroy();
-				this.mdcCheckbox.destroy();
-			}
+			this.mdcFormField?.destroy();
+			this.mdcCheckbox?.destroy();
 		},
 
 		'onClicked': function(vm, event) {

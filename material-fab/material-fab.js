@@ -13,11 +13,10 @@ function(htmlString, tools, materialRipple) {
 			if (!node.isConnected)
 				return;
 
-			this.mdcRipple = new materialRipple.MDCRipple($(node).find('.mdc-fab')[0]);
+			this.mdcRipple = new materialRipple.MDCRipple(node.querySelector('.mdc-fab'));
 		},
 		'dispose': function() {
-			if (this.mdcRipple)
-				this.mdcRipple.destroy();
+			this.mdcRipple?.destroy();
 		}
 	};
 

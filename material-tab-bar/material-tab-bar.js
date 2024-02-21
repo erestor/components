@@ -8,24 +8,22 @@ function(htmlString, tools, materialTabBar) {
 
 		//component lifetime
 		this.mdcTabBar = null;
-		this.selectionSubscription = null;
+		this._selectionSubscription = null;
 	};
 	MaterialTabBar.prototype = {
 		'koDescendantsComplete': function(node) {
 			if (!node.isConnected)
 				return;
 
-			this.mdcTabBar = new materialTabBar.MDCTabBar($(node).find('.mdc-tab-bar')[0]);
+			this.mdcTabBar = new materialTabBar.MDCTabBar(node.querySelector('.mdc-tab-bar'));
 			this.mdcTabBar.activateTab(this.selected());
-			this.selectionSubscription = this.selected.subscribe(newVal => {
+			this._selectionSubscription = this.selected.subscribe(newVal => {
 				this.mdcTabBar.activateTab(newVal);
 			});
 		},
 		'dispose': function() {
-			if (this.mdcTabBar) {
-				this.selectionSubscription.dispose();
-				this.mdcTabBar.destroy();
-			}
+			this._selectionSubscription?.dispose();
+			this.mdcTabBar?.destroy();
 		},
 
 		'onActivated': function(vm, event) {

@@ -16,7 +16,7 @@ function(htmlString, tools, materialIconButton) {
 			if (!node.isConnected)
 				return;
 
-			this.mdcIconButton = new materialIconButton.MDCIconButtonToggle($(node).find('.mdc-icon-button')[0]);
+			this.mdcIconButton = new materialIconButton.MDCIconButtonToggle(node.querySelector('.mdc-icon-button'));
 			this.mdcIconButton.on = this.value();
 			this._valueSubscription = this.value.subscribe(newVal => {
 				this.mdcIconButton.on = newVal;

@@ -37,10 +37,10 @@ function(htmlString, tools, mdcTools, materialTextfield) {
 			mdcTools.setMdcComponent(el, this.mdcTextField);
 
 			if (this.autofocus)
-				$(node).find('textarea')[0].focus();
+				node.querySelector('textarea').focus();
 
 			if (this.validate)
-				this.mdcHelperText = new materialTextfield.MDCTextFieldHelperText($(node).find('.mdc-text-field-helper-text')[0]);
+				this.mdcHelperText = new materialTextfield.MDCTextFieldHelperText(node.querySelector('.mdc-text-field-helper-text'));
 
 			this._inputSubscription = this.value.subscribe(() => {
 				//necessary hack to update the label style when knockout changes the value

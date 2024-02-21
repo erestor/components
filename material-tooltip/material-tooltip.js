@@ -12,13 +12,11 @@ function(htmlString, tools, materialTooltip) {
 			if (!node.isConnected)
 				return;
 
-			const el = $(node);
-			el.prev().attr('aria-describedby', this.id);
-			this.mdcTooltip = new materialTooltip.MDCTooltip(el.find('.mdc-tooltip')[0]);
+			$(node).prev().attr('aria-describedby', this.id);
+			this.mdcTooltip = new materialTooltip.MDCTooltip(node.querySelector('.mdc-tooltip'));
 		},
 		'dispose': function() {
-			if (this.mdcTooltip)
-				this.mdcTooltip.destroy();
+			this.mdcTooltip?.destroy();
 		}
 	};
 

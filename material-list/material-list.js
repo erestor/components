@@ -16,14 +16,13 @@ function(htmlString, materialList, materialRipple) {
 			if (!node.isConnected)
 				return;
 
-			this.mdcList = new materialList.MDCList($(node).find('.mdc-deprecated-list')[0]);
+			this.mdcList = new materialList.MDCList(node.querySelector('.mdc-deprecated-list'));
 			if (!this.fast)
 				this.mdcRipples = this.mdcList.listElements.map(listItemEl => new materialRipple.MDCRipple(listItemEl));
 		},
 		'dispose': function() {
 			this.mdcRipples.forEach(ripple => ripple.destroy());
-			if (this.mdcList)
-				this.mdcList.destroy();
+			this.mdcList?.destroy();
 		},
 
 		'getCss': function() {
