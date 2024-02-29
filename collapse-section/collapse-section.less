@@ -13,6 +13,10 @@
 		&.collapse-section__header--center {
 			justify-content: center;
 		}
+
+		i.material-icons {
+			margin-right: 4px;
+		}
 	}
 
 	.collapse-section__title {
@@ -30,22 +34,11 @@
 	}
 }
 
-html[dir="ltr"] {
-	collapse-section {
-		.collapse-section__header {
-			i.material-icons {
-				margin-right: 4px;
-			}
-		}
-	}
-}
-
-html[dir="rtl"] {
-	collapse-section {
-		.collapse-section__header {
-			i.material-icons {
-				margin-left: 4px;
-			}
+html[dir="rtl"] collapse-section {
+	.collapse-section__header {
+		i.material-icons {
+			margin-right: 0;
+			margin-left: 4px;
 		}
 	}
 }

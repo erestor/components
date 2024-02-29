@@ -5,6 +5,7 @@
 
 	> label {
 		flex: 1;
+		margin-right: 8px;
 
 		&.material-switch-label__structured {
 			display: flex;
@@ -23,18 +24,9 @@ material-switch + material-switch {
 	margin-top: 24px;
 }
 
-html[dir="ltr"] {
-	material-switch {
-		> label {
-			margin-right: 8px;
-		}
-	}
-}
-
-html[dir="rtl"] {
-	material-switch {
-		> label {
-			margin-left: 8px;
-		}
+html[dir="rtl"] material-switch {
+	> label {
+		margin-right: 0;
+		margin-left: 8px;
 	}
 }
