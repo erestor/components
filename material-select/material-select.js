@@ -48,7 +48,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 			this.mdcSelect = new materialSelect.MDCSelect(el);
 			mdcTools.setMdcComponent(el, this.mdcSelect);
 
-			this.mdcSelect.menu.setFixedPosition(true);
+			this.mdcSelect.menu.setIsHoisted(true);
 			this.mdcSelect.disabled = !this.enable();
 			this.mdcSelect.required = !!this.required;
 			this._enableSubscription = this.enable.subscribe(newVal => this.mdcSelect.disabled = !newVal);

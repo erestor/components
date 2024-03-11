@@ -31,7 +31,7 @@ function(htmlString, materialListComponent, mdcTools, materialMenu, materialRipp
 			if (!this.fast)
 				this.mdcRipples = this.mdcMenu.list.listElements.map(listItemEl => new materialRipple.MDCRipple(listItemEl));
 
-			this.mdcMenu.setFixedPosition(true);
+			this.mdcMenu.setIsHoisted(true);
 			if (this.selectedIndex || this.value)
 				this.mdcMenu.list.singleSelection = true;
 
