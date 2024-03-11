@@ -2,7 +2,7 @@
 	<!-- ko if: title -->
 	<div class="collapse-section__title">
 		<i class="material-icons" data-bind="visible: titleIcon">{{titleIcon}}</i>
-		<span data-bind="click: click, css: titleClass">{{title}}</span>
+		<span data-bind="html: title, click: click, css: titleClass"></span>
 	</div>
 	<!-- /ko -->
 	<material-icon-button data-bind="click: click, css: {'flip': opened}" alt="toggle">{{buttonIcon}}</material-icon-button>
