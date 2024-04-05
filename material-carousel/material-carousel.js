@@ -47,12 +47,13 @@ function(htmlString, animations) {
 					if (!$(el).is('iframe'))
 						$(el).click(stop);
 					else {
-						var listener = window.addEventListener('blur', function() {
+						var listener = function() {
 							if (document.activeElement === el) {
 								stop();
 								window.removeEventListener('blur', listener);
 							}
-						});
+						};
+						window.addEventListener('blur', listener);
 					}
 				});
 
