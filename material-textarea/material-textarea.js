@@ -50,7 +50,7 @@ function(htmlString, tools, mdcTools, materialTextfield) {
 				foundation.adapter.floatLabel(shouldFloat);
 				foundation.styleFloating(shouldFloat);
 				if (this.value.isValid)
-					this.mdcTextField.valid = this.value.isValid();
+					this.mdcTextField.valid = this.value.isValid(); //NOTE: this will not work if ko.option.deferUpdates is true, as the validation will not have run yet
 			});
 		},
 		'dispose': function() {
