@@ -2,6 +2,7 @@
 function(htmlString, tools, mdcTools, materialSelect) {
 
 	const MaterialSelect = function(params) {
+		this.items = params.items;
 		this.label = params.label;
 		this.selectedIndex = params.selectedIndex;
 		this.select = params.select;
@@ -15,17 +16,6 @@ function(htmlString, tools, mdcTools, materialSelect) {
 		this.filled = ko.unwrap(params.filled);
 		this.required = ko.unwrap(params.required);
 
-		this.layoutUpdater = ko.computed(() => {
-			if (ko.isObservable(params.items))
-				params.items(); //introduce dependency
-
-			if (this.mdcSelect) {
-				setTimeout(() => {
-					ko.ignoreDependencies(() => this.mdcSelect.layoutOptions());
-				});
-			}
-		});
-
 		//data binding
 		this.labelId = tools.getGuid();
 		this.selectedTextId = tools.getGuid();
@@ -34,6 +24,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 
 		//component lifecycle
 		this.mdcSelect = null;
+		this._itemsSubscription = null;
 		this._enableSubscription = null;
 		this._selectedIndexSubscription = null;
 		this._validationSubscription = null;
@@ -56,7 +47,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 				this.mdcSelect.selectedIndex = this.selectedIndex();
 				this._selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
 					setTimeout(() => {
-						if (this.mdcSelect.selectedIndex != newVal)
+						if (this.mdcSelect?.selectedIndex != newVal)
 							this.mdcSelect.selectedIndex = newVal;
 					});
 				});
@@ -65,7 +56,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 				this.mdcSelect.value = this.value();
 				this._valueSubscription = this.value.subscribe(newVal => {
 					setTimeout(() => {
-						if (this.mdcSelect.value != newVal)
+						if (this.mdcSelect?.value != newVal)
 							this.mdcSelect.value = newVal;
 					});
 				});
@@ -75,11 +66,18 @@ function(htmlString, tools, mdcTools, materialSelect) {
 				this._validationSubscription = this.validationValue.isValid.subscribe(newVal => this.mdcSelect.valid = newVal);
 			}
 
+			//when the items for selection change, we need to update the layout
+			this._itemsSubscription = !ko.isObservable(this.items) ? null : this.items.subscribe(() => {
+				setTimeout(() =>
+					this.mdcSelect?.layoutOptions()
+				);
+			});
+
 			//menu must be on top level to ensure proper function
 			document.body.appendChild(this.mdcSelect.menu.root);
 		},
 		'dispose': function() {
-			this.layoutUpdater.dispose();
+			this._itemsSubscription?.dispose();
 			this._validationSubscription?.dispose();
 			this._selectedIndexSubscription?.dispose();
 			this._valueSubscription?.dispose();
@@ -87,6 +85,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 			if (this.mdcSelect) {
 				const el = this.mdcSelect.menu.root;
 				this.mdcSelect.destroy();
+				this.mdcSelect = null;
 				ko.removeNode(el);
 			}
 			if (this.valueIsNumeric)
