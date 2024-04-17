@@ -5,6 +5,7 @@ function(htmlString, tools, materialRipple) {
 		//data binding
 		this.click = params.click;
 		this.enable = tools.readEnableStatus(params);
+		this.type = params.type;
 
 		//css
 		this.outlined = params.outlined;
@@ -36,6 +37,7 @@ function(htmlString, tools, materialRipple) {
 				'aria-disabled': !this.enable(),
 				'autofocus': this.autofocus ? '' : undefined,
 				'data-mdc-dialog-button-default': (this.autofocus || this.default) ? '' : undefined,
+				'type': this.type
 			};
 		},
 		'getCss': function() {
