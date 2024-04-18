@@ -1,40 +1,45 @@
-﻿define([
-	'text!./material-menu-button.html',
-	'../material-select/material-select'
-],
-function(htmlString, materialSelectComponent) {
+﻿define(['text!./material-menu-button.html', '../material-menu/material-menu', '../tools/tools'],
+function(htmlString, materialMenuComponent, tools) {
 
-	var MaterialSelectVM = materialSelectComponent.viewModel;
+	const MaterialMenuButton = function(params) {
+		this.icon = params.icon || 'more_vert';
+		this.caption = params.caption;
+		this.enable = params.enable;
+		this.disable = params.disable;
+		this.customMenuClass = params.customMenuClass;
 
-	function MaterialMenuButton(params) {
+		this.menuId = tools.getGuid();
+		this.childMenu = new materialMenuComponent.viewModel(params);
+		this.bindMenu = ko.observable(false);
+	};
+	MaterialMenuButton.prototype = {
+		'dispose': function() {
+			this.childMenu?.dispose();
+		},
 
-		//fix polymer bug where dropdown appears as much below the button as the page is scrolled, making it possibly appear below viewscreen
-		//(even though paper-menu-button vertical-align should be 'top' by default!)
-		if (params.valign === undefined)
-			params.valign = 'top';
-
-		MaterialSelectVM.call(this, params);
-		this.buttonCaption = params.buttonCaption;
-		this.noselect = params.noselect;
-		this.icon = params.icon || 'icons:arrow-drop-down'; //depends on polymer iron-icons
-
-		var self = this;
-		this.dropdownTriggerCaption = ko.computed(function() {
-			return self.buttonCaption == 'selection' ? self.selectedItemText() : ko.unwrap(self.buttonCaption);
-		});
-	}
-	MaterialMenuButton.prototype = Object.create(MaterialSelectVM.prototype);
-	MaterialMenuButton.prototype.constructor = MaterialMenuButton;
-
-	MaterialMenuButton.prototype.getDropdown = function() {
-		if (!this.dropdownEl)
-			this.dropdownEl = $('#' + this.rootId)[0].$.dropdown;
-
-		return this.dropdownEl;
+		'onButtonClick': function() {
+			if (!this.bindMenu())
+				this.bindMenu(true);
+			else
+				this.childMenu.mdcMenu.open = true;
+		},
+		'onMenuRendered': function(node) {
+			this.childMenu.koDescendantsComplete(node.parentElement);
+			this.childMenu.mdcMenu.open = true;
+		}
 	};
 
 	return {
-		'viewModel': MaterialMenuButton,
+		'viewModel': {
+			createViewModel: function(params, componentInfo) {
+				const materialMenuButton = new MaterialMenuButton(params),
+					node = componentInfo.element;
+
+				node.classList.add('mdc-menu-surface--anchor');
+				node.setAttribute('data-menu', materialMenuButton.menuId);
+				return materialMenuButton;
+			}
+		},
 		'template': htmlString
 	};
 });

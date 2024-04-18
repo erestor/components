@@ -1,4 +1,22 @@
 ﻿<!-- ko if: label -->
-<span class="caption" data-bind="html: label"></span>
+<span class="material-slider__label mdc-typography--caption" data-bind="html: label"></span>
 <!-- /ko -->
-<paper-slider data-bind="attr: sliderAttrs, enable: enable, event: { 'change': onChanged, 'immediate-value-change': onImmediateChange }"></paper-slider>
+<div class="mdc-slider" data-bind="css: getSliderCss(), event: {'MDCSlider:input': onInput}">
+	<div class="mdc-slider__track">
+		<div class="mdc-slider__track--inactive"></div>
+		<div class="mdc-slider__track--active">
+			<div class="mdc-slider__track--active_fill"></div>
+		</div>
+	</div>
+	<div class="mdc-slider__thumb">
+		<!-- ko if: discrete -->
+		<div class="mdc-slider__value-indicator-container" aria-hidden="true">
+			<div class="mdc-slider__value-indicator">
+				<span class="mdc-slider__value-indicator-text">{{value}}</span>
+			</div>
+		</div>
+		<!-- /ko -->
+		<div class="mdc-slider__thumb-knob"></div>
+		<input class="mdc-slider__input" type="range" data-bind="attr: getInputAttrs()">
+	</div>
+</div>

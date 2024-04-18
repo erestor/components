@@ -1,12 +1,7 @@
-﻿define(['../tools/tools'],
-	function(tools) {
+﻿define(['../tools/tools', '../tools/tools.mdc'], function(tools, mdcTools) {
 
 	var DialogButtonBase = function(params) {
-		this.content = params.content;
 		this.enable = tools.readEnableStatus(params);
-		this.title = params.title;
-		this.data = params.data; //for templated version
-		this.noPosition = params.noPosition;
 		this.dialogId = tools.getGuid();
 		this.dialogEl = null;
 	};
@@ -15,15 +10,19 @@
 			if (!this.dialogEl)
 				this.dialogEl = $('#' + this.dialogId);
 
-			var d = this.dialogEl[0];
-			if (d.__isAnimating) {
-				//this is an unfortunate hack to prevent re-opening the dialog on click while it's closing as a result of polymer handler
-				return;
+			var mdcDialog = this._getMdcDialog();
+			if (mdcDialog)
+				mdcDialog.open();
+		},
+		'close': function() {
+			if (this.dialogEl) {
+				var mdcDialog = this._getMdcDialog();
+				if (mdcDialog)
+					mdcDialog.close();
 			}
-			if (!this.noPosition)
-				d.positionTarget = $('.' + this.dialogId)[0]; //looking for a class(!)
-
-			d.open();
+		},
+		'_getMdcDialog': function() {
+			return mdcTools.getMdcComponent(this.dialogEl);
 		}
 	};
 	return DialogButtonBase;

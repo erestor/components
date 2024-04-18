@@ -1,7 +1,6 @@
 ﻿//Creates an element clicking on which toggles the state of given bool observable
 define(['text!./toggler.html'], function(htmlString) {
 	var Toggler = function(params) {
-		this.data = params.data;
 		this.value = params.value;
 	};
 	Toggler.prototype = {

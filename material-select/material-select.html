@@ -1,15 +1,51 @@
-﻿<paper-dropdown-menu-light class="material-select-impl" data-bind="label: label, enable: enable, attr: dropdownAttrs, event: { 'opened-changed': openedChanged }">
-	<paper-listbox slot="dropdown-content" data-bind="attr: { 'selected': selectedIndex }, event: { 'selected-changed': selectedChanged }">
-		<!-- ko if: title -->
-		<paper-item disabled>
-			<span class="paper-listbox-title" data-bind="html: title"></span>
-		</paper-item>
+﻿<div class="mdc-select" data-bind="css: getCss(), event: {'MDCSelect:change': onChanged}">
+	<div class="mdc-select__anchor" role="button" aria-haspopup="listbox" aria-expanded="false" data-bind="attr: getAnchorAttrs()">
+		<!-- ko if: filled -->
+		<span class="mdc-select__ripple"></span>
+		<!-- ko ifnot: noLabel -->
+		<span class="mdc-floating-label" data-bind="id: labelId">{{label}}</span>
 		<!-- /ko -->
-		<!-- ko if: optionsCaption -->
-		<paper-item data-bind="text: optionsCaption"></paper-item>
 		<!-- /ko -->
-		<!-- ko foreach: options -->
-		<paper-item data-bind="text: $parent.getOptionText($data, $index())"></paper-item>
+		<!-- ko ifnot: filled -->
+		<span class="mdc-notched-outline">
+			<span class="mdc-notched-outline__leading"></span>
+			<!-- ko ifnot: noLabel -->
+			<span class="mdc-notched-outline__notch">
+				<span class="mdc-floating-label" data-bind="id: labelId">{{label}}</span>
+			</span>
+			<!-- /ko -->
+			<span class="mdc-notched-outline__trailing"></span>
+		</span>
 		<!-- /ko -->
-	</paper-listbox>
-</paper-dropdown-menu-light>
+		<span class="mdc-select__selected-text-container">
+			<span class="mdc-select__selected-text" data-bind="id: selectedTextId"></span>
+		</span>
+		<span class="mdc-select__dropdown-icon">
+			<svg class="mdc-select__dropdown-icon-graphic"
+				 viewBox="7 10 10 5" focusable="false">
+				<polygon class="mdc-select__dropdown-icon-inactive"
+						 stroke="none"
+						 fill-rule="evenodd"
+						 points="7 10 12 15 17 10">
+				</polygon>
+				<polygon class="mdc-select__dropdown-icon-active"
+						 stroke="none"
+						 fill-rule="evenodd"
+						 points="7 15 12 10 17 15">
+				</polygon>
+			</svg>
+		</span>
+		<!-- ko if: filled -->
+		<span class="mdc-line-ripple"></span>
+		<!-- /ko -->
+	</div>
+	<div class="mdc-select__menu mdc-menu mdc-menu-surface">
+		<ul class="mdc-deprecated-list"
+			data-bind="template: {'nodes': $componentTemplateNodes.length > 0 ? $componentTemplateNodes : $parentContext.$componentTemplateNodes, 'data': $parent}"></ul>
+		<!-- this special binding allows one level of nesting, hence custom components can be created wrapping the material-select -->
+	</div>
+</div>
+<!-- ko if: validate -->
+<p class="mdc-select-helper-text mdc-select-helper-text--validation-msg" aria-hidden="true"
+	data-bind="id: helperTextId, validationMessage: validationValue"></p>
+<!-- /ko -->

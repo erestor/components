@@ -1,3 +1,5 @@
-﻿<paper-button data-bind="attr: {'autofocus': autofocus, 'elevation': elevation, 'noink': noink, 'raised': raised}, enable: enable, click: click">
-<!-- ko template: {'nodes': $componentTemplateNodes, data: $parent} --><!-- /ko -->
-</paper-button>
+﻿<button class="mdc-button" data-bind="click: click, enable: enable, attr: getAttrs(), css: getCss()">
+	<span class="mdc-button__ripple"></span>
+	<span class="mdc-button__focus-ring"></span>
+	<!-- ko template: {'nodes': $componentTemplateNodes, data: $parent} --><!-- /ko -->
+</button>

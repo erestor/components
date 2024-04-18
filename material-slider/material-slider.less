@@ -2,12 +2,14 @@
 	display: block;
 	width: 100%;
 
-	> paper-slider {
-		cursor: pointer;
-		width: unset;
+	.material-slider__label {
+		margin-left: 8px;
+	}
+}
 
-		&[disabled] {
-			cursor: default;
-		}
+html[dir="rtl"] material-slider {
+	.material-slider__label {
+		margin-left: 0;
+		margin-right: 8px;
 	}
 }

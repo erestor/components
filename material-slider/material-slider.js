@@ -1,49 +1,85 @@
-﻿define(['text!./material-slider.html', '../tools/tools'],
-function(htmlString, tools) {
+﻿define(['text!./material-slider.html', '../tools/tools.mdc', '../tools/tools', '@material/slider'],
+function(htmlString, mdcTools, tools, materialSlider) {
 
-	var MaterialSlider = function(params) {
-		//the order of the attributes matter - especially the value must be after min and max
-		this.dialogId = tools.getGuid();
+	const MaterialSlider = function(params) {
+		this.min = ko.unwrap(params.min) || 0;
+		this.max = ko.unwrap(params.max) || 100;
+		this.step = ko.unwrap(params.step) || 1;
+		this.discrete = !ko.unwrap(params.continuous);
 		this.value = params.value;
 		this.enable = tools.readEnableStatus(params);
-		this.sliderAttrs = {
-			'id': this.dialogId,
-			'min': params.min || 0,
-			'max': params.max || 100,
-			'value': this.value,
-			'pin': params.pin,
-			'expand': params.expand
-		};
 
-		var self = this;
-		if (params.secondaryProgress)
-			this.sliderAttrs['secondary-progress'] = params.secondaryProgress;
-
-		if (params.step) {
-			this.sliderAttrs.snaps = true;
-			this.sliderAttrs.step = params.step;
-		}
-		if (params.marked) {
-			this.sliderAttrs.snaps = true;
-			this.sliderAttrs.step = 1;
-			this.sliderAttrs['max-markers'] = this.sliderAttrs.max;
-		}
-		this.label = !params.label ? null : ko.pureComputed(function() {
+		this.label = !params.label ? null : ko.pureComputed(() => {
 			var txt = ko.unwrap(params.label);
-			var value = ko.unwrap(self.value);
+			var value = ko.unwrap(this.value);
 			var valueDesc = typeof params.valueDesc == 'function' ? params.valueDesc(value) : value;
 			txt += ' (' + valueDesc + ')';
 			return txt;
 		});
+
+		//component lifetime
+		this.mdcSlider = null;
+		this._valueSubscription = null;
+		this._enableSubscription = null;
+		this._intersectionObserver = null;
+		this._resizeObserver = null;
 	};
 	MaterialSlider.prototype = {
-		'onChanged': function() {
-			var d = $('#' + this.dialogId)[0];
-			this.value(d.value);
+		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
+			const el = node.querySelector('.mdc-slider');
+			this._intersectionObserver = mdcTools.initOnVisible(el, this);
+			this._resizeObserver = mdcTools.layoutOnResize(el);
 		},
-		'onImmediateChange': function() {
-			var d = $('#' + this.dialogId)[0];
-			this.value(d.immediateValue);
+		'dispose': function() {
+			this._resizeObserver?.disconnect();
+			this._intersectionObserver?.disconnect();
+			this._enableSubscription?.dispose();
+			this._valueSubscription?.dispose();
+			this.mdcSlider?.destroy();
+			this.mdcSlider = null; //because of the timeout hack in _init
+		},
+
+		'getSliderCss': function() {
+			return {
+				'mdc-slider--discrete': this.discrete
+			};
+		},
+		'getInputAttrs': function() {
+			return {
+				'min': this.min,
+				'max': this.max,
+				'step': this.step,
+				'value': ko.unwrap(this.value),
+				'aria-label': this.label
+			};
+		},
+
+		'onInput': function(vm, event) {
+			setTimeout(() => {
+				this.value(event.detail.value);
+			});
+		},
+
+		'_init': function(el) {
+			this.mdcSlider = new materialSlider.MDCSlider(el);
+			mdcTools.setMdcComponent(el, this.mdcSlider);
+
+			this._valueSubscription = this.value.subscribe(newVal => {
+				this.mdcSlider.setValue(newVal);
+			});
+
+			this.mdcSlider.setDisabled(!ko.unwrap(this.enable));
+			if (ko.isObservable(this.enable)) {
+				this._enableSubscription = this.enable.subscribe(newVal => {
+					this.mdcSlider.setDisabled(!newVal);
+				});
+			}
+
+			//sometimes, in dynamic layouts, the element is moved after the layout has been calculated, but resize isn't observed
+			setTimeout(() => this.mdcSlider?.foundation.layout(), 250);
 		}
 	};
 

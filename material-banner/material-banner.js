@@ -1,7 +1,7 @@
 ﻿define(['text!./material-banner.html', '../tools/tools'],
 function(htmlString, tools) {
 
-	var MaterialBanner = function(params) {
+	const MaterialBanner = function(params) {
 		this.icon = params.icon;
 		this.text = params.text;
 		this.buttons = params.buttons;

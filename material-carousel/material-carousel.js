@@ -1,7 +1,7 @@
 ﻿define(['text!./material-carousel.html', '../tools/animations'],
 function(htmlString, animations) {
 
-	function ViewModel(params) {
+	function MaterialCarousel(params) {
 		this.frameCount = ko.observable();
 		this.interval = params.interval || 10000; //10 seconds by default
 		this.loop = params.loop === undefined ? true : params.loop;
@@ -47,18 +47,19 @@ function(htmlString, animations) {
 					if (!$(el).is('iframe'))
 						$(el).click(stop);
 					else {
-						var listener = window.addEventListener('blur', function() {
+						var listener = function() {
 							if (document.activeElement === el) {
 								stop();
 								window.removeEventListener('blur', listener);
 							}
-						});
+						};
+						window.addEventListener('blur', listener);
 					}
 				});
 
 				//set up observer to start the carousel spin when it becomes visible
-				var observer = new IntersectionObserver(function(entries) {
-					entries.forEach(function(entry) {
+				var observer = new IntersectionObserver(entries => {
+					entries.forEach(entry => {
 						if (entry.isIntersecting)
 							start();
 						else
@@ -70,9 +71,7 @@ function(htmlString, animations) {
 				ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
 					observer.unobserve(element);
 					stop();
-					controls.each(function(el) {
-						$(el).off('click');
-					});
+					controls.each(el => $(el).off('click'));
 				});
 
 				selectFrame(0);
@@ -154,7 +153,7 @@ function(htmlString, animations) {
 	})();
 
     return {
-		'viewModel': ViewModel,
+		'viewModel': MaterialCarousel,
 		'template': htmlString
 	};
 });
