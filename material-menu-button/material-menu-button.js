@@ -7,32 +7,39 @@ function(htmlString, materialMenuComponent, tools) {
 		this.enable = params.enable;
 		this.disable = params.disable;
 		this.customMenuClass = params.customMenuClass;
-		this.childMenu = new materialMenuComponent.viewModel(params);
+
 		this.menuId = tools.getGuid();
+		this.childMenu = new materialMenuComponent.viewModel(params);
+		this.bindMenu = ko.observable(false);
 	};
 	MaterialMenuButton.prototype = {
-		'koDescendantsComplete': function(node) {
-			if (!node.isConnected)
-				return;
-
-			$(node).addClass('mdc-menu-surface--anchor').attr('data-menu', this.menuId);
-			this.childMenu.koDescendantsComplete(node);
-		},
 		'dispose': function() {
-			if (this.childMenu)
-				this.childMenu.dispose();
+			this.childMenu?.dispose();
 		},
 
 		'onButtonClick': function() {
-			this.childMenu.mdcMenu.open = true;
+			if (!this.bindMenu())
+				this.bindMenu(true);
+			else
+				this.childMenu.mdcMenu.open = true;
 		},
-		'onSelected': function(vm, event) {
-			this.childMenu.onSelected(vm, event);
+		'onMenuRendered': function(node) {
+			this.childMenu.koDescendantsComplete(node.parentElement);
+			this.childMenu.mdcMenu.open = true;
 		}
 	};
 
 	return {
-		'viewModel': MaterialMenuButton,
+		'viewModel': {
+			createViewModel: function(params, componentInfo) {
+				const materialMenuButton = new MaterialMenuButton(params),
+					node = componentInfo.element;
+
+				node.classList.add('mdc-menu-surface--anchor');
+				node.setAttribute('data-menu', materialMenuButton.menuId);
+				return materialMenuButton;
+			}
+		},
 		'template': htmlString
 	};
 });

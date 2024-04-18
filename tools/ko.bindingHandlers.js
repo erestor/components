@@ -196,7 +196,7 @@
 						return;
 					}
 					ko.virtualElements.emptyNode(element);
-					//ko.bindingEvent.notify(element, ko.bindingEvent.childrenComplete); ko.bindingEvent.notify seems to be undefined in KO release!
+					ko.bindingEvent.notify(element, "childrenComplete");
 					isRendered = false;
 					subscription = ko.when(trigger, render);
 				});
@@ -204,8 +204,7 @@
 
 			ko.utils.domNodeDisposal.addDisposeCallback(element, () => {
 				subscription.dispose();
-				if (resetSubscription)
-					resetSubscription.dispose();
+				resetSubscription?.dispose();
 			});
 
 			return {

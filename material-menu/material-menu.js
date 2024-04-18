@@ -1,12 +1,16 @@
 ﻿define([
 	'text!./material-menu.html',
 	'../material-list/material-list',
+	'../tools/tools',
 	'../tools/tools.mdc',
 	'@material/menu',
 	'@material/ripple'],
-function(htmlString, materialListComponent, mdcTools, materialMenu, materialRipple) {
+function(htmlString, materialListComponent, tools, mdcTools, materialMenu, materialRipple) {
 
 	const MaterialMenu = function(params) {
+		this.id = params.id || tools.getGuid();
+		this.css = params.css;
+
 		this.selectedIndex = params.selectedIndex;
 		this.select = params.select;
 		this.value = params.value;
