@@ -196,7 +196,7 @@
 						return;
 					}
 					ko.virtualElements.emptyNode(element);
-					ko.bindingEvent.notify(element, "childrenComplete");
+					//ko.bindingEvent.notify(element, "childrenComplete"); ko.bindingEvent.notify doesn't exist in release
 					isRendered = false;
 					subscription = ko.when(trigger, render);
 				});
