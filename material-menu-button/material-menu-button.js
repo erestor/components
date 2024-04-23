@@ -31,7 +31,7 @@ function(htmlString, materialMenuComponent, tools) {
 
 	return {
 		'viewModel': {
-			createViewModel: function(params, componentInfo) {
+			'createViewModel': function(params, componentInfo) {
 				const materialMenuButton = new MaterialMenuButton(params),
 					node = componentInfo.element;
 
