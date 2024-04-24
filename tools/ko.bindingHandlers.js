@@ -178,16 +178,17 @@
 
 	ko.bindingHandlers.when = {
 		'init': function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-			var needAsyncContext = allBindings.has(ko.bindingEvent.descendantsComplete),
+			const needAsyncContext = allBindings.has(ko.bindingEvent.descendantsComplete),
+				resetter = allBindings.get('resetOnChange');
+				//completeOnRender = allBindings.get("completeOn") == "render";
+
+			var renderSubscription = ko.when(trigger, render),
 				savedNodes,
 				isRendered,
 				resetSubscription;
 
-			var subscription = ko.when(trigger, render),
-				resetter = allBindings.get('resetOnChange');
-
 			if (resetter) {
-				var hasIgnoreResetClass = allBindings.has('ignoreResetClass'),
+				const hasIgnoreResetClass = allBindings.has('ignoreResetClass'),
 					ignoreResetClass = hasIgnoreResetClass && allBindings.get('ignoreResetClass');
 
 				resetSubscription = resetter.subscribe(function() {
@@ -196,16 +197,21 @@
 						return;
 					}
 					ko.virtualElements.emptyNode(element);
-					//ko.bindingEvent.notify(element, "childrenComplete"); ko.bindingEvent.notify doesn't exist in release
+					ko.applyBindingsToDescendants(bindingContext, element);
+					//ko.bindingEvent.notify doesn't exist in release so the applyBindingsToDescendants is used instead
+					//ko.bindingEvent.notify(element, ko.bindingEvent.childrenComplete);
 					isRendered = false;
-					subscription = ko.when(trigger, render);
+					renderSubscription = ko.when(trigger, render);
 				});
 			}
 
 			ko.utils.domNodeDisposal.addDisposeCallback(element, () => {
-				subscription.dispose();
 				resetSubscription?.dispose();
+				renderSubscription.dispose();
 			});
+
+            //if (!completeOnRender)
+				//ko.bindingEvent.notify(element, ko.bindingEvent.childrenComplete); //ko.bindingEvent.notify doesn't exist in release
 
 			return {
 				'controlsDescendantBindings': true
