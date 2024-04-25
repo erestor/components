@@ -1,4 +1,4 @@
-﻿define(['text!./material-select.html', '../tools/tools', '../tools/tools.mdc', '@material/select'],
+﻿define(['text!./material-select.html', '../tools/tools', '@knockout-mdc/mdc-tools', '@material/select'],
 function(htmlString, tools, mdcTools, materialSelect) {
 
 	const MaterialSelect = function(params) {

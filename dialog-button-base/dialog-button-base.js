@@ -1,4 +1,4 @@
-﻿define(['../tools/tools', '../tools/tools.mdc'], function(tools, mdcTools) {
+﻿define(['../tools/tools', '@knockout-mdc/mdc-tools'], function(tools, mdcTools) {
 
 	var DialogButtonBase = function(params) {
 		this.enable = tools.readEnableStatus(params);

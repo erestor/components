@@ -1,4 +1,4 @@
-define(['text!./material-textarea.html', '../tools/tools', '../tools/tools.mdc', '@material/textfield'],
+define(['text!./material-textarea.html', '../tools/tools', '@knockout-mdc/mdc-tools', '@material/textfield'],
 function(htmlString, tools, mdcTools, materialTextfield) {
 
 	const MaterialTextArea = function(params) {

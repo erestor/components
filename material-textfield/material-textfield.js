@@ -1,4 +1,4 @@
-define(['text!./material-textfield.html', '../tools/tools', '../tools/tools.mdc', '@material/textfield'],
+define(['text!./material-textfield.html', '../tools/tools', '@knockout-mdc/mdc-tools', '@material/textfield'],
 function(htmlString, tools, mdcTools, materialTextfield) {
 
 	const chromeAutofillTempValue = '__prevent_autofill__';

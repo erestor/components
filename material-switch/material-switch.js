@@ -1,4 +1,4 @@
-﻿define(['text!./material-switch.html', '../tools/tools.mdc', '../tools/tools', '@material/switch'],
+﻿define(['text!./material-switch.html', '@knockout-mdc/mdc-tools', '../tools/tools', '@material/switch'],
 function(htmlString, mdcTools, tools, materialSwitch) {
 
 	const MaterialSwitch = function(params) {

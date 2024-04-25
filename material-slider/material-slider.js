@@ -1,4 +1,4 @@
-﻿define(['text!./material-slider.html', '../tools/tools.mdc', '../tools/tools', '@material/slider'],
+﻿define(['text!./material-slider.html', '@knockout-mdc/mdc-tools', '../tools/tools', '@material/slider'],
 function(htmlString, mdcTools, tools, materialSlider) {
 
 	const MaterialSlider = function(params) {

@@ -2,7 +2,7 @@
 	'text!./material-menu.html',
 	'../material-list/material-list',
 	'../tools/tools',
-	'../tools/tools.mdc',
+	'@knockout-mdc/mdc-tools',
 	'@material/menu',
 	'@material/ripple'],
 function(htmlString, materialListComponent, tools, mdcTools, materialMenu, materialRipple) {

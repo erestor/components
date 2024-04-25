@@ -1,4 +1,4 @@
-﻿define(['text!./material-snackbar.html', '../tools/tools.mdc', '@material/snackbar'],
+﻿define(['text!./material-snackbar.html', '@knockout-mdc/mdc-tools', '@material/snackbar'],
 function(htmlString, mdcTools, materialSnackbar) {
 
 	const MaterialSnackbar = function(params) {
