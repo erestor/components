@@ -13,6 +13,13 @@ function(htmlString, materialMenuComponent, tools) {
 		this.bindMenu = ko.observable(false);
 	};
 	MaterialMenuButton.prototype = {
+		'koDescendantsComplete': function(node) {
+			if (!node.isConnected)
+				return;
+
+			node.classList.add('mdc-menu-surface--anchor');
+			node.setAttribute('data-menu', this.menuId);
+		},
 		'dispose': function() {
 			this.childMenu?.dispose();
 		},
@@ -30,16 +37,7 @@ function(htmlString, materialMenuComponent, tools) {
 	};
 
 	return {
-		'viewModel': {
-			'createViewModel': function(params, componentInfo) {
-				const materialMenuButton = new MaterialMenuButton(params),
-					node = componentInfo.element;
-
-				node.classList.add('mdc-menu-surface--anchor');
-				node.setAttribute('data-menu', materialMenuButton.menuId);
-				return materialMenuButton;
-			}
-		},
+		'viewModel': MaterialMenuButton,
 		'template': htmlString
 	};
 });

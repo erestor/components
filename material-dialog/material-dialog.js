@@ -1,7 +1,7 @@
 ﻿define(['text!./material-dialog.html', '../tools/tools.mdc', '../tools/tools', '@material/dialog'],
 function(htmlString, mdcTools, tools, materialDialog) {
 
-	const MaterialDialog = function(params, node) {
+	const MaterialDialog = function(params) {
 		this.id = params.id;
 		this.title = params.title;
 		this.modal = params.modal;
@@ -11,12 +11,10 @@ function(htmlString, mdcTools, tools, materialDialog) {
 		this.closed = params.closed;
 
 		//component lifetime
-		this._node = node;
 		this.mdcDialog = null;
 	};
 	MaterialDialog.prototype = {
-		'onChildrenComplete': function() {
-			const node = this._node;
+		'koDescendantsComplete': function(node) {
 			if (!node.isConnected)
 				return;
 
@@ -60,11 +58,7 @@ function(htmlString, mdcTools, tools, materialDialog) {
 	};
 
 	return {
-		'viewModel': {
-			'createViewModel': function(params, componentInfo) {
-				return new MaterialDialog(params, componentInfo.element);
-			}
-		},
+		'viewModel': MaterialDialog,
 		'template': htmlString
 	};
 });
