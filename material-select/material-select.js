@@ -47,7 +47,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 				this.mdcSelect.selectedIndex = this.selectedIndex();
 				this._selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
 					setTimeout(() => {
-						if (this.mdcSelect?.selectedIndex != newVal)
+						if (this.mdcSelect && this.mdcSelect.selectedIndex != newVal)
 							this.mdcSelect.selectedIndex = newVal;
 					});
 				});
@@ -56,7 +56,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 				this.mdcSelect.value = this.value();
 				this._valueSubscription = this.value.subscribe(newVal => {
 					setTimeout(() => {
-						if (this.mdcSelect?.value != newVal)
+						if (this.mdcSelect && this.mdcSelect.value != newVal)
 							this.mdcSelect.value = newVal;
 					});
 				});
