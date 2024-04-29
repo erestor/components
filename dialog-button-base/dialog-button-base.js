@@ -1,7 +1,7 @@
-﻿define(['../tools/tools', '@knockout-mdc/mdc-tools'], function(tools, mdcTools) {
+﻿define(['@skolaris/knockout-tools', '@knockout-mdc/mdc-tools'], function(tools, mdcTools) {
 
 	var DialogButtonBase = function(params) {
-		this.enable = tools.readEnableStatus(params);
+		this.enable = tools.isComponentEnabled(params);
 		this.dialogId = tools.getGuid();
 		this.dialogEl = null;
 	};

@@ -1,4 +1,4 @@
-﻿define(['text!./material-menu-button.html', '../material-menu/material-menu', '../tools/tools'],
+﻿define(['text!./material-menu-button.html', '../material-menu/material-menu', '@skolaris/knockout-tools'],
 function(htmlString, materialMenuComponent, tools) {
 
 	const MaterialMenuButton = function(params) {

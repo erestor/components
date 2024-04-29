@@ -1,4 +1,4 @@
-define(['text!./material-tab-bar.html', '../tools/tools', '@material/tab-bar'],
+define(['text!./material-tab-bar.html', '@skolaris/knockout-tools', '@material/tab-bar'],
 function(htmlString, tools, materialTabBar) {
 
 	const MaterialTabBar = function(params) {

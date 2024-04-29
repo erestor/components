@@ -1,9 +1,9 @@
-﻿define(['text!./material-icon-button.html', '../tools/tools', '@material/ripple'],
+﻿define(['text!./material-icon-button.html', '@skolaris/knockout-tools', '@material/ripple'],
 function(htmlString, tools, materialRipple) {
 
 	const MaterialIconButton = function(params) {
 		this.click = params.click;
-		this.enable = tools.readEnableStatus(params);
+		this.enable = tools.isComponentEnabled(params);
 		this.icon = params.icon;
 
 		//component lifetime

@@ -1,4 +1,8 @@
-﻿define(['./animations', './tools'], function(animations, tools) {
+﻿define(['./animations'], function(animations) {
+
+	const trimString = function(value) {
+		return value === null || value === undefined ? '' : value.trim();
+	};
 
 	ko.bindingHandlers.disable = {
 		'update': function(element, valueAccessor) {
@@ -144,7 +148,7 @@
 				if (element[classesWrittenByBindingKey] !== undefined)
 					element.classList.remove(element[classesWrittenByBindingKey]);
 
-				const value = tools.trimString(ko.unwrap(valueAccessor()));
+				const value = trimString(ko.unwrap(valueAccessor()));
 				if (value.length > 0) {
 					element.classList.add(value);
 					element[classesWrittenByBindingKey] = value;

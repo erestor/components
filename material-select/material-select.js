@@ -1,4 +1,4 @@
-﻿define(['text!./material-select.html', '../tools/tools', '@knockout-mdc/mdc-tools', '@material/select'],
+﻿define(['text!./material-select.html', '@skolaris/knockout-tools', '@knockout-mdc/mdc-tools', '@material/select'],
 function(htmlString, tools, mdcTools, materialSelect) {
 
 	const MaterialSelect = function(params) {
@@ -11,7 +11,7 @@ function(htmlString, tools, mdcTools, materialSelect) {
 		this.validate = params.validationValue !== undefined;
 		this.validationValue = params.validationValue;
 		
-		this.enable = tools.readEnableStatus(params);
+		this.enable = tools.isComponentEnabled(params);
 		this.noLabel = ko.pureComputed(() => !ko.unwrap(params.label));
 		this.filled = ko.unwrap(params.filled);
 		this.required = ko.unwrap(params.required);

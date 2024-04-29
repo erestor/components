@@ -1,4 +1,4 @@
-﻿define(['text!./material-banner.html', '../tools/tools'],
+﻿define(['text!./material-banner.html', '@skolaris/knockout-tools'],
 function(htmlString, tools) {
 
 	const MaterialBanner = function(params) {

@@ -1,7 +1,7 @@
 ﻿define([
 	'text!./material-menu.html',
 	'../material-list/material-list',
-	'../tools/tools',
+	'@skolaris/knockout-tools',
 	'@knockout-mdc/mdc-tools',
 	'@material/menu',
 	'@material/ripple'],

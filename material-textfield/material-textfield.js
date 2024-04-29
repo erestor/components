@@ -1,4 +1,4 @@
-define(['text!./material-textfield.html', '../tools/tools', '@knockout-mdc/mdc-tools', '@material/textfield'],
+define(['text!./material-textfield.html', '@skolaris/knockout-tools', '@knockout-mdc/mdc-tools', '@material/textfield'],
 function(htmlString, tools, mdcTools, materialTextfield) {
 
 	const chromeAutofillTempValue = '__prevent_autofill__';
@@ -23,7 +23,7 @@ function(htmlString, tools, mdcTools, materialTextfield) {
 		this.prefix = params.prefix;
 		this.suffix = params.suffix;
 		this.validate = params.validate;
-		this.enable = tools.readEnableStatus(params);
+		this.enable = tools.isComponentEnabled(params);
 		this.labelId = tools.getGuid();
 		if (this.validate)
 			this.helperId = tools.getGuid();

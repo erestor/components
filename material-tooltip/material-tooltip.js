@@ -1,4 +1,4 @@
-﻿define(['text!./material-tooltip.html', '../tools/tools', '@material/tooltip'],
+﻿define(['text!./material-tooltip.html', '@skolaris/knockout-tools', '@material/tooltip'],
 function(htmlString, tools, materialTooltip) {
 
 	const MaterialTooltip = function() {

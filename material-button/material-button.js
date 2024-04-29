@@ -1,10 +1,10 @@
-﻿define(['text!./material-button.html', '../tools/tools', '@material/ripple'],
+﻿define(['text!./material-button.html', '@skolaris/knockout-tools', '@material/ripple'],
 function(htmlString, tools, materialRipple) {
 
 	const MaterialButton = function(params) {
 		//data binding
 		this.click = params.click;
-		this.enable = tools.readEnableStatus(params);
+		this.enable = tools.isComponentEnabled(params);
 		this.type = params.type;
 
 		//css

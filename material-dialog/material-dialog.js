@@ -1,4 +1,4 @@
-﻿define(['text!./material-dialog.html', '@knockout-mdc/mdc-tools', '../tools/tools', '@material/dialog'],
+﻿define(['text!./material-dialog.html', '@knockout-mdc/mdc-tools', '@skolaris/knockout-tools', '@material/dialog'],
 function(htmlString, mdcTools, tools, materialDialog) {
 
 	const MaterialDialog = function(params) {

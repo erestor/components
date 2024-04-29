@@ -1,11 +1,11 @@
-﻿define(['text!./material-list-item.html', '../tools/tools'],
+﻿define(['text!./material-list-item.html', '@skolaris/knockout-tools'],
 function(htmlString, tools) {
 
 	const MaterialListItem = function(params) {
 		this.icon = params.icon;
 		this.text = params.text;
 		this.value = params.value;
-		this.enable = tools.readEnableStatus(params);
+		this.enable = tools.isComponentEnabled(params);
 
 		this.click = typeof params.click != 'function' ? params.click : function(vm, event) {
 			//the timeout means the parent list's selection handler will execute

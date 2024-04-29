@@ -1,4 +1,4 @@
-define(['text!./material-textarea.html', '../tools/tools', '@knockout-mdc/mdc-tools', '@material/textfield'],
+define(['text!./material-textarea.html', '@skolaris/knockout-tools', '@knockout-mdc/mdc-tools', '@material/textfield'],
 function(htmlString, tools, mdcTools, materialTextfield) {
 
 	const MaterialTextArea = function(params) {
@@ -17,7 +17,7 @@ function(htmlString, tools, mdcTools, materialTextfield) {
 		//data binding
 		this.value = params.textInput || ko.observable(ko.unwrap(params.initialValue));
 		this.validate = params.validate;
-		this.enable = tools.readEnableStatus(params);
+		this.enable = tools.isComponentEnabled(params);
 		this.labelId = tools.getGuid();
 		if (this.validate)
 			this.helperId = tools.getGuid();

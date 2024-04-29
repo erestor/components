@@ -1,9 +1,9 @@
-﻿define(['text!./material-switch.html', '@knockout-mdc/mdc-tools', '../tools/tools', '@material/switch'],
+﻿define(['text!./material-switch.html', '@knockout-mdc/mdc-tools', '@skolaris/knockout-tools', '@material/switch'],
 function(htmlString, mdcTools, tools, materialSwitch) {
 
 	const MaterialSwitch = function(params) {
 		this.label = params.label;
-		this.enable = tools.readEnableStatus(params);
+		this.enable = tools.isComponentEnabled(params);
 		this.id = tools.getGuid();
 
 		this.structuredLabel = this.label instanceof Array;

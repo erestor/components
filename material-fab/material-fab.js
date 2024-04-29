@@ -1,9 +1,9 @@
-﻿define(['text!./material-fab.html', '../tools/tools', '@material/ripple'],
+﻿define(['text!./material-fab.html', '@skolaris/knockout-tools', '@material/ripple'],
 function(htmlString, tools, materialRipple) {
 
 	const MaterialFab = function(params) {
 		this.click = params.click;
-		this.enable = tools.readEnableStatus(params);
+		this.enable = tools.isComponentEnabled(params);
 
 		//component lifetime
 		this.mdcRipple = null;

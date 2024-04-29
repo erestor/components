@@ -1,4 +1,4 @@
-﻿define(['text!./material-slider.html', '@knockout-mdc/mdc-tools', '../tools/tools', '@material/slider'],
+﻿define(['text!./material-slider.html', '@knockout-mdc/mdc-tools', '@skolaris/knockout-tools', '@material/slider'],
 function(htmlString, mdcTools, tools, materialSlider) {
 
 	const MaterialSlider = function(params) {
@@ -7,7 +7,7 @@ function(htmlString, mdcTools, tools, materialSlider) {
 		this.step = ko.unwrap(params.step) || 1;
 		this.discrete = !ko.unwrap(params.continuous);
 		this.value = params.value;
-		this.enable = tools.readEnableStatus(params);
+		this.enable = tools.isComponentEnabled(params);
 
 		this.label = !params.label ? null : ko.pureComputed(() => {
 			var txt = ko.unwrap(params.label);

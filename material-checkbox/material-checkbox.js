@@ -1,4 +1,4 @@
-﻿define(['text!./material-checkbox.html', '../tools/tools', '@material/checkbox', '@material/form-field'],
+﻿define(['text!./material-checkbox.html', '@skolaris/knockout-tools', '@material/checkbox', '@material/form-field'],
 function(htmlString, tools, materialCheckbox, materialFormField) {
 
 	const MaterialCheckbox = function(params) {
@@ -6,7 +6,7 @@ function(htmlString, tools, materialCheckbox, materialFormField) {
 		this.clicked = params.clicked;
 		this.label = params.label;
 		this.noLabel = params.label === undefined;
-		this.enable = tools.readEnableStatus(params);
+		this.enable = tools.isComponentEnabled(params);
 		this.id = tools.getGuid();
 
 		//component lifetime
