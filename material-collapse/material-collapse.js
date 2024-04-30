@@ -1,5 +1,7 @@
 ﻿define(['text!./material-collapse.html'], function(htmlString) {
 
+	const transitionDuration = 175; //ms
+
 	var MaterialCollapse = function(params) {
 		this.opened = params.opened;
 		this.node = null;
@@ -30,9 +32,12 @@
 		},
 
 		'_layout': function() {
-			if (this.opened())
+			if (this.opened()) {
 				this._resizeObserver.observe(this.content);
+				setTimeout(() => this.node.classList.add('material-collapse--expanded'), transitionDuration);
+			}
 			else {
+				this.node.classList.remove('material-collapse--expanded');
 				this._resizeObserver.unobserve(this.content);
 				this._setMaxHeight(null);
 			}
