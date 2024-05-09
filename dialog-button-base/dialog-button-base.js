@@ -3,26 +3,19 @@
 	var DialogButtonBase = function(params) {
 		this.enable = tools.isComponentEnabled(params);
 		this.dialogId = tools.getGuid();
-		this.dialogEl = null;
 	};
 	DialogButtonBase.prototype = {
 		'open': function() {
-			if (!this.dialogEl)
-				this.dialogEl = $('#' + this.dialogId);
-
-			var mdcDialog = this._getMdcDialog();
-			if (mdcDialog)
-				mdcDialog.open();
+			const mdcDialog = this._getMdcDialog();
+			mdcDialog?.open();
 		},
 		'close': function() {
-			if (this.dialogEl) {
-				var mdcDialog = this._getMdcDialog();
-				if (mdcDialog)
-					mdcDialog.close();
-			}
+			const mdcDialog = this._getMdcDialog();
+			mdcDialog?.close();
 		},
 		'_getMdcDialog': function() {
-			return mdcTools.getMdcComponent(this.dialogEl);
+			const el = document.getElementById(this.dialogId);
+			return mdcTools.getMdcComponent(el);
 		}
 	};
 	return DialogButtonBase;
