@@ -42,11 +42,11 @@ function(htmlString, mdcTools, tools, materialDialog) {
 				const autofocusEl = dialogEl.querySelector('[autofocus]');
 				autofocusEl?.focus();
 			}
-			if (typeof this.opened == 'function')
+			if (typeof this.opened === 'function')
 				this.opened(vm, event);
 		},
 		'onClosed': function(vm, event) {
-			if (typeof this.closed == 'function')
+			if (typeof this.closed === 'function')
 				this.closed(vm, event);
 		},
 		'getSurfaceAttrs': function() {
