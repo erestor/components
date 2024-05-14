@@ -39,7 +39,6 @@ function(htmlString, mdcTools, tools, materialSlider) {
 			this._enableSubscription?.dispose();
 			this._valueSubscription?.dispose();
 			this.mdcSlider?.destroy();
-			this.mdcSlider = null; //because of the timeout hack in _init
 		},
 
 		'getSliderCss': function() {
@@ -64,22 +63,19 @@ function(htmlString, mdcTools, tools, materialSlider) {
 		},
 
 		'_init': function(el) {
-			this.mdcSlider = new materialSlider.MDCSlider(el);
-			mdcTools.setMdcComponent(el, this.mdcSlider);
+			const slider = this.mdcSlider = new materialSlider.MDCSlider(el);
+			mdcTools.setMdcComponent(el, slider);
 
 			this._valueSubscription = this.value.subscribe(newVal => {
-				this.mdcSlider.setValue(newVal);
+				slider.setValue(newVal);
 			});
 
-			this.mdcSlider.setDisabled(!ko.unwrap(this.enable));
+			slider.setDisabled(!ko.unwrap(this.enable));
 			if (ko.isObservable(this.enable)) {
 				this._enableSubscription = this.enable.subscribe(newVal => {
-					this.mdcSlider.setDisabled(!newVal);
+					slider.setDisabled(!newVal);
 				});
 			}
-
-			//sometimes, in dynamic layouts, the element is moved after the layout has been calculated, but resize isn't observed
-			setTimeout(() => this.mdcSlider?.foundation.layout(), 250);
 		}
 	};
 
