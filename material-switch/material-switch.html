@@ -1,9 +1,9 @@
 ﻿<!-- ko if: showLabel -->
-<label class="mdc-typography--body2" data-bind="attr: {'for': id}, css: getLabelCss()">
+<label class="mdc-typography--body2 material-switch__label" data-bind="attr: {'for': id}, css: getLabelCss()">
 <!-- ko if: singleLabel -->{{label}}<!-- /ko -->
 <!-- ko if: structuredLabel -->
-	<span data-bind="text: label[0]"></span>
-	<span class="material-switch-label-help" data-bind="html: value() ? label[1] : label[2]"></span>
+	<span>{{label[0]}}</span>
+	<span class="material-switch__label-help" data-bind="html: value() ? label[1] : label[2]"></span>
 <!-- /ko -->
 </label>
 <!-- /ko -->

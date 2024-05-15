@@ -44,7 +44,7 @@ function(htmlString, mdcTools, tools, materialSwitch) {
 
 		'getLabelCss': function() {
 			return {
-				'material-switch-label__structured': this.structuredLabel
+				'material-switch__label--structured': this.structuredLabel
 			};
 		},
 
