@@ -1,4 +1,4 @@
-﻿define(['./animations'], function(animations) {
+﻿define([], function() {
 
 	const trimString = function(value) {
 		return value === null || value === undefined ? '' : value.trim();
@@ -157,24 +157,6 @@
 		};
 
 	}();
-
-	//#endregion
-
-	//#region Animation
-
-	ko.bindingHandlers.slideDown = {
-		init: function(element, valueAccessor) {
-			var value = valueAccessor();
-			$(element).toggle(ko.unwrap(value));
-		},
-		'update': function(element, valueAccessor) {
-			var value = valueAccessor();
-			if (ko.unwrap(value))
-				$(element).slideDown(animations.$timing);
-			else
-				$(element).slideUp(animations.$timing);
-		}
-	};
 
 	//#endregion
 

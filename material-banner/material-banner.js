@@ -5,37 +5,23 @@ function(htmlString, tools) {
 		this.icon = params.icon;
 		this.text = params.text;
 		this.buttons = params.buttons;
-		this.closed = params.closed;
+		this.show = params.show;
+		this.dismissed = params.dismissed;
 		this.id = tools.getGuid();
 
-		var self = this;
-		var onButtonClick = function(index) {
-			var buttons = self.buttons;
-			if (buttons[index].dismiss)
-				self._hide();
+		const onButtonClick = index => {
+			if (this.buttons[index].dismiss)
+				this._hide();
 
-			if (buttons[index].click)
-				buttons[index].click();
+			if (typeof this.buttons[index].click === 'function')
+				this.buttons[index].click();
 		};
-
-		this.onButton0 = function() {
-			onButtonClick(0);
-		};
-		this.onButton1 = function() {
-			onButtonClick(1);
-		};
+		this.onButton0 = () => onButtonClick(0);
+		this.onButton1 = () => onButtonClick(1);
 	};
 	MaterialBanner.prototype = {
 		'_hide': function() {
-			var self = this;
-			$('#' + this.id).parent().slideUp({
-				duration: 375,
-				easing: 'easeOutCubic',
-				complete: function() {
-					if (ko.isWritableObservable(self.closed))
-						self.closed(true);
-				}
-			});
+			this.dismissed(true);
 		}
 	};
 

@@ -1,34 +1,36 @@
-﻿<div data-bind="attr: { id: id }" class="material-banner-wrapper">
-	<div class="material-banner-message">
-		<!-- ko if: icon -->
-		<div class="material-banner-illustration">
-			<i class="material-icons">{{icon}}</i>
+﻿<material-collapse params="opened: show">
+	<div class="material-banner__wrapper">
+		<div class="material-banner__message">
+			<!-- ko if: icon -->
+			<div class="material-banner__illustration">
+				<i class="material-icons">{{icon}}</i>
+			</div>
+			<!-- /ko -->
+			<div class="material-banner__text">
+				<span class="mdc-typography--body2" data-bind="html: text"></span>
+			</div>
 		</div>
-		<!-- /ko -->
-		<div class="material-banner-text">
-			<span class="mdc-typography--body2" data-bind="html: text"></span>
-		</div>
-	</div>
-	<div class="material-banner-buttons">
-		<!-- ko using: buttons[0] -->
+		<div class="material-banner__buttons">
+			<!-- ko using: buttons[0] -->
 			<!-- ko if: $data.href -->
 			<a data-bind="href: href" target="_blank" rel="noopener" tabindex="-1">
 				<material-button>{{text}}</material-button>
 			</a>
 			<!-- /ko -->
 			<!-- ko ifnot: $data.href -->
-			<material-button data-bind="click: $component.onButton0">{{text}}</material-button>
+			<material-button data-bind="click: $parent.onButton0">{{text}}</material-button>
 			<!-- /ko -->
-		<!-- /ko -->
-		<!-- ko with: buttons[1] -->
+			<!-- /ko -->
+			<!-- ko with: buttons[1] -->
 			<!-- ko if: $data.href -->
 			<a data-bind="href: href" target="_blank" rel="noopener" tabindex="-1">
 				<material-button>{{text}}</material-button>
 			</a>
 			<!-- /ko -->
 			<!-- ko ifnot: $data.href -->
-			<material-button data-bind="click: $component.onButton1">{{text}}</material-button>
+			<material-button data-bind="click: $parent.onButton1">{{text}}</material-button>
 			<!-- /ko -->
-		<!-- /ko -->
+			<!-- /ko -->
+		</div>
 	</div>
-</div>
+</material-collapse>
