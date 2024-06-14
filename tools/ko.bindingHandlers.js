@@ -133,9 +133,8 @@
 			if (value === null || typeof value != "object")
 				ko.bindingHandlers['class'].update(element, valueAccessor);
 			else {
-				ko.utils.objectForEach(value, (className, shouldHaveClass) => {
+				for (const [className, shouldHaveClass] of Object.entries(value))
 					element.classList.toggle(className, !!ko.unwrap(shouldHaveClass));
-				});
 			}
 		}
 	};
