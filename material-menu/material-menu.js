@@ -22,6 +22,7 @@ function(htmlString, materialListComponent, tools, mdcTools, materialMenu, mater
 		this._selectedIndexSubscription = null;
 		this._valueSubscription = null;
 		this._handleKeyDown = null;
+		this._mutationObserver = null;
 	};
 	MaterialMenu.prototype = {
 		'koDescendantsComplete': function(node) {
@@ -29,42 +30,43 @@ function(htmlString, materialListComponent, tools, mdcTools, materialMenu, mater
 				return;
 
 			const el = node.querySelector('.mdc-menu');
-			this.mdcMenu = new materialMenu.MDCMenu(el);
-			mdcTools.setMdcComponent(el, this.mdcMenu);
+			const menu = this.mdcMenu = new materialMenu.MDCMenu(el);
+			const list = menu.list;
+			mdcTools.setMdcComponent(el, menu);
 
 			if (!this.fast)
-				this.mdcRipples = this.mdcMenu.list.listElements.map(listItemEl => new materialRipple.MDCRipple(listItemEl));
+				this.mdcRipples = list.listElements.map(listItemEl => new materialRipple.MDCRipple(listItemEl));
 
-			this.mdcMenu.setIsHoisted(true);
+			menu.setIsHoisted(true);
 			if (this.selectedIndex || this.value)
-				this.mdcMenu.list.singleSelection = true;
+				list.singleSelection = true;
 
 			if (this.selectedIndex) {
-				this.mdcMenu.list.selectedIndex = this.selectedIndex();
+				list.selectedIndex = this.selectedIndex();
 				this._selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
-					this.mdcMenu.list.selectedIndex = newVal;
+					list.selectedIndex = newVal;
 				});
 			}
 			if (this.value) {
-				this.mdcMenu.list.selectedIndex = this._findListItemIndex(this.value());
+				list.selectedIndex = this._findListItemIndex(this.value());
 				this._valueSubscription = this.value.subscribe(newVal => {
-					this.mdcMenu.list.selectedIndex = this._findListItemIndex(newVal);
+					list.selectedIndex = this._findListItemIndex(newVal);
 				});
 			}
 
-			this.mdcMenu.list.listElements.forEach(listEl => $(listEl).attr('role', 'menuitem'));
+			list.listElements.forEach(listEl => $(listEl).attr('role', 'menuitem'));
 
 			let typedChars = '';
 			this._handleKeyDown = ev => {
-				if (!this.mdcMenu.open)
+				if (!menu.open)
 					return;
 
-				const isMenuButton = $(ev.target).closest('.mdc-menu-surface--anchor').attr('data-menu') == this.mdcMenu.root.id;
+				const isMenuButton = $(ev.target).closest('.mdc-menu-surface--anchor').attr('data-menu') == menu.root.id;
 				const closestMenu = $(ev.target).closest('.mdc-menu');
 				const targetMenu = closestMenu.length > 0 && mdcTools.getMdcComponent(closestMenu[0]);
-				if (isMenuButton || targetMenu == this.mdcMenu) {
+				if (isMenuButton || targetMenu == menu) {
 					typedChars += ev.key.toLowerCase();
-					const items = this.mdcMenu.items;
+					const items = menu.items;
 
 					//loop through list items and find the first item that starts with the pressed keys
 					for (const item of items) {
@@ -72,7 +74,7 @@ function(htmlString, materialListComponent, tools, mdcTools, materialMenu, mater
 							continue;
 
 						if (item.querySelector('.mdc-deprecated-list-item__text').textContent.trim().toLowerCase().startsWith(typedChars)) {
-							this.mdcMenu.foundation.adapter.focusItemAtIndex(items.indexOf(item));
+							menu.foundation.adapter.focusItemAtIndex(items.indexOf(item));
 							break;
 						}
 					}
@@ -82,9 +84,13 @@ function(htmlString, materialListComponent, tools, mdcTools, materialMenu, mater
 			document.addEventListener('keydown', this._handleKeyDown);
 
 			//menu must be on top level to ensure proper function
-			document.body.appendChild(this.mdcMenu.root);
+			document.body.appendChild(menu.root);
+
+			this._mutationObserver = new MutationObserver(() => list.layout());
+			this._mutationObserver.observe(list.root, { childList: true, subtree: true });
 		},
 		'dispose': function() {
+			this._mutationObserver?.disconnect();
 			if (this._handleKeyDown)
 				document.removeEventListener('keydown', this._handleKeyDown);
 

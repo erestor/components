@@ -1,5 +1,5 @@
-﻿define(['text!./material-list.html', '@material/list', '@material/ripple'],
-function(htmlString, materialList, materialRipple) {
+﻿define(['text!./material-list.html', '@knockout-mdc/mdc-tools', '@material/list', '@material/ripple'],
+function(htmlString, mdcTools, materialList, materialRipple) {
 
 	const MaterialList = function(params) {
 		this.fast = params.fast; //prevent ripple effect
@@ -10,17 +10,24 @@ function(htmlString, materialList, materialRipple) {
 		//component lifetime
 		this.mdcList = null;
 		this.mdcRipples = [];
+		this._mutationObserver = null;
 	};
 	MaterialList.prototype = {
 		'koDescendantsComplete': function(node) {
 			if (!node.isConnected)
 				return;
 
-			this.mdcList = new materialList.MDCList(node.querySelector('.mdc-deprecated-list'));
+			var el = node.querySelector('.mdc-deprecated-list');
+			const list = this.mdcList = new materialList.MDCList(el);
+			mdcTools.setMdcComponent(el, list);
 			if (!this.fast)
-				this.mdcRipples = this.mdcList.listElements.map(listItemEl => new materialRipple.MDCRipple(listItemEl));
+				this.mdcRipples = list.listElements.map(listItemEl => new materialRipple.MDCRipple(listItemEl));
+
+			this._mutationObserver = new MutationObserver(() => list.layout());
+			this._mutationObserver.observe(list.root, { childList: true, subtree: true });
 		},
 		'dispose': function() {
+			this._mutationObserver?.disconnect();
 			this.mdcRipples.forEach(ripple => ripple.destroy());
 			this.mdcList?.destroy();
 		},
