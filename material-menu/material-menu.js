@@ -1,11 +1,11 @@
 ﻿define([
 	'text!./material-menu.html',
-	'../material-list/material-list',
 	'@skolaris/knockout-tools',
 	'@knockout-mdc/mdc-tools',
+	'@knockout-mdc/material-list',
 	'@material/menu',
 	'@material/ripple'],
-function(htmlString, materialListComponent, tools, mdcTools, materialMenu, materialRipple) {
+function(htmlString, tools, mdcTools, mdcList, materialMenu, materialRipple) {
 
 	const MaterialMenu = function(params) {
 		this.id = params.id || tools.getGuid();
@@ -14,7 +14,7 @@ function(htmlString, materialListComponent, tools, mdcTools, materialMenu, mater
 		this.selectedIndex = params.selectedIndex;
 		this.select = params.select;
 		this.value = params.value;
-		this.childList = new materialListComponent.viewModel(params);
+		this.childList = new mdcList.viewModel(params);
 
 		//component lifetime
 		this.mdcMenu = null;
@@ -44,13 +44,13 @@ function(htmlString, materialListComponent, tools, mdcTools, materialMenu, mater
 			if (this.selectedIndex) {
 				list.selectedIndex = this.selectedIndex();
 				this._selectedIndexSubscription = this.selectedIndex.subscribe(newVal => {
-					list.selectedIndex = newVal;
+					this._selectIndex(newVal);
 				});
 			}
 			if (this.value) {
 				list.selectedIndex = this._findListItemIndex(this.value());
 				this._valueSubscription = this.value.subscribe(newVal => {
-					list.selectedIndex = this._findListItemIndex(newVal);
+					this._selectIndex(this._findListItemIndex(newVal));
 				});
 			}
 
@@ -123,6 +123,14 @@ function(htmlString, materialListComponent, tools, mdcTools, materialMenu, mater
 		'_findListItemIndex': function(value) {
 			const listItems = this.mdcMenu.list.listElements;
 			return listItems.findIndex(listItem => $(listItem).attr('data-value') == value);
+		},
+		'_selectIndex': function(index) {
+			const list = this.mdcMenu.list,
+				focusedIndex = list.foundation.focusedItemIndex;
+
+			list.selectedIndex = index;
+			if (focusedIndex >= 0 && focusedIndex != index)
+				list.foundation.focusedItemIndex = -1;
 		}
 	};
 
