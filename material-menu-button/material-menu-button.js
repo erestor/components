@@ -1,5 +1,5 @@
-﻿define(['text!./material-menu-button.html', '../material-menu/material-menu', '@skolaris/knockout-tools'],
-function(htmlString, materialMenuComponent, tools) {
+﻿define(['text!./material-menu-button.html', '@knockout-mdc/material-menu', '@skolaris/knockout-tools'],
+function(htmlString, koMdcMenu, tools) {
 
 	const MaterialMenuButton = function(params) {
 		this.icon = params.icon || 'more_vert';
@@ -9,7 +9,7 @@ function(htmlString, materialMenuComponent, tools) {
 		this.customMenuClass = params.customMenuClass;
 
 		this.menuId = tools.getGuid();
-		this.childMenu = new materialMenuComponent.viewModel(params);
+		this.childMenu = new koMdcMenu.viewModel(params);
 		this.bindMenu = ko.observable(false);
 	};
 	MaterialMenuButton.prototype = {
